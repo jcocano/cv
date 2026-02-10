@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jesús Cocaño · Senior Backend & Platform Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page lang-en" id="page-wrap">
+      <article class="card">
+        <header class="hero">
+          <div class="hero-avatar">
+            <img
+              src="./pfp.jpeg"
+              alt="Jesús Cocaño"
+              loading="eager"
+              width="96"
+              height="96"
+            />
+          </div>
+          <div class="hero-content">
+            <div class="hero-main">
+              <div>
+                <h1>Jesús Cocaño</h1>
+                <p class="hero-role">Senior Backend &amp; Platform Engineer</p>
+                <p class="hero-meta"><span class="lang-es">México · Remote</span><span class="lang-en">Mexico · Remote</span></p>
+                <div class="hero-links">
+                  <span>jesus.cocano@gmail.com</span>
+                  <a href="https://github.com/jcocano" target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <a href="https://linkedin.com/in/jcocano" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+              </div>
+              <nav class="lang-switcher" aria-label="Idioma / Language">
+                <button
+                  type="button"
+                  data-lang="es"
+                  aria-pressed="false"
+                  aria-label="Español"
+                  title="Español"
+                >
+                  <span aria-hidden="true">🇲🇽</span>
+                </button>
+                <button
+                  type="button"
+                  class="is-active"
+                  data-lang="en"
+                  aria-pressed="true"
+                  aria-label="English"
+                  title="English"
+                >
+                  <span aria-hidden="true">🇺🇸</span>
+                </button>
+              </nav>
+            </div>
+          </div>
+        </header>
+
+        <div class="tabs-wrap" id="tablist-wrap" role="tablist" aria-label="Secciones del CV">
+          <ul class="tabs">
+            <li>
+              <button
+                type="button"
+                role="tab"
+                id="tab-resumen"
+                aria-selected="true"
+                aria-controls="panel-resumen"
+              >
+                <span class="lang-es">Resumen</span><span class="lang-en">Summary</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                role="tab"
+                id="tab-experiencia"
+                aria-selected="false"
+                aria-controls="panel-experiencia"
+              >
+                <span class="lang-es">Experiencia</span><span class="lang-en">Experience</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                role="tab"
+                id="tab-tecnico"
+                aria-selected="false"
+                aria-controls="panel-tecnico"
+              >
+                <span class="lang-es">Perfil técnico</span><span class="lang-en">Technical profile</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div id="panel-resumen" class="panel" role="tabpanel" aria-labelledby="tab-resumen" aria-hidden="false">
+          <h2><span class="lang-es">Resumen profesional</span><span class="lang-en">Professional summary</span></h2>
+          <p class="lang-es">
+            Senior Backend &amp; Platform Engineer con 7+ años construyendo
+            sistemas distribuidos en producción y 12+ años en infraestructura y
+            operaciones. Experiencia en plataformas cloud-native escalables,
+            entornos basados en Kubernetes y microservicios event-driven sobre AWS
+            y GCP.
+          </p>
+          <p class="lang-en">
+            Senior Backend &amp; Platform Engineer with 7+ years building
+            production-grade distributed systems and 12+ years in infrastructure
+            and operations. Experience designing scalable cloud-native platforms,
+            Kubernetes-based environments, and event-driven microservices on AWS
+            and GCP.
+          </p>
+          <p class="lang-es">
+            Sólida base en fiabilidad en producción, automatización de
+            infraestructura y diseño de sistemas bajo tráfico real. Combina
+            profundidad en backend con experiencia en infraestructura para
+            diseñar, operar y escalar sistemas resilientes, desde arquitecturas
+            early-stage hasta plataformas maduras en producción.
+          </p>
+          <p class="lang-en">
+            Strong background in production reliability, infrastructure automation,
+            and system design under real-world traffic. Combines backend depth with
+            infrastructure expertise to design, operate, and scale resilient systems—
+            from early-stage architectures to mature production platforms.
+          </p>
+        </div>
+
+        <div id="panel-experiencia" class="panel" role="tabpanel" aria-labelledby="tab-experiencia" aria-hidden="true">
+          <h2><span class="lang-es">Experiencia profesional</span><span class="lang-en">Professional experience</span></h2>
+          <ul class="job-list">
+            <li class="job">
+              <button class="job-header" type="button" aria-expanded="true">
+                <div class="job-header-main">
+                  <div class="job-title">Senior Software Engineer – Backend &amp; Platform</div>
+                  <div class="job-company">Yuga Labs</div>
+                  <div class="job-meta"><span class="lang-es">Remote · Dic 2024 – Feb 2026</span><span class="lang-en">Remote · Dec 2024 – Feb 2026</span></div>
+                </div>
+                <span class="job-chevron" aria-hidden="true">⌃</span>
+              </button>
+              <div class="job-body">
+                <ul>
+                  <li class="lang-es">Diseño y evolución de servicios backend distribuidos que soportan productos integrados con blockchain en producción.</li>
+                  <li class="lang-en">Designed and evolved distributed backend services supporting blockchain-integrated products in production.</li>
+                  <li class="lang-es">Arquitectura de APIs escalables bajo eventos globales de alto tráfico.</li>
+                  <li class="lang-en">Architected scalable APIs operating under high-traffic global events.</li>
+                  <li class="lang-es">Liderazgo en discusiones de arquitectura sobre escalabilidad, despliegue y fiabilidad en sistemas basados en Kubernetes.</li>
+                  <li class="lang-en">Led architectural discussions on scalability, deployment strategies, and infrastructure reliability across Kubernetes-based systems.</li>
+                  <li class="lang-es">Participación en respuesta a incidentes, análisis de causa raíz y postmortems.</li>
+                  <li class="lang-en">Participated in incident response, root cause analysis, and postmortem improvements for production systems.</li>
+                  <li class="lang-es">Contribuciones a hardening de infraestructura, observabilidad y fiabilidad de despliegues multi cloud (AWS / GCP).</li>
+                  <li class="lang-en">Contributed to infrastructure hardening, observability improvements, and deployment reliability across multi-environment cloud setups (AWS / GCP).</li>
+                </ul>
+              </div>
+            </li>
+            <li class="job">
+              <button class="job-header" type="button" aria-expanded="false">
+                <div class="job-header-main">
+                  <div class="job-title">Senior Software Engineer – Backend &amp; Platform</div>
+                  <div class="job-company">tokenproof</div>
+                  <div class="job-meta">Remote · 2022 – 2024</div>
+                </div>
+                <span class="job-chevron" aria-hidden="true">⌃</span>
+              </button>
+              <div class="job-body" hidden>
+                <ul>
+                  <li class="lang-es">Arquitectura de sistemas de autenticación distribuidos con verificación on-chain y microservicios backend.</li>
+                  <li class="lang-en">Architected distributed authentication systems integrating on-chain verification with backend microservices.</li>
+                  <li class="lang-es">Diseño de comunicación event-driven con Apache Pulsar y Google Pub/Sub.</li>
+                  <li class="lang-en">Designed event-driven service communication using Apache Pulsar and Google Pub/Sub.</li>
+                  <li class="lang-es">Provisión y operación de infraestructura en Kubernetes con Terraform y Terragrunt (VPCs, bases de datos, mensajería).</li>
+                  <li class="lang-en">Provisioned and operated Kubernetes-based production infrastructure using Terraform and Terragrunt (VPCs, managed databases, messaging).</li>
+                  <li class="lang-es">Mejora de CI/CD y estándares de despliegue; mayor fiabilidad y menor overhead operativo.</li>
+                  <li class="lang-en">Strengthened CI/CD workflows and deployment standards, improving reliability and reducing operational overhead.</li>
+                  <li class="lang-es">Soporte y troubleshooting en producción en entornos multi cloud (GCP / AWS).</li>
+                  <li class="lang-en">Participated in production troubleshooting across multi-cloud environments (GCP / AWS).</li>
+                </ul>
+              </div>
+            </li>
+            <li class="job">
+              <button class="job-header" type="button" aria-expanded="false">
+                <div class="job-header-main">
+                  <div class="job-title">Founding Engineer / Blockchain Developer</div>
+                  <div class="job-company">METAONE</div>
+                  <div class="job-meta"><span class="lang-es">Híbrido (GLD Mex) · 2022</span><span class="lang-en">Hybrid (GLD Mex) · 2022</span></div>
+                </div>
+                <span class="job-chevron" aria-hidden="true">⌃</span>
+              </button>
+              <div class="job-body" hidden>
+                <ul>
+                  <li class="lang-es">Diseño y despliegue de smart contracts en Solidity para ecosistemas DeFi y NFT.</li>
+                  <li class="lang-en">Designed and deployed Solidity smart contracts for DeFi and NFT ecosystems.</li>
+                  <li class="lang-es">Implementación de servicios backend que integran aplicaciones web con lógica on-chain.</li>
+                  <li class="lang-en">Implemented backend services integrating web applications with on-chain logic.</li>
+                  <li class="lang-es">Decisiones de arquitectura early-stage equilibrando escalabilidad, seguridad y velocidad de entrega.</li>
+                  <li class="lang-en">Contributed to early-stage architecture decisions balancing scalability, security, and delivery speed.</li>
+                </ul>
+              </div>
+            </li>
+            <li class="job">
+              <button class="job-header" type="button" aria-expanded="false">
+                <div class="job-header-main">
+                  <div class="job-title">Software Engineer – Backend &amp; Enterprise Integrations</div>
+                  <div class="job-company">Savare Medika</div>
+                  <div class="job-meta">2018 – 2022</div>
+                </div>
+                <span class="job-chevron" aria-hidden="true">⌃</span>
+              </button>
+              <div class="job-body" hidden>
+                <ul>
+                  <li class="lang-es">Desarrollo de soluciones backend enterprise en Java y C#.</li>
+                  <li class="lang-en">Developed enterprise backend solutions using Java and C#.</li>
+                  <li class="lang-es">Diseño de patrones de integración event-driven con Kafka.</li>
+                  <li class="lang-en">Designed event-driven integration patterns using Kafka.</li>
+                  <li class="lang-es">Soluciones Salesforce (Apex, Visualforce) para flujos empresariales.</li>
+                  <li class="lang-en">Built Salesforce solutions (Apex, Visualforce) for enterprise workflows.</li>
+                  <li class="lang-es">Procesamiento idempotente en sistemas distribuidos.</li>
+                  <li class="lang-en">Implemented idempotent data processing strategies across distributed systems.</li>
+                </ul>
+              </div>
+            </li>
+            <li class="job">
+              <button class="job-header" type="button" aria-expanded="false">
+                <div class="job-header-main">
+                  <div class="job-title"><span class="lang-es">Infraestructura e ingeniería de sistemas</span><span class="lang-en">Infrastructure &amp; Systems Engineering</span></div>
+                  <div class="job-company"><span class="lang-es">Inicios · 2006 – 2013</span><span class="lang-en">Early career · 2006 – 2013</span></div>
+                  <div class="job-meta"><span class="lang-es">Varios</span><span class="lang-en">Various</span></div>
+                </div>
+                <span class="job-chevron" aria-hidden="true">⌃</span>
+              </button>
+              <div class="job-body" hidden>
+                <ul>
+                  <li class="lang-es">Gestión de servidores enterprise, red, firewalls y hosting para operaciones críticas.</li>
+                  <li class="lang-en">Managed enterprise-grade server environments, networking, firewalls, and hosting for business-critical operations.</li>
+                  <li class="lang-es">Fundamentos en fiabilidad de sistemas, uptime y continuidad operativa.</li>
+                  <li class="lang-en">Developed strong foundations in systems reliability, uptime management, and operational continuity.</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div id="panel-tecnico" class="panel" role="tabpanel" aria-labelledby="tab-tecnico" aria-hidden="true">
+          <h2><span class="lang-es">Perfil técnico</span><span class="lang-en">Technical profile</span></h2>
+          <div class="tech-profile">
+            <section class="tech-section" aria-labelledby="tech-expertise-heading">
+              <h3 id="tech-expertise-heading" class="tech-section-title"><span class="lang-es">Áreas de expertise</span><span class="lang-en">Areas of expertise</span></h3>
+              <ul class="tech-expertise lang-es">
+                <li>Sistemas backend cloud-native y arquitecturas distribuidas</li>
+                <li>Microservicios event-driven y mensajería (Kafka, Pulsar, Pub/Sub)</li>
+                <li>Infraestructura basada en Kubernetes e Infrastructure as Code (Terraform)</li>
+                <li>Diseño de APIs seguras y multi-cloud (AWS, GCP)</li>
+                <li>Observabilidad y fiabilidad en producción (SRE)</li>
+              </ul>
+              <ul class="tech-expertise lang-en">
+                <li>Cloud-native backend systems and distributed architectures</li>
+                <li>Event-driven microservices and messaging (Kafka, Pulsar, Pub/Sub)</li>
+                <li>Kubernetes-based infrastructure and Infrastructure as Code (Terraform)</li>
+                <li>Secure API design and multi-cloud deployments (AWS, GCP)</li>
+                <li>Observability and production reliability (SRE)</li>
+              </ul>
+            </section>
+            <section class="tech-section" aria-labelledby="tech-core-heading">
+              <h3 id="tech-core-heading" class="tech-section-title"><span class="lang-es">Tecnologías principales</span><span class="lang-en">Core technologies</span></h3>
+              <div class="tech-grid">
+                <span class="tech-tag">TypeScript</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">NestJS</span>
+                <span class="tech-tag">Kubernetes</span>
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">GCP</span>
+                <span class="tech-tag">Prometheus</span>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <span class="lang-es">Versión en PDF:</span><span class="lang-en">PDF version:</span>
+          <a href="jesus_cocano_cv.pdf" target="_blank" rel="noopener noreferrer"><span class="lang-es">abrir</span><span class="lang-en">open</span></a>
+          ·
+          <a href="jesus_cocano_cv.pdf" download="jesus_cocano_cv.pdf"><span class="lang-es">descargar</span><span class="lang-en">download</span></a>
+        </footer>
+      </article>
+    </div>
+
+    <script src="lang.js"></script>
+    <script src="tabs.js"></script>
+    <script src="accordion.js"></script>
+  </body>
+</html>

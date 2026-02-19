@@ -7,231 +7,252 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script>
+      (function () {
+        var t = localStorage.getItem('cv-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
   </head>
   <body>
     <div class="page lang-en" id="page-wrap">
       <article class="card">
+
+        <!-- ============================================================ -->
+        <!-- Hero -->
+        <!-- ============================================================ -->
         <header class="hero">
           <div class="hero-avatar">
-            <img
-              src="./pfp.jpeg"
-              alt="Jesús Cocaño"
-              loading="eager"
-              width="96"
-              height="96"
-            />
+            <img src="./pfp.jpeg" alt="Jesús Cocaño" loading="eager" width="120" height="120" />
           </div>
           <div class="hero-content">
-            <div class="hero-main">
-              <div>
-                <h1>Jesús Cocaño</h1>
-                <p class="hero-role">Senior Backend &amp; Platform Engineer</p>
-                <p class="hero-meta"><span class="lang-es">México · Remote</span><span class="lang-en">Mexico · Remote</span></p>
-                <div class="hero-links">
-                  <span>jesus.cocano@gmail.com</span>
-                  <a href="https://github.com/jcocano" target="_blank" rel="noopener noreferrer">GitHub</a>
-                  <a href="https://linkedin.com/in/jcocano" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                </div>
+            <div class="hero-name-row">
+              <h1>Jesús Cocaño</h1>
+              <div class="hero-controls">
+                <nav class="lang-switcher" aria-label="Idioma / Language">
+                  <button type="button" data-lang="es" aria-pressed="false" aria-label="Español" title="Español">ES</button>
+                  <button type="button" class="is-active" data-lang="en" aria-pressed="true" aria-label="English" title="English">EN</button>
+                </nav>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
               </div>
-              <nav class="lang-switcher" aria-label="Idioma / Language">
-                <button
-                  type="button"
-                  data-lang="es"
-                  aria-pressed="false"
-                  aria-label="Español"
-                  title="Español"
-                >
-                  <span aria-hidden="true">🇲🇽</span>
-                </button>
-                <button
-                  type="button"
-                  class="is-active"
-                  data-lang="en"
-                  aria-pressed="true"
-                  aria-label="English"
-                  title="English"
-                >
-                  <span aria-hidden="true">🇺🇸</span>
-                </button>
-              </nav>
+            </div>
+            <p class="hero-subtitle">
+              <span class="hero-role">Senior Backend &amp; Platform Engineer</span>
+              <span class="hero-sep" aria-hidden="true">&middot;</span>
+              <span class="hero-meta"><span class="lang-es">México · Remoto</span><span class="lang-en">Mexico · Remote</span></span>
+            </p>
+            <div class="hero-actions">
+              <div class="hero-status">
+                <span class="lang-es">Disponible para oportunidades</span>
+                <span class="lang-en">Available for opportunities</span>
+              </div>
+              <a href="mailto:jesus.cocano@gmail.com" class="hero-link">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="22,6 12,13 2,6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                Email
+              </a>
+              <a href="https://github.com/jcocano" target="_blank" rel="noopener noreferrer" class="hero-link">
+                <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </a>
+              <a href="https://linkedin.com/in/jcocano" target="_blank" rel="noopener noreferrer" class="hero-link">
+                <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                LinkedIn
+              </a>
             </div>
           </div>
         </header>
 
-        <div class="tabs-wrap" id="tablist-wrap" role="tablist" aria-label="Secciones del CV">
+        <!-- ============================================================ -->
+        <!-- Tabs — sticky glass bar -->
+        <!-- ============================================================ -->
+        <div class="tabs-wrap" id="tablist-wrap" role="tablist" aria-label="CV sections">
           <ul class="tabs">
             <li>
-              <button
-                type="button"
-                role="tab"
-                id="tab-resumen"
-                aria-selected="true"
-                aria-controls="panel-resumen"
-              >
+              <button type="button" role="tab" id="tab-resumen" aria-selected="true" aria-controls="panel-resumen">
                 <span class="lang-es">Resumen</span><span class="lang-en">Summary</span>
               </button>
             </li>
             <li>
-              <button
-                type="button"
-                role="tab"
-                id="tab-experiencia"
-                aria-selected="false"
-                aria-controls="panel-experiencia"
-              >
+              <button type="button" role="tab" id="tab-experiencia" aria-selected="false" aria-controls="panel-experiencia">
                 <span class="lang-es">Experiencia</span><span class="lang-en">Experience</span>
               </button>
             </li>
             <li>
-              <button
-                type="button"
-                role="tab"
-                id="tab-tecnico"
-                aria-selected="false"
-                aria-controls="panel-tecnico"
-              >
-                <span class="lang-es">Perfil técnico</span><span class="lang-en">Technical profile</span>
+              <button type="button" role="tab" id="tab-tecnico" aria-selected="false" aria-controls="panel-tecnico">
+                <span class="lang-es">Perfil técnico</span><span class="lang-en">Technical</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" role="tab" id="tab-proyectos" aria-selected="false" aria-controls="panel-proyectos">
+                <span class="lang-es">Proyectos</span><span class="lang-en">Projects</span>
               </button>
             </li>
           </ul>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- Panel: Summary — bento layout with stat cards -->
+        <!-- ============================================================ -->
         <div id="panel-resumen" class="panel" role="tabpanel" aria-labelledby="tab-resumen" aria-hidden="false">
           <h2><span class="lang-es">Resumen profesional</span><span class="lang-en">Professional summary</span></h2>
-          <p class="lang-es">
-            Senior Backend &amp; Platform Engineer con 7+ años construyendo
-            sistemas distribuidos en producción y 12+ años en infraestructura y
-            operaciones. Experiencia en plataformas cloud-native escalables,
-            entornos basados en Kubernetes y microservicios event-driven sobre AWS
-            y GCP.
-          </p>
-          <p class="lang-en">
-            Senior Backend &amp; Platform Engineer with 7+ years building
-            production-grade distributed systems and 12+ years in infrastructure
-            and operations. Experience designing scalable cloud-native platforms,
-            Kubernetes-based environments, and event-driven microservices on AWS
-            and GCP.
-          </p>
-          <p class="lang-es">
-            Sólida base en fiabilidad en producción, automatización de
-            infraestructura y diseño de sistemas bajo tráfico real. Combina
-            profundidad en backend con experiencia en infraestructura para
-            diseñar, operar y escalar sistemas resilientes, desde arquitecturas
-            early-stage hasta plataformas maduras en producción.
-          </p>
-          <p class="lang-en">
-            Strong background in production reliability, infrastructure automation,
-            and system design under real-world traffic. Combines backend depth with
-            infrastructure expertise to design, operate, and scale resilient systems—
-            from early-stage architectures to mature production platforms.
-          </p>
+
+          <div class="summary-grid">
+            <!-- Stat cards row -->
+            <div class="stat-card">
+              <span class="stat-number">7+</span>
+              <span class="stat-label lang-es">años en sistemas distribuidos</span>
+              <span class="stat-label lang-en">years in distributed systems</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number">12+</span>
+              <span class="stat-label lang-es">años en infraestructura y operaciones</span>
+              <span class="stat-label lang-en">years in infrastructure &amp; ops</span>
+            </div>
+
+            <!-- Summary text -->
+            <div class="summary-text">
+              <p class="lang-es">
+                Senior Backend &amp; Platform Engineer con 7+ años construyendo sistemas distribuidos en producción y 12+ años en infraestructura y operaciones. Experiencia en plataformas cloud-native escalables, entornos basados en Kubernetes y microservicios event-driven sobre AWS y GCP.
+              </p>
+              <p class="lang-en">
+                Senior Backend and Platform Engineer with over 7 years of experience building production-grade distributed systems and 12+ years in infrastructure and operations. Experienced in architecting cloud-native platforms, Kubernetes-based environments, and event-driven microservices across AWS and GCP.
+              </p>
+              <p class="lang-es">
+                Sólida base en fiabilidad en producción, automatización de infraestructura y diseño de sistemas bajo tráfico real. Combina profundidad en backend con experiencia en infraestructura para diseñar, operar y escalar sistemas resilientes, desde arquitecturas early-stage hasta plataformas maduras de alto tráfico en producción.
+              </p>
+              <p class="lang-en">
+                Combines strong backend engineering with deep infrastructure expertise to design, operate, and scale resilient systems—from early-stage architectures to mature high-traffic platforms.
+              </p>
+            </div>
+
+            <!-- Expertise items as bento cells -->
+            <div class="expertise-grid">
+              <div class="expertise-item lang-es">Sistemas backend cloud-native y arquitecturas distribuidas</div>
+              <div class="expertise-item lang-es">Microservicios event-driven y mensajería (Kafka, Pulsar, Pub/Sub)</div>
+              <div class="expertise-item lang-es">Infraestructura basada en Kubernetes e IaC (Terraform)</div>
+              <div class="expertise-item lang-es">Diseño de APIs seguras y despliegues multi-cloud (AWS, GCP)</div>
+              <div class="expertise-item lang-es">Observabilidad y fiabilidad en producción (SRE)</div>
+              <div class="expertise-item lang-en">Cloud-native backend systems and distributed architectures</div>
+              <div class="expertise-item lang-en">Event-driven microservices and messaging (Kafka, Pulsar, Pub/Sub)</div>
+              <div class="expertise-item lang-en">Kubernetes-based infrastructure and IaC (Terraform)</div>
+              <div class="expertise-item lang-en">Secure API design and multi-cloud deployments (AWS, GCP)</div>
+              <div class="expertise-item lang-en">Observability and production reliability (SRE)</div>
+            </div>
+          </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- Panel: Experience — timeline -->
+        <!-- ============================================================ -->
         <div id="panel-experiencia" class="panel" role="tabpanel" aria-labelledby="tab-experiencia" aria-hidden="true">
           <h2><span class="lang-es">Experiencia profesional</span><span class="lang-en">Professional experience</span></h2>
           <ul class="job-list">
+
+            <!-- Yuga Labs -->
             <li class="job">
               <button class="job-header" type="button" aria-expanded="true">
                 <div class="job-header-main">
                   <div class="job-title">Senior Software Engineer – Backend &amp; Platform</div>
                   <div class="job-company">Yuga Labs</div>
-                  <div class="job-meta"><span class="lang-es">Remote · Dic 2024 – Feb 2026</span><span class="lang-en">Remote · Dec 2024 – Feb 2026</span></div>
+                  <div class="job-meta"><span class="lang-es">Remoto · Dic 2024 – Feb 2026</span><span class="lang-en">Remote · Dec 2024 – Feb 2026</span></div>
                 </div>
-                <span class="job-chevron" aria-hidden="true">⌃</span>
+                <span class="job-chevron" aria-hidden="true">&#x25B4;</span>
               </button>
               <div class="job-body">
                 <ul>
-                  <li class="lang-es">Diseño y evolución de servicios backend distribuidos que soportan productos integrados con blockchain en producción.</li>
-                  <li class="lang-en">Designed and evolved distributed backend services supporting blockchain-integrated products in production.</li>
-                  <li class="lang-es">Arquitectura de APIs escalables bajo eventos globales de alto tráfico.</li>
-                  <li class="lang-en">Architected scalable APIs operating under high-traffic global events.</li>
-                  <li class="lang-es">Liderazgo en discusiones de arquitectura sobre escalabilidad, despliegue y fiabilidad en sistemas basados en Kubernetes.</li>
-                  <li class="lang-en">Led architectural discussions on scalability, deployment strategies, and infrastructure reliability across Kubernetes-based systems.</li>
-                  <li class="lang-es">Participación en respuesta a incidentes, análisis de causa raíz y postmortems.</li>
-                  <li class="lang-en">Participated in incident response, root cause analysis, and postmortem improvements for production systems.</li>
-                  <li class="lang-es">Contribuciones a hardening de infraestructura, observabilidad y fiabilidad de despliegues multi cloud (AWS / GCP).</li>
-                  <li class="lang-en">Contributed to infrastructure hardening, observability improvements, and deployment reliability across multi-environment cloud setups (AWS / GCP).</li>
+                  <li class="lang-es">Diseño y evolución de servicios backend distribuidos que soportan productos integrados con blockchain operando a gran escala.</li>
+                  <li class="lang-en">Designed and evolved distributed backend services supporting blockchain-integrated products operating at high scale.</li>
+                  <li class="lang-es">Arquitectura de APIs de alto rendimiento y guía en estrategias de escalabilidad y despliegue en sistemas basados en Kubernetes.</li>
+                  <li class="lang-en">Architected high-throughput APIs and guided scalability and deployment strategies across Kubernetes-based systems.</li>
+                  <li class="lang-es">Liderazgo en respuesta a incidentes, análisis de causa raíz y mejoras post-mortem, fortaleciendo la infraestructura y observabilidad en AWS/GCP.</li>
+                  <li class="lang-en">Led incident response, root cause analysis, and post-mortem improvements, hardening infrastructure and observability across AWS/GCP.</li>
                 </ul>
               </div>
             </li>
+
+            <!-- tokenproof -->
             <li class="job">
               <button class="job-header" type="button" aria-expanded="false">
                 <div class="job-header-main">
                   <div class="job-title">Senior Software Engineer – Backend &amp; Platform</div>
                   <div class="job-company">tokenproof</div>
-                  <div class="job-meta">Remote · 2022 – 2024</div>
+                  <div class="job-meta">Remote · 2022 – Dec 2024</div>
                 </div>
-                <span class="job-chevron" aria-hidden="true">⌃</span>
+                <span class="job-chevron" aria-hidden="true">&#x25B4;</span>
               </button>
               <div class="job-body" hidden>
                 <ul>
-                  <li class="lang-es">Arquitectura de sistemas de autenticación distribuidos con verificación on-chain y microservicios backend.</li>
+                  <li class="lang-es">Arquitectura de sistemas de autenticación distribuidos integrando verificación on-chain con microservicios backend.</li>
                   <li class="lang-en">Architected distributed authentication systems integrating on-chain verification with backend microservices.</li>
-                  <li class="lang-es">Diseño de comunicación event-driven con Apache Pulsar y Google Pub/Sub.</li>
-                  <li class="lang-en">Designed event-driven service communication using Apache Pulsar and Google Pub/Sub.</li>
-                  <li class="lang-es">Provisión y operación de infraestructura en Kubernetes con Terraform y Terragrunt (VPCs, bases de datos, mensajería).</li>
-                  <li class="lang-en">Provisioned and operated Kubernetes-based production infrastructure using Terraform and Terragrunt (VPCs, managed databases, messaging).</li>
-                  <li class="lang-es">Mejora de CI/CD y estándares de despliegue; mayor fiabilidad y menor overhead operativo.</li>
-                  <li class="lang-en">Strengthened CI/CD workflows and deployment standards, improving reliability and reducing operational overhead.</li>
-                  <li class="lang-es">Soporte y troubleshooting en producción en entornos multi cloud (GCP / AWS).</li>
-                  <li class="lang-en">Participated in production troubleshooting across multi-cloud environments (GCP / AWS).</li>
+                  <li class="lang-es">Diseño de comunicación event-driven con Apache Pulsar y Google Pub/Sub; provisión y operación de infraestructura Kubernetes vía Terraform/Terragrunt.</li>
+                  <li class="lang-en">Designed event-driven communication using Apache Pulsar and Google Pub/Sub; provisioned and operated Kubernetes infrastructure via Terraform/Terragrunt.</li>
+                  <li class="lang-es">Mejora de flujos CI/CD y estándares de despliegue, aumentando la fiabilidad y reduciendo overhead operativo en entornos multi-cloud.</li>
+                  <li class="lang-en">Strengthened CI/CD workflows and deployment standards, improving reliability and reducing operational overhead across multi-cloud environments.</li>
                 </ul>
               </div>
             </li>
+
+            <!-- METAONE -->
             <li class="job">
               <button class="job-header" type="button" aria-expanded="false">
                 <div class="job-header-main">
                   <div class="job-title">Founding Engineer / Blockchain Developer</div>
                   <div class="job-company">METAONE</div>
-                  <div class="job-meta"><span class="lang-es">Híbrido (GLD Mex) · 2022</span><span class="lang-en">Hybrid (GLD Mex) · 2022</span></div>
+                  <div class="job-meta"><span class="lang-es">Híbrido (GLD Mex) · Mar 2022 – Sep 2022</span><span class="lang-en">Hybrid (GLD Mex) · Mar 2022 – Sep 2022</span></div>
                 </div>
-                <span class="job-chevron" aria-hidden="true">⌃</span>
+                <span class="job-chevron" aria-hidden="true">&#x25B4;</span>
               </button>
               <div class="job-body" hidden>
                 <ul>
-                  <li class="lang-es">Diseño y despliegue de smart contracts en Solidity para ecosistemas DeFi y NFT.</li>
-                  <li class="lang-en">Designed and deployed Solidity smart contracts for DeFi and NFT ecosystems.</li>
-                  <li class="lang-es">Implementación de servicios backend que integran aplicaciones web con lógica on-chain.</li>
-                  <li class="lang-en">Implemented backend services integrating web applications with on-chain logic.</li>
-                  <li class="lang-es">Decisiones de arquitectura early-stage equilibrando escalabilidad, seguridad y velocidad de entrega.</li>
-                  <li class="lang-en">Contributed to early-stage architecture decisions balancing scalability, security, and delivery speed.</li>
+                  <li class="lang-es">Liderazgo técnico del desarrollo de productos Web3 en etapa temprana enfocados en ecosistemas DeFi y NFT.</li>
+                  <li class="lang-en">Led technical development of early-stage Web3 products focused on DeFi and NFT ecosystems.</li>
+                  <li class="lang-es">Diseño y despliegue de smart contracts en Solidity, optimizados para eficiencia de gas y estándares de tokens seguros.</li>
+                  <li class="lang-en">Designed and deployed Solidity smart contracts, optimized for gas efficiency and secure token standards.</li>
+                  <li class="lang-es">Desarrollo de aplicaciones web integrando proveedores de wallets con servicios backend, alineando arquitectura técnica con dirección de producto.</li>
+                  <li class="lang-en">Built web applications integrating wallet providers with backend services, aligning technical architecture with product direction.</li>
                 </ul>
               </div>
             </li>
+
+            <!-- Savare Medika -->
             <li class="job">
               <button class="job-header" type="button" aria-expanded="false">
                 <div class="job-header-main">
                   <div class="job-title">Software Engineer – Backend &amp; Enterprise Integrations</div>
                   <div class="job-company">Savare Medika</div>
-                  <div class="job-meta">2018 – 2022</div>
+                  <div class="job-meta">Mar 2018 – Mar 2022</div>
                 </div>
-                <span class="job-chevron" aria-hidden="true">⌃</span>
+                <span class="job-chevron" aria-hidden="true">&#x25B4;</span>
               </button>
               <div class="job-body" hidden>
                 <ul>
-                  <li class="lang-es">Desarrollo de soluciones backend enterprise en Java y C#.</li>
-                  <li class="lang-en">Developed enterprise backend solutions using Java and C#.</li>
-                  <li class="lang-es">Diseño de patrones de integración event-driven con Kafka.</li>
-                  <li class="lang-en">Designed event-driven integration patterns using Kafka.</li>
-                  <li class="lang-es">Soluciones Salesforce (Apex, Visualforce) para flujos empresariales.</li>
-                  <li class="lang-en">Built Salesforce solutions (Apex, Visualforce) for enterprise workflows.</li>
-                  <li class="lang-es">Procesamiento idempotente en sistemas distribuidos.</li>
-                  <li class="lang-en">Implemented idempotent data processing strategies across distributed systems.</li>
+                  <li class="lang-es">Desarrollo de soluciones backend enterprise en Java y C#, incluyendo un servicio de sincronización de alta disponibilidad y capa de API.</li>
+                  <li class="lang-en">Developed enterprise backend solutions in Java and C#, including a high-availability synchronization service and API layer.</li>
+                  <li class="lang-es">Diseño de capas de integración entre Salesforce y CONTPAQi, habilitando sincronización confiable de datos financieros y operativos.</li>
+                  <li class="lang-en">Designed integration layers between Salesforce and CONTPAQi, enabling reliable synchronization of financial and operational data.</li>
+                  <li class="lang-es">Implementación de patrones event-driven con Kafka y estrategias idempotentes en bases de datos para garantizar consistencia en procesos distribuidos.</li>
+                  <li class="lang-en">Implemented event-driven patterns using Kafka and idempotent database strategies to ensure data consistency across distributed processes.</li>
                 </ul>
               </div>
             </li>
+
+            <!-- Early career -->
             <li class="job">
               <button class="job-header" type="button" aria-expanded="false">
                 <div class="job-header-main">
-                  <div class="job-title"><span class="lang-es">Infraestructura e ingeniería de sistemas</span><span class="lang-en">Infrastructure &amp; Systems Engineering</span></div>
+                  <div class="job-title"><span class="lang-es">Infraestructura e Ingeniería de Sistemas</span><span class="lang-en">Infrastructure &amp; Systems Engineering</span></div>
                   <div class="job-company"><span class="lang-es">Inicios · 2006 – 2013</span><span class="lang-en">Early career · 2006 – 2013</span></div>
                   <div class="job-meta"><span class="lang-es">Varios</span><span class="lang-en">Various</span></div>
                 </div>
-                <span class="job-chevron" aria-hidden="true">⌃</span>
+                <span class="job-chevron" aria-hidden="true">&#x25B4;</span>
               </button>
               <div class="job-body" hidden>
                 <ul>
@@ -242,57 +263,209 @@
                 </ul>
               </div>
             </li>
+
           </ul>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- Panel: Technical — 2-column bento grid -->
+        <!-- ============================================================ -->
         <div id="panel-tecnico" class="panel" role="tabpanel" aria-labelledby="tab-tecnico" aria-hidden="true">
           <h2><span class="lang-es">Perfil técnico</span><span class="lang-en">Technical profile</span></h2>
           <div class="tech-profile">
-            <section class="tech-section" aria-labelledby="tech-expertise-heading">
-              <h3 id="tech-expertise-heading" class="tech-section-title"><span class="lang-es">Áreas de expertise</span><span class="lang-en">Areas of expertise</span></h3>
-              <ul class="tech-expertise lang-es">
-                <li>Sistemas backend cloud-native y arquitecturas distribuidas</li>
-                <li>Microservicios event-driven y mensajería (Kafka, Pulsar, Pub/Sub)</li>
-                <li>Infraestructura basada en Kubernetes e Infrastructure as Code (Terraform)</li>
-                <li>Diseño de APIs seguras y multi-cloud (AWS, GCP)</li>
-                <li>Observabilidad y fiabilidad en producción (SRE)</li>
-              </ul>
-              <ul class="tech-expertise lang-en">
-                <li>Cloud-native backend systems and distributed architectures</li>
-                <li>Event-driven microservices and messaging (Kafka, Pulsar, Pub/Sub)</li>
-                <li>Kubernetes-based infrastructure and Infrastructure as Code (Terraform)</li>
-                <li>Secure API design and multi-cloud deployments (AWS, GCP)</li>
-                <li>Observability and production reliability (SRE)</li>
-              </ul>
-            </section>
-            <section class="tech-section" aria-labelledby="tech-core-heading">
-              <h3 id="tech-core-heading" class="tech-section-title"><span class="lang-es">Tecnologías principales</span><span class="lang-en">Core technologies</span></h3>
-              <div class="tech-grid">
-                <span class="tech-tag">TypeScript</span>
-                <span class="tech-tag">Node.js</span>
-                <span class="tech-tag">NestJS</span>
-                <span class="tech-tag">Kubernetes</span>
-                <span class="tech-tag">Terraform</span>
-                <span class="tech-tag">PostgreSQL</span>
-                <span class="tech-tag">AWS</span>
-                <span class="tech-tag">GCP</span>
-                <span class="tech-tag">Prometheus</span>
+
+            <div class="tech-skills-grid">
+
+              <div class="tech-category">
+                <div class="tech-category-label"><span class="lang-es">Lenguajes</span><span class="lang-en">Languages</span></div>
+                <div class="tech-tags">
+                  <span class="tech-tag">TypeScript (Node.js)</span>
+                  <span class="tech-tag">JavaScript</span>
+                  <span class="tech-tag">Java</span>
+                  <span class="tech-tag">C#</span>
+                  <span class="tech-tag">Solidity</span>
+                  <span class="tech-tag">SQL</span>
+                </div>
               </div>
-            </section>
+
+              <div class="tech-category">
+                <div class="tech-category-label">Frameworks</div>
+                <div class="tech-tags">
+                  <span class="tech-tag">NestJS</span>
+                  <span class="tech-tag">Express.js</span>
+                  <span class="tech-tag">NextJS</span>
+                  <span class="tech-tag">React</span>
+                  <span class="tech-tag">.NET Core</span>
+                  <span class="tech-tag">Visualforce/Apex</span>
+                </div>
+              </div>
+
+              <div class="tech-category tech-category--wide">
+                <div class="tech-category-label">Cloud &amp; DevOps</div>
+                <div class="tech-tags">
+                  <span class="tech-tag">AWS (EKS, Lambda, SQS)</span>
+                  <span class="tech-tag">GCP</span>
+                  <span class="tech-tag">Kubernetes</span>
+                  <span class="tech-tag">Docker</span>
+                  <span class="tech-tag">Terraform</span>
+                  <span class="tech-tag">GitHub Actions</span>
+                </div>
+              </div>
+
+              <div class="tech-category tech-category--wide">
+                <div class="tech-category-label"><span class="lang-es">Mensajería y Datos</span><span class="lang-en">Messaging &amp; Data</span></div>
+                <div class="tech-tags">
+                  <span class="tech-tag">PostgreSQL</span>
+                  <span class="tech-tag">MongoDB</span>
+                  <span class="tech-tag">Salesforce</span>
+                  <span class="tech-tag">Apache Kafka</span>
+                  <span class="tech-tag">Apache Pulsar</span>
+                  <span class="tech-tag">Google Pub/Sub</span>
+                  <span class="tech-tag">Redis</span>
+                </div>
+              </div>
+
+              <div class="tech-category">
+                <div class="tech-category-label"><span class="lang-es">Herramientas</span><span class="lang-en">Tools</span></div>
+                <div class="tech-tags">
+                  <span class="tech-tag">Git</span>
+                  <span class="tech-tag">Prometheus</span>
+                  <span class="tech-tag">Grafana</span>
+                  <span class="tech-tag">ELK Stack</span>
+                  <span class="tech-tag">JIRA / Agile</span>
+                </div>
+              </div>
+
+              <div class="tech-category">
+                <div class="tech-category-label"><span class="lang-es">Especialización</span><span class="lang-en">Specialization</span></div>
+                <div class="tech-tags">
+                  <span class="tech-tag">Microservices</span>
+                  <span class="tech-tag">Event-driven</span>
+                  <span class="tech-tag">SRE</span>
+                  <span class="tech-tag">Web3 / DeFi</span>
+                  <span class="tech-tag">CI/CD</span>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- Panel: Projects — featured + grid -->
+        <!-- ============================================================ -->
+        <div id="panel-proyectos" class="panel" role="tabpanel" aria-labelledby="tab-proyectos" aria-hidden="true">
+
+          <h2 class="projects-section-title"><span class="lang-es">Proyectos seleccionados</span><span class="lang-en">Selected projects &amp; achievements</span></h2>
+
+          <!-- Featured project -->
+          <div class="project-cards" style="margin-bottom: var(--space-4);">
+            <div class="project-card">
+              <div class="project-card-header">
+                <div>
+                  <h3 class="project-card-title">Made by Apes (MBA)</h3>
+                  <span class="project-card-company">Yuga Labs</span>
+                </div>
+                <span class="project-card-year">2025</span>
+              </div>
+              <ul>
+                <li class="lang-es">Liderazgo de la entrega de la plataforma oficial de licencias para BAYC/MAYC, permitiendo a los holders verificar y monetizar sus derechos de propiedad intelectual a escala.</li>
+                <li class="lang-en">Owned the delivery of the official licensing platform for BAYC/MAYC, empowering holders to verify and monetize their intellectual property rights at scale.</li>
+                <li class="lang-es">Diseño de un flujo de autenticación sin fricción y sin firma que eliminó barreras de seguridad y aumentó significativamente la adopción y confianza de los usuarios.</li>
+                <li class="lang-en">Designed a friction-less, signature-free authentication flow that removed security barriers and significantly increased user adoption and trust.</li>
+                <li class="lang-es">Desarrollo de un motor de sincronización en tiempo real que garantiza la validez de licencias reflejando instantáneamente cambios de propiedad on-chain en toda la plataforma.</li>
+                <li class="lang-en">Engineered a real-time synchronization engine that guarantees license validity by instantly reflecting on-chain ownership changes across the platform.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2-col grid for remaining projects -->
+          <div class="project-cards project-cards--grid">
+            <div class="project-card">
+              <div class="project-card-header">
+                <div>
+                  <h3 class="project-card-title"><span class="lang-es">Separación de Clusters</span><span class="lang-en">Cluster Separation</span></h3>
+                  <span class="project-card-company">tokenproof</span>
+                </div>
+                <span class="project-card-year">2023</span>
+              </div>
+              <ul>
+                <li class="lang-es">Arquitectura de entornos completamente aislados usando Infrastructure-as-Code, eliminando riesgos en producción.</li>
+                <li class="lang-en">Architected fully isolated environments using Infrastructure-as-Code, eliminating production risks and ensuring consistent provisioning across Kubernetes clusters.</li>
+                <li class="lang-es">Aceleración de ciclos de release estableciendo pipelines CI/CD robustos y flujos seguros de contenedores.</li>
+                <li class="lang-en">Accelerated release cycles by establishing robust CI/CD pipelines and secure container workflows.</li>
+                <li class="lang-es">Fortalecimiento de seguridad implementando gestión avanzada de tráfico y redes privadas.</li>
+                <li class="lang-en">Hardened platform security by implementing advanced traffic management and private networking.</li>
+              </ul>
+            </div>
+
+            <div class="project-card">
+              <div class="project-card-header">
+                <div>
+                  <h3 class="project-card-title"><span class="lang-es">Incommers NFT</span><span class="lang-en">Incommers NFT</span></h3>
+                  <span class="project-card-company">MetaOne</span>
+                </div>
+                <span class="project-card-year">2024</span>
+              </div>
+              <ul>
+                <li class="lang-es">Entrega de una experiencia NFT visualmente rica optimizando la lógica del smart contract sin comprometer el uso de gas.</li>
+                <li class="lang-en">Delivered a cost-efficient NFT experience by optimizing smart contract logic without compromising gas usage.</li>
+                <li class="lang-es">Ingeniería de un sistema criptográfico de whitelist (Merkle Tree) minimizando costos on-chain.</li>
+                <li class="lang-en">Engineered a cryptographic whitelist system (Merkle Tree) that minimized on-chain storage costs.</li>
+                <li class="lang-es">Integración de lógica blockchain segura con una interfaz web responsiva.</li>
+                <li class="lang-en">Tightly integrated secure blockchain logic with a responsive web interface.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Side Projects -->
+          <h2 class="projects-section-title"><span class="lang-es">Proyectos personales</span><span class="lang-en">Side projects</span></h2>
+          <div class="project-cards">
+            <div class="project-card">
+              <div class="project-card-header">
+                <div>
+                  <h3 class="project-card-title">Draguima eSports</h3>
+                  <span class="project-card-company">Technology Partner &amp; Co-Founder</span>
+                </div>
+                <span class="project-card-year"><span class="lang-es">2025 – Presente</span><span class="lang-en">2025 – Present</span></span>
+              </div>
+              <ul>
+                <li class="lang-es">Co-fundador de Draguima eSports como socio tecnológico, proporcionando dirección arquitectónica para la plataforma.</li>
+                <li class="lang-en">Co-founded Draguima eSports as a technology partner, providing architectural direction for the platform.</li>
+                <li class="lang-es">Diseño e implementación de infraestructura backend escalable para soportar torneos en vivo, analíticas en tiempo real y tráfico de alta concurrencia.</li>
+                <li class="lang-en">Designed and implemented a scalable backend infrastructure to support live tournaments, real-time analytics, and high-concurrency user traffic.</li>
+                <li class="lang-es">Integración de servicios de streaming y módulos de gestión de torneos usando patrones de microservicios y event-driven.</li>
+                <li class="lang-en">Integrated streaming services and tournament management modules using microservice and event-driven patterns.</li>
+                <li class="lang-es">Liderazgo en esfuerzos de ingeniería para desarrollo de nuevas funcionalidades, asegurando fiabilidad del sistema, rendimiento y entrega continua.</li>
+                <li class="lang-en">Leading engineering efforts for new feature development, ensuring system reliability, performance, and continuous delivery.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- Footer -->
+        <!-- ============================================================ -->
         <footer class="footer">
-          <span class="lang-es">Versión en PDF:</span><span class="lang-en">PDF version:</span>
-          <a href="jesus_cocano_cv.pdf" target="_blank" rel="noopener noreferrer"><span class="lang-es">abrir</span><span class="lang-en">open</span></a>
-          ·
-          <a href="jesus_cocano_cv.pdf" download="jesus_cocano_cv.pdf"><span class="lang-es">descargar</span><span class="lang-en">download</span></a>
+          <div class="footer-actions">
+            <a href="jesus_cocano_cv.pdf" download="jesus_cocano_cv.pdf" class="footer-btn">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="lang-es">Descargar CV</span><span class="lang-en">Download CV</span>
+            </a>
+            <a href="jesus_cocano_cv.pdf" target="_blank" rel="noopener noreferrer" class="footer-link">
+              <span class="lang-es">Abrir PDF</span><span class="lang-en">Open PDF</span>
+            </a>
+          </div>
+          <span class="footer-credit"><span class="lang-es">Hecho con HTML y CSS</span><span class="lang-en">Built with HTML &amp; CSS</span></span>
         </footer>
+
       </article>
     </div>
 
     <script src="lang.js"></script>
     <script src="tabs.js"></script>
     <script src="accordion.js"></script>
+    <script src="theme.js"></script>
   </body>
 </html>

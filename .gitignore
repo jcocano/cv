@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+.cache/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+.harness_verify.log
+
+# Claude Code local overrides
+.claude/settings.local.json
+
+# Arnés de coordinación IA y documentación interna (no se publica en el repo)
+.claude/
+docs/
+progress/
+scripts/
+AGENTS.md
+CHECKPOINTS.md
+CLAUDE.md
+feature_list.json
+
+# Handoff de diseño (referencia, no producción)
+refactor/

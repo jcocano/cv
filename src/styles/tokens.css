@@ -1,0 +1,55 @@
+:root {
+  --bg: #0a0a0b;
+  --bg-elev: #111113;
+  --bg-elev-2: #18181b;
+  --fg: #fafafa;
+  --fg-dim: #a1a1aa;
+  --fg-mute: #52525b;
+  --line: #27272a;
+  --line-soft: #1c1c1f;
+  --accent: oklch(0.82 0.16 145);
+  --accent-dim: oklch(0.82 0.16 145 / 0.12);
+  --warn: oklch(0.78 0.15 60);
+
+  --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  --container: 1180px;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #fafaf8;
+  --bg-elev: #f3f3f0;
+  --bg-elev-2: #ebebe7;
+  --fg: #0a0a0b;
+  --fg-dim: #52525b;
+  --fg-mute: #a1a1aa;
+  --line: #d4d4d4;
+  --line-soft: #e7e7e4;
+  --accent: oklch(0.55 0.16 145);
+  --accent-dim: oklch(0.55 0.16 145 / 0.1);
+  --warn: oklch(0.78 0.15 60);
+
+  color-scheme: light;
+}
+
+:root[data-theme='paper'] {
+  --bg: #f5f1e8;
+  --bg-elev: #ede7d6;
+  --bg-elev-2: #e3dcc6;
+  --fg: #1a1612;
+  --fg-dim: #5c5447;
+  --fg-mute: #8a8170;
+  --line: #c8bfa5;
+  --line-soft: #d8d0b8;
+  --accent: oklch(0.55 0.18 50);
+  --accent-dim: oklch(0.55 0.18 50 / 0.12);
+  --warn: oklch(0.78 0.15 60);
+
+  color-scheme: light;
+}

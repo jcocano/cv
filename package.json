@@ -42,5 +42,10 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.59.1",
     "vitest": "^4.1.5"
+  },
+  "dependencies": {
+    "@fontsource/geist": "^5.2.8",
+    "@fontsource/geist-mono": "^5.2.7",
+    "zod": "^4.4.2"
   }
 }

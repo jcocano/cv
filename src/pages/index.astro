@@ -1,17 +1,142 @@
 ---
-const greeting = 'hello';
+import '../styles/tokens.css';
+import '../styles/base.css';
+
+const tokenNames = [
+  'bg',
+  'bg-elev',
+  'bg-elev-2',
+  'fg',
+  'fg-dim',
+  'fg-mute',
+  'line',
+  'line-soft',
+  'accent',
+  'accent-dim',
+  'warn',
+] as const;
+
+const themes = ['dark', 'light', 'paper'] as const;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>CV — Jesus Cocano</title>
+    <title>CV — Jesus Cocano · Design tokens</title>
   </head>
   <body>
-    <main>
-      <h1>{greeting}</h1>
+    <main class="page">
+      <header class="page-head">
+        <h1>Design tokens</h1>
+        <p class="mono">
+          Active theme: <span id="active-theme">dark</span>
+        </p>
+        <button id="cycle-theme" class="mono cycle">cycle theme (dark → light → paper)</button>
+      </header>
+
+      {
+        themes.map((theme) => (
+          <section class="theme-block" data-theme-preview={theme}>
+            <h2 class="mono">{theme}</h2>
+            <div class="swatches" data-theme={theme}>
+              {tokenNames.map((token) => (
+                <article class="swatch">
+                  <span class="chip" style={`background: var(--${token});`} aria-hidden="true" />
+                  <span class="name mono">{token}</span>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))
+      }
     </main>
+
+    <style>
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 48px 28px;
+      }
+      .page-head {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 48px;
+      }
+      .cycle {
+        align-self: flex-start;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--bg-elev);
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .theme-block {
+        margin-bottom: 48px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--bg-elev);
+      }
+      .theme-block h2 {
+        margin: 0 0 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 12px;
+        color: var(--fg-dim);
+      }
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+      }
+      .swatch {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: var(--bg);
+      }
+      .swatch .chip {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+        flex-shrink: 0;
+      }
+      .swatch .name {
+        font-size: 12px;
+        color: var(--fg-dim);
+      }
+    </style>
+
+    <script>
+      const cycle = ['dark', 'light', 'paper'] as const;
+      type ThemeName = (typeof cycle)[number];
+
+      function isThemeName(value: string | null): value is ThemeName {
+        return value === 'dark' || value === 'light' || value === 'paper';
+      }
+
+      const button = document.getElementById('cycle-theme');
+      const label = document.getElementById('active-theme');
+      const root = document.documentElement;
+
+      button?.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme');
+        const currentName: ThemeName = isThemeName(current) ? current : 'dark';
+        const nextIndex = (cycle.indexOf(currentName) + 1) % cycle.length;
+        const nextName = cycle[nextIndex] ?? 'dark';
+        root.setAttribute('data-theme', nextName);
+        if (label) {
+          label.textContent = nextName;
+        }
+      });
+    </script>
   </body>
 </html>

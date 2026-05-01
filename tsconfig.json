@@ -1,0 +1,17 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["vitest/globals", "node", "astro/client"],
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*", "vitest.config.ts", "astro.config.mjs"],
+  "exclude": ["node_modules", "dist", ".astro"]
+}

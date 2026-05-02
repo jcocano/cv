@@ -1,0 +1,11 @@
+---
+import styles from './Tag.module.css';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class={styles.tag}>{label}</span>

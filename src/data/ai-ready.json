@@ -1,0 +1,52 @@
+{
+  "title": {
+    "es": "AI-native\npor defecto.",
+    "en": "AI-native\nby default."
+  },
+  "lede": {
+    "es": "Aplicando IA en mi flujo diario y construyendo sistemas backend pensados para integrarse con LLMs, agentes y pipelines de datos modernos.",
+    "en": "Using AI in my daily workflow and architecting backend systems designed to integrate with LLMs, agents, and modern data pipelines."
+  },
+  "cards": [
+    {
+      "iconKey": "assistedDev",
+      "title": {
+        "es": "Desarrollo asistido",
+        "en": "AI-assisted dev"
+      },
+      "body": {
+        "es": "Claude Code, Cursor y Copilot integrados en mi loop diario — desde diseño de APIs hasta refactors a escala. Productividad multiplicada sin sacrificar criterio técnico.",
+        "en": "Claude Code, Cursor, and Copilot integrated into my daily loop — from API design to large-scale refactors. Productivity multiplied without compromising technical judgment."
+      },
+      "tags": ["Claude Code", "Cursor", "Copilot"]
+    },
+    {
+      "iconKey": "llmBackends",
+      "title": {
+        "es": "Backends para LLMs",
+        "en": "LLM backends"
+      },
+      "body": {
+        "es": "Diseño de APIs y servicios pensados para LLMs: streaming, function calling, RAG con vector stores, rate limiting, observabilidad de tokens y costos.",
+        "en": "API and service design built for LLMs: streaming, function calling, RAG with vector stores, rate limiting, token cost observability."
+      },
+      "tags": ["RAG", "Vector DBs", "Streaming", "Function calling"]
+    },
+    {
+      "iconKey": "agentsMcp",
+      "title": {
+        "es": "Agentes y MCP",
+        "en": "Agents & MCP"
+      },
+      "body": {
+        "es": "Construcción de agentes con tools, memory y orquestación. Servidores MCP para exponer infraestructura y datos a modelos de forma segura y auditable.",
+        "en": "Building agents with tools, memory, and orchestration. MCP servers exposing infrastructure and data to models in a secure, auditable way."
+      },
+      "tags": ["MCP", "Agents", "Tool use", "Orchestration"]
+    }
+  ],
+  "myTake": {
+    "es": "Mi enfoque: la IA es una capa más del stack — se diseña, se observa y se escala como cualquier otro sistema en producción.",
+    "en": "My take: AI is just another layer of the stack — designed, observed, and scaled like any other production system."
+  }
+}

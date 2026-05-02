@@ -1,0 +1,77 @@
+.ai-section {
+  background: var(--bg-elev);
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 32px;
+}
+@media (max-width: 860px) {
+  .ai-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ai-cell {
+  background: var(--bg);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ic {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.ic svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ai-cell h4 {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.ai-cell p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--fg-dim);
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.my-take {
+  margin-top: 32px;
+  color: var(--fg-dim);
+  font-size: 14px;
+  max-width: 70ch;
+  font-family: var(--font-mono);
+}
+.my-take .arrow {
+  color: var(--accent);
+}

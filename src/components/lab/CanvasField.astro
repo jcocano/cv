@@ -1,0 +1,109 @@
+---
+import styles from './CanvasField.module.css';
+---
+
+<div class={styles.stage} id="stage-canvas-field">
+  <canvas id="canvas-field-surface" class={styles.surface} aria-hidden="true"></canvas>
+</div>
+
+<script>
+  import {
+    mountField,
+    type CanvasFieldDeps,
+    type CanvasFieldHandle,
+    type FakeCanvas,
+    type FakeIntersectionEntry,
+    type FakeIntersectionObserver,
+    type FakeIntersectionTarget,
+    type FakePointerTarget,
+  } from '@/lib/lab/canvas-field';
+  import { themeStore } from '@/lib/theme/theme-store';
+
+  const PARTICLE_COUNT = 90;
+  const REPULSION_RADIUS_PX = 80;
+
+  function bootCanvasField(): void {
+    const stage = document.getElementById('stage-canvas-field');
+    if (stage === null) {
+      return;
+    }
+    const canvas = stage.querySelector<HTMLCanvasElement>('#canvas-field-surface');
+    if (canvas === null) {
+      return;
+    }
+
+    const stageRect = stage.getBoundingClientRect();
+    const pixelRatio = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.floor(stageRect.width * pixelRatio));
+    canvas.height = Math.max(1, Math.floor(stageRect.height * pixelRatio));
+
+    const fakeCanvas: FakeCanvas = {
+      width: canvas.width,
+      height: canvas.height,
+      getContext: (kind) => canvas.getContext(kind),
+    };
+
+    const pointerTarget: FakePointerTarget = {
+      addEventListener: (type, handler) => {
+        canvas.addEventListener(type, handler as EventListener);
+      },
+      removeEventListener: (type, handler) => {
+        canvas.removeEventListener(type, handler as EventListener);
+      },
+      getBoundingClientRect: () => {
+        const rect = canvas.getBoundingClientRect();
+        return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+      },
+    };
+
+    const intersectionTarget: FakeIntersectionTarget = { tag: 'canvas-field-stage' };
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const deps: CanvasFieldDeps = {
+      canvas: fakeCanvas,
+      pointerTarget,
+      intersectionTarget,
+      requestAnimationFrame: (callback) => window.requestAnimationFrame(callback),
+      cancelAnimationFrame: (handleId) => {
+        window.cancelAnimationFrame(handleId);
+      },
+      now: () => performance.now(),
+      createIntersectionObserver: (callback): FakeIntersectionObserver => {
+        const fakeObserver: FakeIntersectionObserver = {
+          observe: () => {
+            realObserver.observe(stage!);
+          },
+          disconnect: () => {
+            realObserver.disconnect();
+          },
+        };
+        const realObserver = new IntersectionObserver((entries) => {
+          const adapted: FakeIntersectionEntry[] = entries.map((entry) => ({
+            isIntersecting: entry.isIntersecting,
+          }));
+          callback(adapted, fakeObserver);
+        });
+        return fakeObserver;
+      },
+      prefersReducedMotion: reduceMotion,
+      initialIsIntersecting: true,
+      particleCount: PARTICLE_COUNT,
+      repulsionRadius: REPULSION_RADIUS_PX * pixelRatio,
+      random: () => Math.random(),
+      getColors: () => themeStore.getColors(),
+      subscribeToColors: (cb) => themeStore.subscribe((state) => cb(state.colors)),
+    };
+
+    const handle: CanvasFieldHandle = mountField(deps);
+
+    function teardown(): void {
+      handle.unmount();
+      window.removeEventListener('beforeunload', teardown);
+    }
+
+    window.addEventListener('beforeunload', teardown);
+  }
+
+  bootCanvasField();
+</script>

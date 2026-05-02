@@ -15,6 +15,10 @@ const validProject = {
     es: 'Plataforma de certificación on-chain para creadores BAYC.',
     en: 'On-chain certification platform for BAYC creators.',
   },
+  description: {
+    es: 'Lideré la entrega de la plataforma que permite a holders verificar y monetizar derechos de IP.',
+    en: 'Led delivery of the platform letting holders verify and monetize IP rights.',
+  },
   cover: './cover.png',
   tags: ['NestJS', 'AWS', 'EVM'],
   order: 1,
@@ -30,6 +34,12 @@ describe('projectSchema', () => {
     expect(parsed.year).toBe(2025);
     expect(parsed.featured).toBe(true);
     expect(parsed.tagline.en).toBe('On-chain certification platform for BAYC creators.');
+    expect(parsed.description.es).toBe(
+      'Lideré la entrega de la plataforma que permite a holders verificar y monetizar derechos de IP.',
+    );
+    expect(parsed.description.en).toBe(
+      'Led delivery of the platform letting holders verify and monetize IP rights.',
+    );
     expect(parsed.cover).toBe('./cover.png');
     expect(parsed.tags).toHaveLength(3);
     expect(parsed.tags[0]).toBe('NestJS');
@@ -127,5 +137,35 @@ describe('projectSchema', () => {
     const notFeatured = { ...validProject, featured: false };
     const parsed = projectSchema.parse(notFeatured);
     expect(parsed.featured).toBe(false);
+  });
+
+  it('fails with a Zod error pointing at description.en when description only has es', () => {
+    const incomplete = {
+      ...validProject,
+      description: { es: 'Solo descripción en español' },
+    };
+    const result = projectSchema.safeParse(incomplete);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnDescriptionEn = result.error.issues.filter(
+      (issue) => issue.path[0] === 'description' && issue.path[1] === 'en',
+    );
+    expect(issuesOnDescriptionEn).toHaveLength(1);
+  });
+
+  it('fails when description is missing entirely', () => {
+    const { description: _description, ...withoutDescription } = validProject;
+    void _description;
+    const result = projectSchema.safeParse(withoutDescription);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnDescription = result.error.issues.filter(
+      (issue) => issue.path[0] === 'description',
+    );
+    expect(issuesOnDescription.length).toBeGreaterThan(0);
   });
 });

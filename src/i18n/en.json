@@ -22,5 +22,7 @@
   "nav.work": "Work",
   "skip.toContent": "Skip to content",
   "stack.eyebrow": "technical",
-  "summary.eyebrow": "summary"
+  "summary.eyebrow": "summary",
+  "work.eyebrow": "selected work",
+  "work.sideEyebrow": "side projects"
 }

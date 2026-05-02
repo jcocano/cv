@@ -1,0 +1,50 @@
+---
+import type { SideProject } from '@/lib/schemas/side-projects';
+import styles from './SideProjectRow.module.css';
+
+interface Props {
+  project: SideProject;
+}
+
+const { project } = Astro.props;
+
+// Strip protocol + leading "www." for the human-readable label of the external link.
+function readableHost(url: string): string {
+  return url
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .replace(/\/$/, '');
+}
+---
+
+<div class={styles.sideRow}>
+  <div>
+    <h3>
+      <span lang="es">{project.title.es}</span>
+      <span lang="en">{project.title.en}</span>
+    </h3>
+    <div class={styles.role}>
+      <span lang="es">{project.role.es}</span>
+      <span lang="en">{project.role.en}</span>
+    </div>
+    <div class={styles.tagsBlock}>
+      {project.tags.map((tag) => <span class={styles.tag}>{tag}</span>)}
+    </div>
+  </div>
+  <p class={styles.desc}>
+    <span lang="es">{project.tagline.es}</span>
+    <span lang="en">{project.tagline.en}</span>
+  </p>
+  <div class={styles.aside}>
+    <div class={styles.when}>
+      {project.year} → <span lang="es">Presente</span><span lang="en">Present</span>
+    </div>
+    {
+      project.url !== null && (
+        <a class={styles.externalLink} href={project.url} target="_blank" rel="noopener noreferrer">
+          {readableHost(project.url)} →
+        </a>
+      )
+    }
+  </div>
+</div>

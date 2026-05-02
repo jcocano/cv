@@ -30,3 +30,8 @@ a {
 .mono {
   font-family: var(--font-mono);
 }
+
+[data-lang='en'] [lang='es']:not(html),
+[data-lang='es'] [lang='en']:not(html) {
+  display: none !important;
+}

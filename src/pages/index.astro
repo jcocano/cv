@@ -1,4 +1,5 @@
 ---
+import HeroSection from '@/components/hero/HeroSection.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const tokenNames = [
@@ -18,7 +19,9 @@ const tokenNames = [
 const themes = ['dark', 'light', 'paper'] as const;
 ---
 
-<BaseLayout title="CV — Jesus Cocano · Design tokens">
+<BaseLayout title="Jesús Cocaño — Senior Backend & Platform Engineer">
+  <HeroSection />
+
   <section class="page">
     <header class="page-head">
       <h1>Design tokens</h1>

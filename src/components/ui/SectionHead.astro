@@ -1,0 +1,51 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import styles from './SectionHead.module.css';
+
+interface Props {
+  num: string;
+  labelEs: string;
+  labelEn: string;
+  titleEs: string;
+  titleEn: string;
+  ledeEs: string;
+  ledeEn: string;
+}
+
+const { num, labelEs, labelEn, titleEs, titleEn, ledeEs, ledeEn } = Astro.props;
+
+const titleEsLines = titleEs.split('\n');
+const titleEnLines = titleEn.split('\n');
+---
+
+<div class={styles.sectionHead}>
+  <Eyebrow num={num} labelEs={labelEs} labelEn={labelEn} />
+  <div>
+    <h2>
+      <span lang="es"
+        >{
+          titleEsLines.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))
+        }</span
+      >
+      <span lang="en"
+        >{
+          titleEnLines.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))
+        }</span
+      >
+    </h2>
+    <p class={styles.lede}>
+      <span lang="es">{ledeEs}</span>
+      <span lang="en">{ledeEn}</span>
+    </p>
+  </div>
+</div>

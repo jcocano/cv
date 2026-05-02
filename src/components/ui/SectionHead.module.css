@@ -1,0 +1,27 @@
+.section-head {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 60px;
+  margin-bottom: 56px;
+  align-items: start;
+}
+.section-head h2 {
+  font-size: clamp(32px, 4.5vw, 48px);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-weight: 500;
+  margin: 0;
+}
+.section-head .lede {
+  color: var(--fg-dim);
+  font-size: 16px;
+  max-width: 60ch;
+  margin-top: 8px;
+}
+@media (max-width: 720px) {
+  .section-head {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+}

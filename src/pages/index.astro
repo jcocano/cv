@@ -1,5 +1,6 @@
 ---
 import HeroSection from '@/components/hero/HeroSection.astro';
+import SummarySection from '@/components/sections/SummarySection.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const tokenNames = [
@@ -22,7 +23,11 @@ const themes = ['dark', 'light', 'paper'] as const;
 <BaseLayout title="Jesús Cocaño — Senior Fullstack & Platform Engineer">
   <HeroSection />
 
-  <section class="page">
+  <div id="about">
+    <SummarySection />
+  </div>
+
+  <div class="page">
     <header class="page-head">
       <h1>Design tokens</h1>
       <p class="mono">
@@ -35,7 +40,7 @@ const themes = ['dark', 'light', 'paper'] as const;
 
     {
       themes.map((theme) => (
-        <section class="theme-block" data-theme-preview={theme}>
+        <div class="theme-block" data-theme-preview={theme}>
           <h2 class="mono">{theme}</h2>
           <div class="swatches" data-theme={theme}>
             {tokenNames.map((token) => (
@@ -45,10 +50,10 @@ const themes = ['dark', 'light', 'paper'] as const;
               </article>
             ))}
           </div>
-        </section>
+        </div>
       ))
     }
-  </section>
+  </div>
 
   <style>
     .page {

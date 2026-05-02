@@ -32,10 +32,10 @@ describe('HeroSection (render-test)', () => {
   it('emits both Spanish and English pitch blocks with proper lang attributes', async () => {
     const html = await renderHero('es');
     expect(html).toMatch(
-      /<span[^>]*lang="es"[^>]*>[^<]*Senior Backend &amp; Platform Engineer construyendo/,
+      /<span[^>]*lang="es"[^>]*>[^<]*Senior Fullstack &amp; Platform Engineer construyendo/,
     );
     expect(html).toMatch(
-      /<span[^>]*lang="en"[^>]*>[^<]*Senior Backend &amp; Platform Engineer building/,
+      /<span[^>]*lang="en"[^>]*>[^<]*Senior Fullstack &amp; Platform Engineer building/,
     );
   });
 
@@ -50,7 +50,7 @@ describe('HeroSection (render-test)', () => {
     expect(html).toContain('Ubicación');
     expect(html).toContain('Estado');
     expect(html).toContain('Rol');
-    expect(html).toContain('Backend / Platform / SRE');
+    expect(html).toContain('Fullstack / Platform / SRE');
     expect(html).toContain('LLMs · RAG · Agentes · MCP');
   });
 

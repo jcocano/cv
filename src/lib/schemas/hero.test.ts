@@ -168,6 +168,6 @@ describe('heroSchema', () => {
     expect(parsed.links.email.startsWith('mailto:')).toBe(true);
     expect(parsed.links.github).toBe('https://github.com/jcocano');
     expect(parsed.links.linkedin).toBe('https://linkedin.com/in/jcocano');
-    expect(parsed.roleShort).toBe('Backend / Platform / SRE');
+    expect(parsed.roleShort).toBe('Fullstack / Platform / SRE');
   });
 });

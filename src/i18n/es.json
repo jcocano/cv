@@ -22,5 +22,7 @@
   "nav.work": "Trabajo",
   "skip.toContent": "Saltar al contenido",
   "stack.eyebrow": "perfil técnico",
-  "summary.eyebrow": "resumen"
+  "summary.eyebrow": "resumen",
+  "work.eyebrow": "proyectos",
+  "work.sideEyebrow": "proyectos personales"
 }

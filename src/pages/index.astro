@@ -5,6 +5,7 @@ import ExperienceSection from '@/components/sections/ExperienceSection.astro';
 import LabSection from '@/components/sections/LabSection.astro';
 import StackSection from '@/components/sections/StackSection.astro';
 import SummarySection from '@/components/sections/SummarySection.astro';
+import WorkSection from '@/components/sections/WorkSection.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const tokenNames = [
@@ -35,6 +36,8 @@ const themes = ['dark', 'light', 'paper'] as const;
   </div>
 
   <StackSection />
+
+  <WorkSection />
 
   <div class="page">
     <header class="page-head">

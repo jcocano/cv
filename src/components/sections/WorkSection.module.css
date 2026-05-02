@@ -1,0 +1,27 @@
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 720px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.side-block {
+  margin-top: 80px;
+}
+
+.side-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}

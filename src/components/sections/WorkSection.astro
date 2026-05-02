@@ -1,0 +1,63 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import ProjectCard from '@/components/work/ProjectCard.astro';
+import SideProjectRow from '@/components/work/SideProjectRow.astro';
+import { splitFeatured } from '@/lib/content/split-featured';
+import { t } from '@/lib/i18n/t';
+import type { Project } from '@/lib/schemas/projects';
+import type { SideProject } from '@/lib/schemas/side-projects';
+import styles from './WorkSection.module.css';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const projectEntries: CollectionEntry<'projects'>[] = await getCollection('projects');
+const projects: Project[] = projectEntries
+  .map((entry: CollectionEntry<'projects'>) => entry.data)
+  .sort((a, b) => a.order - b.order);
+
+const { featured, rest } = splitFeatured(projects);
+
+const sideEntries: CollectionEntry<'side-projects'>[] = await getCollection('side-projects');
+const sideProjects: SideProject[] = sideEntries
+  .map((entry: CollectionEntry<'side-projects'>) => entry.data)
+  .sort((a, b) => a.order - b.order);
+---
+
+<section id="work">
+  <div class="container">
+    <SectionHead
+      num="04"
+      labelEs={t('work.eyebrow', 'es')}
+      labelEn={t('work.eyebrow', 'en')}
+      titleEs={'Trabajo\nseleccionado.'}
+      titleEn={'Selected\nprojects.'}
+      ledeEs="Plataformas en producción, decisiones de arquitectura, e impacto medible."
+      ledeEn="Production platforms, architectural calls, and measurable impact."
+    />
+
+    <div class={styles.projects}>
+      <ProjectCard project={featured} featured={true} baseUrl={baseUrl} />
+      <div class={styles.projectsGrid}>
+        {
+          rest.map((project) => (
+            <ProjectCard project={project} featured={false} baseUrl={baseUrl} />
+          ))
+        }
+      </div>
+    </div>
+
+    <div class={styles.sideBlock}>
+      <Eyebrow
+        num="04.6"
+        labelEs={t('work.sideEyebrow', 'es')}
+        labelEn={t('work.sideEyebrow', 'en')}
+      />
+      <div class={`${styles.sideList} reveal`}>
+        {sideProjects.map((project) => <SideProjectRow project={project} />)}
+      </div>
+    </div>
+  </div>
+</section>

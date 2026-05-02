@@ -12,6 +12,10 @@ const validSideProject = {
     es: 'Generador de cartas de tarot dragones.',
     en: 'Dragon-themed tarot card generator.',
   },
+  role: {
+    es: 'Technology Partner & Co-Founder',
+    en: 'Technology Partner & Co-Founder',
+  },
   year: 2024,
   cover: './draguima.png',
   tags: ['Three.js', 'Vite'],
@@ -26,6 +30,8 @@ describe('sideProjectSchema', () => {
     expect(parsed.title.es).toBe('Draguima');
     expect(parsed.title.en).toBe('Draguima');
     expect(parsed.tagline.en).toBe('Dragon-themed tarot card generator.');
+    expect(parsed.role.es).toBe('Technology Partner & Co-Founder');
+    expect(parsed.role.en).toBe('Technology Partner & Co-Founder');
     expect(parsed.year).toBe(2024);
     expect(parsed.cover).toBe('./draguima.png');
     expect(parsed.tags).toHaveLength(2);
@@ -110,5 +116,41 @@ describe('sideProjectSchema', () => {
     }
     const issuesOnUrl = result.error.issues.filter((issue) => issue.path.includes('url'));
     expect(issuesOnUrl.length).toBeGreaterThan(0);
+  });
+
+  it('parses a valid side project without a cover (cover is optional)', () => {
+    const { cover: _cover, ...withoutCover } = validSideProject;
+    void _cover;
+    const parsed = sideProjectSchema.parse(withoutCover);
+    expect(parsed.cover).toBeUndefined();
+    expect(parsed.slug).toBe('draguima');
+  });
+
+  it('fails with a Zod error pointing at role.en when role only has es', () => {
+    const incomplete = {
+      ...validSideProject,
+      role: { es: 'Solo en español' },
+    };
+    const result = sideProjectSchema.safeParse(incomplete);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnRoleEn = result.error.issues.filter(
+      (issue) => issue.path[0] === 'role' && issue.path[1] === 'en',
+    );
+    expect(issuesOnRoleEn).toHaveLength(1);
+  });
+
+  it('fails when role is missing entirely', () => {
+    const { role: _role, ...withoutRole } = validSideProject;
+    void _role;
+    const result = sideProjectSchema.safeParse(withoutRole);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnRole = result.error.issues.filter((issue) => issue.path[0] === 'role');
+    expect(issuesOnRole.length).toBeGreaterThan(0);
   });
 });

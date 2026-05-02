@@ -1,0 +1,50 @@
+---
+import type { Project } from '@/lib/schemas/projects';
+import ProjectSignature from '@/components/work/ProjectSignature.astro';
+import styles from './ProjectCard.module.css';
+
+interface Props {
+  project: Project;
+  featured: boolean;
+  baseUrl: string;
+}
+
+const { project, featured, baseUrl } = Astro.props;
+
+const href = `${baseUrl}projects/${project.slug}`;
+const cardClass = featured
+  ? `${styles.projectCard} ${styles.cardFeatured} reveal`
+  : `${styles.projectCard} reveal`;
+---
+
+<a class={cardClass} href={href}>
+  <div class={styles.head}>
+    <span class={styles.meta}>{project.company} · {project.year}</span>
+    <span class={styles.arrow}>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"></path></svg
+      >
+    </span>
+  </div>
+  <h3>
+    <span lang="es">{project.title.es}</span>
+    <span lang="en">{project.title.en}</span>
+  </h3>
+  <p class={styles.sub}>
+    <span lang="es">{project.tagline.es}</span>
+    <span lang="en">{project.tagline.en}</span>
+  </p>
+  <p class={styles.desc}>
+    <span lang="es">{project.description.es}</span>
+    <span lang="en">{project.description.en}</span>
+  </p>
+  <div class={styles.tags}>
+    {project.tags.map((tag) => <span class={styles.tag}>{tag}</span>)}
+  </div>
+  <ProjectSignature slug={project.slug} />
+</a>

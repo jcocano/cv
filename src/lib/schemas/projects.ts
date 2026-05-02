@@ -10,6 +10,7 @@ export const projectSchema = z
     year: z.number().int(),
     featured: z.boolean(),
     tagline: i18nString,
+    description: i18nString,
     cover: z.string().min(1),
     tags: z.array(z.string()),
     order: z.number().int(),

@@ -1,0 +1,79 @@
+---
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Tag from '@/components/ui/Tag.astro';
+import AgentsMcpIcon from '@/components/ui/icons/AgentsMcpIcon.astro';
+import AssistedDevIcon from '@/components/ui/icons/AssistedDevIcon.astro';
+import LlmBackendsIcon from '@/components/ui/icons/LlmBackendsIcon.astro';
+import aiReadyJson from '@/data/ai-ready.json';
+import { t } from '@/lib/i18n/t';
+import { aiReadySchema, type AiReady, type IconKey } from '@/lib/schemas/ai-ready';
+import type { LangCode } from '@/lib/theme/toggle-lang';
+import styles from './AiReadySection.module.css';
+
+interface Props {
+  /** Accepted for consistency with sibling sections (e.g. SummarySection). The
+   *  AI Ready section is fully bilingual via paired <span lang="…"> blocks; the
+   *  active language is switched at the document level by base.css, so the
+   *  component itself does not branch on this prop. */
+  lang?: LangCode;
+}
+
+const { lang: _lang } = Astro.props;
+void _lang;
+
+const aiReady: AiReady = aiReadySchema.parse(aiReadyJson);
+
+const iconByKey: Record<IconKey, typeof AssistedDevIcon> = {
+  assistedDev: AssistedDevIcon,
+  llmBackends: LlmBackendsIcon,
+  agentsMcp: AgentsMcpIcon,
+};
+---
+
+<section id="ai" class={styles.aiSection}>
+  <div class="container">
+    <SectionHead
+      num="✦"
+      labelEs={t('aiReady.eyebrow', 'es')}
+      labelEn={t('aiReady.eyebrow', 'en')}
+      titleEs={aiReady.title.es}
+      titleEn={aiReady.title.en}
+      ledeEs={aiReady.lede.es}
+      ledeEn={aiReady.lede.en}
+    />
+
+    <div class={styles.aiGrid}>
+      {
+        aiReady.cards.map((card) => {
+          const Icon = iconByKey[card.iconKey];
+          return (
+            <div class={styles.aiCell}>
+              <div class={styles.ic}>
+                <Icon />
+              </div>
+              <h4>
+                <span lang="es">{card.title.es}</span>
+                <span lang="en">{card.title.en}</span>
+              </h4>
+              <p>
+                <span lang="es">{card.body.es}</span>
+                <span lang="en">{card.body.en}</span>
+              </p>
+              <div class={styles.tags}>
+                {card.tags.map((tag) => (
+                  <Tag label={tag} />
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <p class={styles.myTake}>
+      <span class={styles.arrow}>→</span>
+      <span lang="es">{aiReady.myTake.es}</span>
+      <span lang="en">{aiReady.myTake.en}</span>
+    </p>
+  </div>
+</section>

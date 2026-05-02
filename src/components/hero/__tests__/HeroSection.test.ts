@@ -10,23 +10,23 @@ async function renderHero(lang: 'es' | 'en'): Promise<string> {
 }
 
 describe('HeroSection (render-test)', () => {
-  it('renders the hero name split across two lines with the period in the accent span', async () => {
+  it('renders the hero name split across two lines with the period as the only "." inside a span', async () => {
     const html = await renderHero('es');
     expect(html).toContain('Jesús');
     expect(html).toContain('Cocaño');
-    expect(html).toMatch(/<span[^>]*class="[^"]*accent[^"]*"[^>]*>\.<\/span>/);
+    expect(html).toMatch(/Jesús\s*<br[^>]*>\s*Cocaño/);
+    expect(html).toMatch(/<span[^>]*>\.<\/span>/);
   });
 
-  it('emits the eyebrow with the "01 /" numeric prefix', async () => {
+  it('emits the eyebrow with the "01 /" numeric prefix and the bilingual labels', async () => {
     const html = await renderHero('es');
-    expect(html).toMatch(/eyebrow[\s\S]*?01[\s\S]*?\//);
+    expect(html).toMatch(/>01<\/span>\s*\/\s*<span[^>]*lang="es"[^>]*>disponible<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>available<\/span>/);
   });
 
-  it('emits the AI Ready badge with the sparkle SVG and the "AI Ready" text', async () => {
+  it('emits the AI Ready badge with the sparkle SVG and the "AI Ready" text together', async () => {
     const html = await renderHero('es');
-    expect(html).toMatch(/class="[^"]*ai-badge[^"]*"/);
-    expect(html).toMatch(/class="[^"]*sparkle[^"]*"/);
-    expect(html).toContain('AI Ready');
+    expect(html).toMatch(/<svg[^>]*class="[^"]*sparkle[^"]*"[\s\S]*?<\/svg>\s*AI Ready/);
   });
 
   it('emits both Spanish and English pitch blocks with proper lang attributes', async () => {
@@ -39,14 +39,8 @@ describe('HeroSection (render-test)', () => {
     );
   });
 
-  it('renders the four meta grid items with their labels and values', async () => {
+  it('renders the four meta grid items with their Spanish labels and values', async () => {
     const html = await renderHero('es');
-    const itemMatches = html.match(/class="[^"]*item[^"]*"/g);
-    expect(itemMatches).not.toBeNull();
-    if (itemMatches === null) {
-      throw new Error('expected at least four meta items');
-    }
-    expect(itemMatches.length).toBeGreaterThanOrEqual(4);
     expect(html).toContain('Ubicación');
     expect(html).toContain('Estado');
     expect(html).toContain('Rol');
@@ -69,13 +63,6 @@ describe('HeroSection (render-test)', () => {
     expect(html).toContain(`href="${heroJson.links.linkedin}"`);
   });
 
-  it('marks the LinkedIn link with the .full class so it spans two columns', async () => {
-    const html = await renderHero('es');
-    expect(html).toMatch(
-      /<a[^>]*class="[^"]*full[^"]*"[^>]*href="https:\/\/linkedin\.com\/in\/jcocano"/,
-    );
-  });
-
   it('opens GitHub and LinkedIn in a new tab with rel="noopener noreferrer"', async () => {
     const html = await renderHero('es');
     expect(html).toMatch(
@@ -86,27 +73,31 @@ describe('HeroSection (render-test)', () => {
     );
   });
 
-  it('renders the avatar pointing to BASE_URL/pfp.jpeg and inside a .pfp container', async () => {
+  it('renders the LinkedIn link with title="LinkedIn" so the user can identify it', async () => {
     const html = await renderHero('es');
-    expect(html).toMatch(/<div[^>]*class="[^"]*pfp[^"]*"[\s\S]*?<img[^>]*src="[^"]*pfp\.jpeg"/);
-    expect(html).toMatch(/<img[^>]*alt="Jesús Cocaño"/);
+    expect(html).toMatch(/<a[^>]*href="https:\/\/linkedin\.com\/in\/jcocano"[^>]*title="LinkedIn"/);
   });
 
-  it('renders the hero-bg ASCII container with deterministic non-empty content', async () => {
+  it('renders the avatar img pointing to BASE_URL/pfp.jpeg with the name as alt text', async () => {
     const html = await renderHero('es');
-    expect(html).toMatch(/class="[^"]*hero-bg[^"]*"/);
-    const heroBgMatch = html.match(/<div[^>]*class="[^"]*hero-bg[^"]*"[^>]*>([\s\S]*?)<\/div>/);
-    expect(heroBgMatch).not.toBeNull();
-    if (heroBgMatch === null) {
-      throw new Error('expected hero-bg container');
+    expect(html).toMatch(/<img[^>]*src="[^"]*pfp\.jpeg"[^>]*alt="Jesús Cocaño"/);
+  });
+
+  it('renders the hero card as <aside aria-label="Profile card"> wrapping the avatar', async () => {
+    const html = await renderHero('es');
+    expect(html).toMatch(/<aside[^>]*aria-label="Profile card"[\s\S]*?pfp\.jpeg/);
+  });
+
+  it('renders the section root as <header id="top"> with deterministic ASCII content inside an aria-hidden div', async () => {
+    const html = await renderHero('es');
+    expect(html).toMatch(/<header[^>]*id="top"/);
+    const ariaHiddenMatch = html.match(/<div[^>]*aria-hidden="true"[^>]*>([\s\S]*?)<\/div>/);
+    expect(ariaHiddenMatch).not.toBeNull();
+    if (ariaHiddenMatch === null) {
+      throw new Error('expected aria-hidden ASCII container');
     }
-    const heroBgInner = heroBgMatch[1] ?? '';
-    expect(heroBgInner.length).toBeGreaterThan(100);
-    expect(heroBgInner).toContain('▓');
-  });
-
-  it('renders the section as <header class="hero" id="top">', async () => {
-    const html = await renderHero('es');
-    expect(html).toMatch(/<header[^>]*class="[^"]*hero[^"]*"[^>]*id="top"/);
+    const ascii = ariaHiddenMatch[1] ?? '';
+    expect(ascii.length).toBeGreaterThan(100);
+    expect(ascii).toContain('▓');
   });
 });

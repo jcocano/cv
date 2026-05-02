@@ -3,6 +3,7 @@ import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
 import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
 import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
 import type { HeroLinks } from '@/lib/schemas/hero';
+import styles from './HeroCard.module.css';
 
 interface Props {
   name: string;
@@ -13,11 +14,11 @@ interface Props {
 const { name, avatarSrc, links } = Astro.props;
 ---
 
-<aside class="hero-card" aria-label="Profile card">
-  <div class="pfp">
+<aside class={styles.heroCard} aria-label="Profile card">
+  <div class={styles.pfp}>
     <img src={avatarSrc} alt={name} />
   </div>
-  <div class="links">
+  <div class={styles.links}>
     <a href={links.email} title="Email">
       <EmailIcon />
       Email
@@ -27,7 +28,7 @@ const { name, avatarSrc, links } = Astro.props;
       GitHub
     </a>
     <a
-      class="full"
+      class={styles.full}
       href={links.linkedin}
       target="_blank"
       rel="noopener noreferrer"
@@ -38,75 +39,3 @@ const { name, avatarSrc, links } = Astro.props;
     </a>
   </div>
 </aside>
-
-<style>
-  .hero-card {
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: 18px;
-    background: var(--bg-elev);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .hero-card .pfp {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: var(--radius);
-    background: var(--bg-elev-2);
-    overflow: hidden;
-    position: relative;
-  }
-  .hero-card .pfp img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(0.15) contrast(1.05);
-    transition: filter 0.3s;
-  }
-  .hero-card:hover .pfp img {
-    filter: grayscale(0) contrast(1);
-  }
-  .hero-card .pfp::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 60%,
-      color-mix(in oklab, var(--accent) 18%, transparent)
-    );
-    pointer-events: none;
-  }
-  .hero-card .links {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .hero-card .links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 9px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--fg-dim);
-    transition: all 0.15s;
-  }
-  .hero-card .links a:hover,
-  .hero-card .links a:focus-visible {
-    color: var(--fg);
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
-  .hero-card .links a.full {
-    grid-column: span 2;
-  }
-  .hero-card .links a :global(svg) {
-    width: 12px;
-    height: 12px;
-  }
-</style>

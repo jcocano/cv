@@ -1,5 +1,6 @@
 ---
 import SparkleIcon from '@/components/ui/icons/SparkleIcon.astro';
+import styles from './AiBadge.module.css';
 
 interface Props {
   label: string;
@@ -8,54 +9,7 @@ interface Props {
 const { label } = Astro.props;
 ---
 
-<span class="ai-badge" title={label}>
+<span class={styles.aiBadge} title={label}>
   <SparkleIcon />
   {label}
 </span>
-
-<style>
-  .ai-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    border: 1px solid var(--accent);
-    border-radius: 100px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-dim);
-    position: relative;
-    overflow: hidden;
-  }
-  .ai-badge::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
-    animation: hero-pulse 2s infinite;
-  }
-  .ai-badge :global(.sparkle) {
-    width: 12px;
-    height: 12px;
-    margin-right: -2px;
-  }
-  @keyframes hero-pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ai-badge::before {
-      animation: none;
-    }
-  }
-</style>

@@ -1,4 +1,6 @@
 ---
+import styles from './Eyebrow.module.css';
+
 interface Props {
   num: string;
   labelEs: string;
@@ -8,30 +10,8 @@ interface Props {
 const { num, labelEs, labelEn } = Astro.props;
 ---
 
-<span class="eyebrow">
-  <span class="num">{num}</span> /
+<span class={styles.eyebrow}>
+  <span class={styles.num}>{num}</span> /
   <span lang="es">{labelEs}</span>
   <span lang="en">{labelEn}</span>
 </span>
-
-<style>
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-  }
-  .eyebrow::before {
-    content: '';
-    width: 18px;
-    height: 1px;
-    background: var(--fg-mute);
-  }
-  .eyebrow .num {
-    color: var(--accent);
-  }
-</style>

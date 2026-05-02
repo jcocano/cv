@@ -1,0 +1,105 @@
+---
+interface BilingualText {
+  es: string;
+  en: string;
+}
+
+export interface HeroMetaItem {
+  label: BilingualText | string;
+  value: BilingualText | string;
+  live?: boolean;
+}
+
+interface Props {
+  items: HeroMetaItem[];
+}
+
+const { items } = Astro.props;
+
+function isBilingual(text: BilingualText | string): text is BilingualText {
+  return typeof text !== 'string';
+}
+---
+
+<div class="hero-meta">
+  {
+    items.map((item) => (
+      <div class="item">
+        <span class="k">
+          {isBilingual(item.label) ? (
+            <>
+              <span lang="es">{item.label.es}</span>
+              <span lang="en">{item.label.en}</span>
+            </>
+          ) : (
+            item.label
+          )}
+        </span>
+        <span class:list={['v', { live: item.live }]}>
+          {isBilingual(item.value) ? (
+            <>
+              <span lang="es">{item.value.es}</span>
+              <span lang="en">{item.value.en}</span>
+            </>
+          ) : (
+            item.value
+          )}
+        </span>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 32px;
+    margin-top: 36px;
+    align-items: center;
+  }
+  .hero-meta .item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-meta .item .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .hero-meta .item .v {
+    font-size: 14px;
+    color: var(--fg);
+  }
+  .hero-meta .item .v.live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-meta .item .v.live::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+    animation: hero-pulse 2s infinite;
+  }
+  @keyframes hero-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-meta .item .v.live::before {
+      animation: none;
+    }
+  }
+</style>

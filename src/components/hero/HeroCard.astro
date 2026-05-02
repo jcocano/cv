@@ -1,0 +1,41 @@
+---
+import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
+import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
+import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
+import type { HeroLinks } from '@/lib/schemas/hero';
+import styles from './HeroCard.module.css';
+
+interface Props {
+  name: string;
+  avatarSrc: string;
+  links: HeroLinks;
+}
+
+const { name, avatarSrc, links } = Astro.props;
+---
+
+<aside class={styles.heroCard} aria-label="Profile card">
+  <div class={styles.pfp}>
+    <img src={avatarSrc} alt={name} />
+  </div>
+  <div class={styles.links}>
+    <a href={links.email} title="Email">
+      <EmailIcon />
+      Email
+    </a>
+    <a href={links.github} target="_blank" rel="noopener noreferrer" title="GitHub">
+      <GithubIcon />
+      GitHub
+    </a>
+    <a
+      class={styles.full}
+      href={links.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="LinkedIn"
+    >
+      <LinkedinIcon />
+      LinkedIn
+    </a>
+  </div>
+</aside>

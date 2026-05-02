@@ -30,3 +30,30 @@ a {
 .mono {
   font-family: var(--font-mono);
 }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+[data-lang='en'] [lang='es']:not(html),
+[data-lang='es'] [lang='en']:not(html) {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@keyframes hero-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

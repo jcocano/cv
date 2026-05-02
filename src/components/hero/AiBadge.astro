@@ -1,0 +1,15 @@
+---
+import SparkleIcon from '@/components/ui/icons/SparkleIcon.astro';
+import styles from './AiBadge.module.css';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class={styles.aiBadge} title={label}>
+  <SparkleIcon />
+  {label}
+</span>

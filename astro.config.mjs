@@ -8,6 +8,11 @@ export default defineConfig({
   base: '/cv/',
   integrations: [mdx()],
   vite: {
+    css: {
+      modules: {
+        localsConvention: 'camelCaseOnly',
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -1,15 +1,12 @@
-import { fileURLToPath } from 'node:url';
+import { getViteConfig } from 'astro/config';
+import type { UserConfig as ViteUserConfig } from 'vite';
+import type { ViteUserConfig as VitestUserConfig } from 'vitest/config';
 
-import { defineConfig } from 'vitest/config';
-
-const srcPath = fileURLToPath(new URL('./src', import.meta.url));
-
-export default defineConfig({
-  resolve: {
-    alias: [{ find: /^@\/(.*)$/, replacement: `${srcPath}/$1` }],
-  },
+const viteConfigWithVitest: ViteUserConfig & Pick<VitestUserConfig, 'test'> = {
   test: {
     include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
     environment: 'node',
   },
-});
+};
+
+export default getViteConfig(viteConfigWithVitest);

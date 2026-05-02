@@ -1,0 +1,29 @@
+{
+  "name": "Jesús Cocaño",
+  "role": {
+    "es": "Senior Fullstack & Platform Engineer",
+    "en": "Senior Fullstack & Platform Engineer"
+  },
+  "pitch": {
+    "es": "Senior Fullstack & Platform Engineer construyendo sistemas distribuidos resilientes, desde arquitecturas early-stage hasta plataformas de alto tráfico en producción.",
+    "en": "Senior Fullstack & Platform Engineer building resilient distributed systems, from early-stage architectures to high-traffic production platforms."
+  },
+  "location": {
+    "es": "México · Remoto",
+    "en": "Mexico · Remote"
+  },
+  "status": {
+    "es": "Disponible para oportunidades",
+    "en": "Available for opportunities"
+  },
+  "roleShort": "Fullstack / Platform / SRE",
+  "aiTopics": {
+    "es": "LLMs · RAG · Agentes · MCP",
+    "en": "LLMs · RAG · Agents · MCP"
+  },
+  "links": {
+    "email": "mailto:jesus.cocano@gmail.com",
+    "github": "https://github.com/jcocano",
+    "linkedin": "https://linkedin.com/in/jcocano"
+  }
+}

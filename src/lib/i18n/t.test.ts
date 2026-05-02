@@ -61,4 +61,34 @@ describe('t (translation helper)', () => {
     expectTypeOf(t('nav.home', 'es')).toEqualTypeOf<string>();
     expectTypeOf(t('nav.home', 'es', { name: 'X' })).toEqualTypeOf<string>();
   });
+
+  it('exposes hero.eyebrow with handoff strings ("disponible" / "available")', () => {
+    expect(t('hero.eyebrow', 'es')).toBe('disponible');
+    expect(t('hero.eyebrow', 'en')).toBe('available');
+  });
+
+  it('exposes hero.aiReady as the language-agnostic "AI Ready" badge text', () => {
+    expect(t('hero.aiReady', 'es')).toBe('AI Ready');
+    expect(t('hero.aiReady', 'en')).toBe('AI Ready');
+  });
+
+  it('exposes hero.meta.location as "Ubicación" (es) and "Location" (en)', () => {
+    expect(t('hero.meta.location', 'es')).toBe('Ubicación');
+    expect(t('hero.meta.location', 'en')).toBe('Location');
+  });
+
+  it('exposes hero.meta.status as "Estado" (es) and "Status" (en)', () => {
+    expect(t('hero.meta.status', 'es')).toBe('Estado');
+    expect(t('hero.meta.status', 'en')).toBe('Status');
+  });
+
+  it('exposes hero.meta.role as "Rol" (es) and "Role" (en)', () => {
+    expect(t('hero.meta.role', 'es')).toBe('Rol');
+    expect(t('hero.meta.role', 'en')).toBe('Role');
+  });
+
+  it('exposes hero.meta.ai as the literal "AI" label in both languages', () => {
+    expect(t('hero.meta.ai', 'es')).toBe('AI');
+    expect(t('hero.meta.ai', 'en')).toBe('AI');
+  });
 });

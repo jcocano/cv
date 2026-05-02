@@ -1,0 +1,71 @@
+---
+import AiBadge from '@/components/hero/AiBadge.astro';
+import HeroCard from '@/components/hero/HeroCard.astro';
+import HeroMeta, { type HeroMetaItem } from '@/components/hero/HeroMeta.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import heroJson from '@/data/hero.json';
+import { buildAscii } from '@/lib/hero/build-ascii';
+import { heroSchema, type Hero } from '@/lib/schemas/hero';
+import { t } from '@/lib/i18n/t';
+import { isLangCode, type LangCode } from '@/lib/theme/toggle-lang';
+import styles from './HeroSection.module.css';
+
+interface Props {
+  lang?: LangCode;
+}
+
+const { lang } = Astro.props;
+const activeLang: LangCode = isLangCode(lang) ? lang : 'es';
+
+const hero: Hero = heroSchema.parse(heroJson);
+
+const heroAsciiPattern = buildAscii(80, 60);
+const avatarSrc = `${import.meta.env.BASE_URL}pfp.jpeg`;
+
+const metaItems: HeroMetaItem[] = [
+  {
+    label: { es: t('hero.meta.location', 'es'), en: t('hero.meta.location', 'en') },
+    value: hero.location,
+  },
+  {
+    label: { es: t('hero.meta.status', 'es'), en: t('hero.meta.status', 'en') },
+    value: hero.status,
+    live: true,
+  },
+  {
+    label: { es: t('hero.meta.role', 'es'), en: t('hero.meta.role', 'en') },
+    value: hero.roleShort,
+  },
+  {
+    label: t('hero.meta.ai', activeLang),
+    value: hero.aiTopics,
+  },
+];
+---
+
+<header class={styles.hero} id="top">
+  <div class={styles.heroBg} aria-hidden="true">{heroAsciiPattern}</div>
+  <div class="container">
+    <div class={styles.heroGrid}>
+      <div>
+        <div class={styles.heroEyebrowRow}>
+          <Eyebrow num="01" labelEs={t('hero.eyebrow', 'es')} labelEn={t('hero.eyebrow', 'en')} />
+          <AiBadge label={t('hero.aiReady', activeLang)} />
+        </div>
+
+        <h1>
+          Jesús<br />Cocaño<span class={styles.accent}>.</span>
+        </h1>
+
+        <p class={styles.heroPitch}>
+          <span lang="es">{hero.pitch.es}</span>
+          <span lang="en">{hero.pitch.en}</span>
+        </p>
+
+        <HeroMeta items={metaItems} />
+      </div>
+
+      <HeroCard name={hero.name} avatarSrc={avatarSrc} links={hero.links} />
+    </div>
+  </div>
+</header>

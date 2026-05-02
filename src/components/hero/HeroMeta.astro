@@ -1,0 +1,53 @@
+---
+import styles from './HeroMeta.module.css';
+
+interface BilingualText {
+  es: string;
+  en: string;
+}
+
+export interface HeroMetaItem {
+  label: BilingualText | string;
+  value: BilingualText | string;
+  live?: boolean;
+}
+
+interface Props {
+  items: HeroMetaItem[];
+}
+
+const { items } = Astro.props;
+
+function isBilingual(text: BilingualText | string): text is BilingualText {
+  return typeof text !== 'string';
+}
+---
+
+<div class={styles.heroMeta}>
+  {
+    items.map((item) => (
+      <div class={styles.item}>
+        <span class={styles.k}>
+          {isBilingual(item.label) ? (
+            <>
+              <span lang="es">{item.label.es}</span>
+              <span lang="en">{item.label.en}</span>
+            </>
+          ) : (
+            item.label
+          )}
+        </span>
+        <span class={item.live === true ? `${styles.v} ${styles.live}` : styles.v}>
+          {isBilingual(item.value) ? (
+            <>
+              <span lang="es">{item.value.es}</span>
+              <span lang="en">{item.value.en}</span>
+            </>
+          ) : (
+            item.value
+          )}
+        </span>
+      </div>
+    ))
+  }
+</div>

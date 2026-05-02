@@ -3,6 +3,7 @@ import HeroSection from '@/components/hero/HeroSection.astro';
 import AiReadySection from '@/components/sections/AiReadySection.astro';
 import ExperienceSection from '@/components/sections/ExperienceSection.astro';
 import LabSection from '@/components/sections/LabSection.astro';
+import StackSection from '@/components/sections/StackSection.astro';
 import SummarySection from '@/components/sections/SummarySection.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
@@ -32,6 +33,8 @@ const themes = ['dark', 'light', 'paper'] as const;
     <LabSection />
     <ExperienceSection />
   </div>
+
+  <StackSection />
 
   <div class="page">
     <header class="page-head">

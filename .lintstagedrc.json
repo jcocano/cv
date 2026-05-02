@@ -1,4 +1,5 @@
 {
   "*.{ts,astro,mjs,cjs,js}": ["prettier --check", "eslint"],
+  "src/{components,layouts}/**/*.astro": ["bash -c 'npm run check:styles'"],
   "*.{json,md,css}": ["prettier --check"]
 }

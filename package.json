@@ -12,6 +12,7 @@
     "lint": "eslint \"src/**/*.{ts,astro,mjs,cjs,js}\"",
     "format": "prettier --write \"**/*.{ts,astro,mjs,cjs,js,json,md,css}\"",
     "format:check": "prettier --check \"**/*.{ts,astro,mjs,cjs,js,json,md,css}\"",
+    "check:styles": "bash -c 'matches=$(grep -rEn \"<style\" src/components src/layouts 2>/dev/null | grep -v \"is:global\" || true); if [ -n \"$matches\" ]; then echo \"ERROR: Found <style> blocks in components/layouts (use <Componente>.module.css instead, see docs/conventions.md §3):\"; echo \"$matches\"; exit 1; fi'",
     "test": "vitest run",
     "test:watch": "vitest",
     "prepare": "husky"

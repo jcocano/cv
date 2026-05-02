@@ -160,6 +160,13 @@ describe('ContactSection (render-test)', () => {
     expect(svgMatches.length).toBeGreaterThanOrEqual(3);
   });
 
+  it('uses the shared EmailIcon component (no inline svg with stroke-width="1.8") so SVGs live in src/components/ui/icons', async () => {
+    const html = await renderContactSection();
+    expect(html).not.toContain('stroke-width="1.8"');
+    expect(html).toContain('stroke-width="1.6"');
+    expect(html).toMatch(/<svg[^>]*aria-hidden="true"/);
+  });
+
   it('does NOT render a Download CV CTA (out of scope per decision D2)', async () => {
     const html = await renderContactSection();
     expect(html).not.toMatch(/href="[^"]*jesus_cocano_cv\.pdf/);

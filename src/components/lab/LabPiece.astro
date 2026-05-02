@@ -1,4 +1,5 @@
 ---
+import CanvasField from '@/components/lab/CanvasField.astro';
 import KineticType from '@/components/lab/KineticType.astro';
 import Tag from '@/components/ui/Tag.astro';
 import { t } from '@/lib/i18n/t';
@@ -11,12 +12,15 @@ interface Props {
 
 const { piece } = Astro.props;
 const isKinetic = piece.key === 'kinetic';
+const isGrid = piece.key === 'grid';
 ---
 
 <article class={styles.piece} data-piece={piece.key}>
   {
     isKinetic && piece.words ? (
       <KineticType words={piece.words} />
+    ) : isGrid ? (
+      <CanvasField />
     ) : (
       <div class={styles.placeholderStage}>
         <span class={styles.placeholderLabel}>

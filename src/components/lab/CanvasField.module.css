@@ -1,0 +1,17 @@
+.stage {
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.surface {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}

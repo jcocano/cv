@@ -73,12 +73,13 @@ describe('LabPiece (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>pointer events<\/span>/);
   });
 
-  it('renders a "Coming soon" placeholder bilingually for the grid piece (no kinetic stage)', async () => {
+  it('renders the canvas-field stage for the grid piece (not the placeholder)', async () => {
     const html = await renderLabPiece(gridPiece);
     expect(html).toMatch(/<article[^>]*data-piece="grid"/);
     expect(html).not.toMatch(/id="stage-kinetic"/);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/);
+    expect(html).toMatch(/id="stage-canvas-field"/);
+    expect(html).toMatch(/<canvas[^>]*id="canvas-field-surface"/);
+    expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Campo generativo<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Generative field<\/span>/);
   });

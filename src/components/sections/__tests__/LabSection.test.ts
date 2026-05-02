@@ -69,17 +69,23 @@ describe('LabSection (render-test)', () => {
     }
   });
 
-  it('renders the "Coming soon" placeholder bilingually for both placeholder pieces (grid + marquee)', async () => {
+  it('renders the "Coming soon" placeholder bilingually for the marquee piece', async () => {
     const html = await renderLabSection();
     const esPlaceholders = html.match(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/g);
     const enPlaceholders = html.match(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/g);
     expect(esPlaceholders).not.toBeNull();
     expect(enPlaceholders).not.toBeNull();
     if (esPlaceholders === null || enPlaceholders === null) {
-      throw new Error('expected two coming-soon placeholders in each language');
+      throw new Error('expected one coming-soon placeholder in each language');
     }
-    expect(esPlaceholders).toHaveLength(2);
-    expect(enPlaceholders).toHaveLength(2);
+    expect(esPlaceholders).toHaveLength(1);
+    expect(enPlaceholders).toHaveLength(1);
+  });
+
+  it('renders the canvas-field stage for the grid piece (now interactive)', async () => {
+    const html = await renderLabSection();
+    expect(html).toMatch(/id="stage-canvas-field"/);
+    expect(html).toMatch(/<canvas[^>]*id="canvas-field-surface"/);
   });
 
   it('applies the global "reveal" class to the lab grid wrapper', async () => {

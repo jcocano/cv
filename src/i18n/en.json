@@ -1,0 +1,14 @@
+{
+  "cta.toggleLang": "Toggle language",
+  "cta.toggleTheme": "Cycle theme",
+  "footer.copyright": "Jesus Cocano",
+  "footer.shortcutHint": "⌨ T theme · L lang",
+  "greet.hello": "Hello, {name}",
+  "greet.repeat": "{name}, {name}, {name}",
+  "nav.about": "About",
+  "nav.brand": "jc",
+  "nav.contact": "Contact",
+  "nav.home": "Home",
+  "nav.work": "Work",
+  "skip.toContent": "Skip to content"
+}

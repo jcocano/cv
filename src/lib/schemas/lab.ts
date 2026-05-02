@@ -18,13 +18,13 @@ export const labPieceSchema = z
   .strict()
   .refine(
     (piece) => {
-      if (piece.key === 'kinetic') {
+      if (piece.key === 'kinetic' || piece.key === 'marquee') {
         return piece.words !== undefined;
       }
       return true;
     },
     {
-      message: "The 'kinetic' piece requires a non-empty 'words' array.",
+      message: "The 'kinetic' and 'marquee' pieces require a non-empty 'words' array.",
       path: ['words'],
     },
   );

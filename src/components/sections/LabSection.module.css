@@ -11,6 +11,10 @@
   gap: 24px;
 }
 
+.lab-grid > [data-piece='marquee'] {
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 720px) {
   .lab-grid {
     grid-template-columns: 1fr;

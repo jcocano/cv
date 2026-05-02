@@ -46,7 +46,8 @@
         "es": "El cursor controla la velocidad y dirección. Hover hacia la izquierda invierte el flujo.",
         "en": "Cursor drives speed and direction. Hover left to reverse the flow."
       },
-      "tags": ["CSS animations", "pointer math"]
+      "tags": ["CSS animations", "pointer math"],
+      "words": ["build", "break", "observe", "iterate", "ship"]
     }
   ]
 }

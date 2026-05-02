@@ -43,6 +43,7 @@ const validLab = {
         en: 'Cursor drives speed and direction.',
       },
       tags: ['CSS animations', 'pointer math'],
+      words: ['build', 'break', 'observe', 'iterate', 'ship'],
     },
   ],
 } as const;
@@ -69,6 +70,7 @@ describe('labSchema', () => {
     expect(parsed.pieces[1]?.num).toBe('02');
     expect(parsed.pieces[2]?.key).toBe('marquee');
     expect(parsed.pieces[2]?.num).toBe('03');
+    expect(parsed.pieces[2]?.words).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
   });
 
   it('fails when pieces has only two entries (length 3 is required)', () => {
@@ -117,6 +119,24 @@ describe('labSchema', () => {
     }
     const wordsIssues = result.error.issues.filter(
       (issue) => issue.path[0] === 'pieces' && issue.path[1] === 0,
+    );
+    expect(wordsIssues.length).toBeGreaterThan(0);
+  });
+
+  it('fails when the marquee piece is missing the words array', () => {
+    const { words: _omitted, ...marqueeWithoutWords } = validLab.pieces[2];
+    void _omitted;
+    const broken = {
+      ...validLab,
+      pieces: [validLab.pieces[0], validLab.pieces[1], marqueeWithoutWords],
+    };
+    const result = labSchema.safeParse(broken);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const wordsIssues = result.error.issues.filter(
+      (issue) => issue.path[0] === 'pieces' && issue.path[1] === 2,
     );
     expect(wordsIssues.length).toBeGreaterThan(0);
   });
@@ -214,6 +234,6 @@ describe('labSchema', () => {
     expect(parsed.pieces[1]?.key).toBe('grid');
     expect(parsed.pieces[1]?.words).toBeUndefined();
     expect(parsed.pieces[2]?.key).toBe('marquee');
-    expect(parsed.pieces[2]?.words).toBeUndefined();
+    expect(parsed.pieces[2]?.words).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
   });
 });

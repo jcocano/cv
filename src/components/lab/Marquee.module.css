@@ -1,0 +1,47 @@
+.stage {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+}
+
+.track {
+  display: flex;
+  gap: 28px;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  will-change: transform;
+  animation: marqueeSlide var(--speed) linear infinite;
+  animation-direction: normal;
+  animation-play-state: paused;
+}
+
+.track[data-dir='-1'] {
+  animation-direction: reverse;
+}
+
+.track > span:nth-child(odd) {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .track {
+    animation-play-state: running;
+  }
+}
+
+@keyframes marqueeSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}

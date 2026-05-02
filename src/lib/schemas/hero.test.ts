@@ -31,6 +31,20 @@ const validHero = {
     github: 'https://github.com/jcocano',
     linkedin: 'https://linkedin.com/in/jcocano',
   },
+  contact: {
+    headline: {
+      es: 'algo serio.',
+      en: "Let's build",
+    },
+    headlineAccent: {
+      es: 'Construyamos',
+      en: 'something serious.',
+    },
+    lede: {
+      es: 'Disponible para roles senior en backend, platform o infraestructura. Web3, fintech, o cualquier producto que viva o muera por su fiabilidad en producción.',
+      en: 'Available for senior roles in backend, platform, or infrastructure. Web3, fintech, or any product whose life depends on production reliability.',
+    },
+  },
 } as const;
 
 describe('heroSchema', () => {
@@ -169,5 +183,73 @@ describe('heroSchema', () => {
     expect(parsed.links.github).toBe('https://github.com/jcocano');
     expect(parsed.links.linkedin).toBe('https://linkedin.com/in/jcocano');
     expect(parsed.roleShort).toBe('Fullstack / Platform / SRE');
+  });
+
+  it('parses the bilingual contact block (headline, headlineAccent, lede) populated from validHero', () => {
+    const parsed = heroSchema.parse(validHero);
+    expect(parsed.contact.headline.es).toBe('algo serio.');
+    expect(parsed.contact.headline.en).toBe("Let's build");
+    expect(parsed.contact.headlineAccent.es).toBe('Construyamos');
+    expect(parsed.contact.headlineAccent.en).toBe('something serious.');
+    expect(parsed.contact.lede.es.startsWith('Disponible para roles senior')).toBe(true);
+    expect(parsed.contact.lede.en.startsWith('Available for senior roles')).toBe(true);
+  });
+
+  it('fails when contact.headline is missing', () => {
+    const incomplete: Record<string, unknown> = {
+      ...validHero,
+      contact: {
+        headlineAccent: validHero.contact.headlineAccent,
+        lede: validHero.contact.lede,
+      },
+    };
+    const result = heroSchema.safeParse(incomplete);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnHeadline = result.error.issues.filter(
+      (issue) => issue.path[0] === 'contact' && issue.path[1] === 'headline',
+    );
+    expect(issuesOnHeadline.length).toBeGreaterThan(0);
+  });
+
+  it('fails when contact.lede.en is missing', () => {
+    const incomplete: Record<string, unknown> = {
+      ...validHero,
+      contact: {
+        headline: validHero.contact.headline,
+        headlineAccent: validHero.contact.headlineAccent,
+        lede: { es: validHero.contact.lede.es },
+      },
+    };
+    const result = heroSchema.safeParse(incomplete);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnLedeEn = result.error.issues.filter(
+      (issue) => issue.path[0] === 'contact' && issue.path[1] === 'lede' && issue.path[2] === 'en',
+    );
+    expect(issuesOnLedeEn).toHaveLength(1);
+  });
+
+  it('rejects an extra unknown nested key inside contact in strict mode', () => {
+    const withExtra: Record<string, unknown> = {
+      ...validHero,
+      contact: { ...validHero.contact, twitter: { es: 'x', en: 'x' } },
+    };
+    const result = heroSchema.safeParse(withExtra);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const unrecognizedOnContact = result.error.issues.filter(
+      (issue): issue is typeof issue & { keys: string[] } =>
+        issue.code === 'unrecognized_keys' &&
+        issue.path[0] === 'contact' &&
+        Array.isArray((issue as { keys?: unknown }).keys),
+    );
+    expect(unrecognizedOnContact).toHaveLength(1);
   });
 });

@@ -25,5 +25,19 @@
     "email": "mailto:jesus.cocano@gmail.com",
     "github": "https://github.com/jcocano",
     "linkedin": "https://linkedin.com/in/jcocano"
+  },
+  "contact": {
+    "headline": {
+      "es": "algo serio.",
+      "en": "Let's build"
+    },
+    "headlineAccent": {
+      "es": "Construyamos",
+      "en": "something serious."
+    },
+    "lede": {
+      "es": "Disponible para roles senior en backend, platform o infraestructura. Web3, fintech, o cualquier producto que viva o muera por su fiabilidad en producción.",
+      "en": "Available for senior roles in backend, platform, or infrastructure. Web3, fintech, or any product whose life depends on production reliability."
+    }
   }
 }

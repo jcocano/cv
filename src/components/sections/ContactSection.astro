@@ -1,0 +1,60 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import heroJson from '@/data/hero.json';
+import { t } from '@/lib/i18n/t';
+import { heroSchema, type Hero } from '@/lib/schemas/hero';
+import styles from './ContactSection.module.css';
+
+const hero: Hero = heroSchema.parse(heroJson);
+const { headline, headlineAccent, lede } = hero.contact;
+const { email, github, linkedin } = hero.links;
+
+const githubLabel = github.replace(/^https?:\/\//, '');
+const linkedinLabel = linkedin.replace(/^https?:\/\//, '');
+const emailLabel = email.replace(/^mailto:/, '');
+---
+
+<section id="contact" class={styles.contact}>
+  <div class="container">
+    <Eyebrow num="05" labelEs={t('contact.eyebrow', 'es')} labelEn={t('contact.eyebrow', 'en')} />
+
+    <h2 class={styles.headline}>
+      <span lang="es"
+        ><span class={styles.accent}>{headlineAccent.es}</span><br />{headline.es}</span
+      >
+      <span lang="en"
+        >{headline.en}<br /><span class={styles.accent}>{headlineAccent.en}</span></span
+      >
+    </h2>
+
+    <p class={styles.lede}>
+      <span lang="es">{lede.es}</span>
+      <span lang="en">{lede.en}</span>
+    </p>
+
+    <div class={styles.row}>
+      <a class={`${styles.cta} ${styles.ctaPrimary}`} href={email}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          ><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path>
+        </svg>
+        {emailLabel}
+      </a>
+      <a class={styles.cta} href={github} target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"
+          ><path
+            d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"
+          ></path></svg
+        >
+        {githubLabel}
+      </a>
+      <a class={styles.cta} href={linkedin} target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"
+          ><path
+            d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.5a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm11.34 9.84h-2.67v-4.22c0-1-.02-2.3-1.4-2.3-1.4 0-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04c.36-.68 1.23-1.4 2.54-1.4 2.71 0 3.22 1.79 3.22 4.11v4.78z"
+          ></path></svg
+        >
+        {linkedinLabel}
+      </a>
+    </div>
+  </div>
+</section>

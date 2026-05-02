@@ -1,5 +1,5 @@
 const BASE_WEIGHT = 300;
-const WEIGHT_RANGE = 500;
+const WEIGHT_RANGE = 600;
 const NUDGE_FACTOR = 0.04;
 const COLOR_SHIFT_THRESHOLD = 0.5;
 

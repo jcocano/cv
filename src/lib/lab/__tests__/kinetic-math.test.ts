@@ -3,20 +3,20 @@ import { describe, expect, it } from 'vitest';
 import { nudgeOffset, proximityToWeight, shouldShiftColor } from '@/lib/lab/kinetic-math';
 
 describe('proximityToWeight', () => {
-  it('returns the maximum weight 800 when distance is exactly 0', () => {
-    expect(proximityToWeight(0, 200)).toBe(800);
+  it('returns the maximum weight 900 when distance is exactly 0', () => {
+    expect(proximityToWeight(0, 200)).toBe(900);
   });
 
   it('returns the base weight 300 when distance equals maxDistance', () => {
     expect(proximityToWeight(200, 200)).toBe(300);
   });
 
-  it('linearly interpolates: distance 100 of 200 → 550', () => {
-    expect(proximityToWeight(100, 200)).toBe(550);
+  it('linearly interpolates: distance 100 of 200 → 600', () => {
+    expect(proximityToWeight(100, 200)).toBe(600);
   });
 
-  it('clamps a negative distance to factor 1, returning the maximum weight 800', () => {
-    expect(proximityToWeight(-10, 200)).toBe(800);
+  it('clamps a negative distance to factor 1, returning the maximum weight 900', () => {
+    expect(proximityToWeight(-10, 200)).toBe(900);
   });
 
   it('returns the base weight 300 when distance is past the maximum', () => {

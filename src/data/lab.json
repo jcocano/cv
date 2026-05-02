@@ -1,0 +1,52 @@
+{
+  "title": {
+    "es": "Frontend también,\ncuando el backend lo pide.",
+    "en": "Frontend too,\nwhen the backend asks for it."
+  },
+  "lede": {
+    "es": "Pequeñas piezas en vivo. CSS, Canvas y un poco de matemáticas.",
+    "en": "Small live pieces. CSS, Canvas, and a bit of math."
+  },
+  "pieces": [
+    {
+      "key": "kinetic",
+      "num": "01",
+      "title": {
+        "es": "Kinetic Type",
+        "en": "Kinetic Type"
+      },
+      "description": {
+        "es": "Variable font reaccionando al cursor. Peso y ancho interpolados por proximidad.",
+        "en": "Variable font reacting to the cursor. Weight and width interpolated by proximity."
+      },
+      "tags": ["CSS", "variable fonts", "pointer events"],
+      "words": ["distributed", "resilient", "observable", "elastic", "event-driven", "cloud-native"]
+    },
+    {
+      "key": "grid",
+      "num": "02",
+      "title": {
+        "es": "Campo generativo",
+        "en": "Generative field"
+      },
+      "description": {
+        "es": "Flow field con ruido Perlin simple. Cada partícula sigue el gradiente del campo.",
+        "en": "Flow field with simple Perlin noise. Each particle follows the field gradient."
+      },
+      "tags": ["Canvas", "noise", "requestAnimationFrame"]
+    },
+    {
+      "key": "marquee",
+      "num": "03",
+      "title": {
+        "es": "Marquee con scrub",
+        "en": "Scrubbable marquee"
+      },
+      "description": {
+        "es": "El cursor controla la velocidad y dirección. Hover hacia la izquierda invierte el flujo.",
+        "en": "Cursor drives speed and direction. Hover left to reverse the flow."
+      },
+      "tags": ["CSS animations", "pointer math"]
+    }
+  ]
+}

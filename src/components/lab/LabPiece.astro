@@ -1,0 +1,45 @@
+---
+import KineticType from '@/components/lab/KineticType.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { t } from '@/lib/i18n/t';
+import type { LabPiece } from '@/lib/schemas/lab';
+import styles from './LabPiece.module.css';
+
+interface Props {
+  piece: LabPiece;
+}
+
+const { piece } = Astro.props;
+const isKinetic = piece.key === 'kinetic';
+---
+
+<article class={styles.piece} data-piece={piece.key}>
+  {
+    isKinetic && piece.words ? (
+      <KineticType words={piece.words} />
+    ) : (
+      <div class={styles.placeholderStage}>
+        <span class={styles.placeholderLabel}>
+          <span lang="es">{t('lab.comingSoon', 'es')}</span>
+          <span lang="en">{t('lab.comingSoon', 'en')}</span>
+        </span>
+      </div>
+    )
+  }
+  <div class={styles.meta}>
+    <span class={styles.num}>{piece.num}</span>
+    <div>
+      <h3>
+        <span lang="es">{piece.title.es}</span>
+        <span lang="en">{piece.title.en}</span>
+      </h3>
+      <p>
+        <span lang="es">{piece.description.es}</span>
+        <span lang="en">{piece.description.en}</span>
+      </p>
+      <div class={styles.tags}>
+        {piece.tags.map((tag) => <Tag label={tag} />)}
+      </div>
+    </div>
+  </div>
+</article>

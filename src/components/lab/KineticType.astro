@@ -1,0 +1,97 @@
+---
+import styles from './KineticType.module.css';
+
+interface Props {
+  words: readonly string[];
+}
+
+const { words } = Astro.props;
+---
+
+<div class={styles.stage} id="stage-kinetic">
+  <div class={styles.wrap}>
+    {words.map((word) => <span class={styles.word}>{word}</span>)}
+  </div>
+</div>
+
+<script>
+  import { nudgeOffset, proximityToWeight, shouldShiftColor } from '@/lib/lab/kinetic-math';
+
+  const PROXIMITY_RADIUS_PX = 200;
+  const OUT_OF_RANGE_COORD = -9999;
+
+  function bootKineticType(): void {
+    const stage = document.getElementById('stage-kinetic');
+    if (stage === null) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduceMotion.matches) {
+      return;
+    }
+
+    const wordNodes = stage.querySelectorAll<HTMLSpanElement>('span');
+    if (wordNodes.length === 0) {
+      return;
+    }
+
+    let pointerX = OUT_OF_RANGE_COORD;
+    let pointerY = OUT_OF_RANGE_COORD;
+    let scheduledFrame: number | null = null;
+
+    function update(): void {
+      scheduledFrame = null;
+      const stageRect = stage!.getBoundingClientRect();
+      wordNodes.forEach((wordNode) => {
+        const rect = wordNode.getBoundingClientRect();
+        const wordCenterX = rect.left - stageRect.left + rect.width / 2;
+        const wordCenterY = rect.top - stageRect.top + rect.height / 2;
+        const dx = pointerX - wordCenterX;
+        const dy = pointerY - wordCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const weight = Math.round(proximityToWeight(distance, PROXIMITY_RADIUS_PX));
+        const offset = nudgeOffset(dx, distance, PROXIMITY_RADIUS_PX);
+        const shiftColor = shouldShiftColor(distance, PROXIMITY_RADIUS_PX);
+        wordNode.style.fontVariationSettings = `"wght" ${weight.toString()}`;
+        wordNode.style.transform = `translateX(${offset.toFixed(1)}px)`;
+        wordNode.style.color = shiftColor ? 'var(--accent)' : 'var(--fg)';
+      });
+    }
+
+    function scheduleUpdate(): void {
+      if (scheduledFrame === null) {
+        scheduledFrame = requestAnimationFrame(update);
+      }
+    }
+
+    function handleMouseMove(event: MouseEvent): void {
+      const stageRect = stage!.getBoundingClientRect();
+      pointerX = event.clientX - stageRect.left;
+      pointerY = event.clientY - stageRect.top;
+      scheduleUpdate();
+    }
+
+    function handleMouseLeave(): void {
+      pointerX = OUT_OF_RANGE_COORD;
+      pointerY = OUT_OF_RANGE_COORD;
+      scheduleUpdate();
+    }
+
+    function teardown(): void {
+      stage!.removeEventListener('mousemove', handleMouseMove);
+      stage!.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('beforeunload', teardown);
+      if (scheduledFrame !== null) {
+        cancelAnimationFrame(scheduledFrame);
+        scheduledFrame = null;
+      }
+    }
+
+    stage.addEventListener('mousemove', handleMouseMove);
+    stage.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('beforeunload', teardown);
+  }
+
+  bootKineticType();
+</script>

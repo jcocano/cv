@@ -1,0 +1,18 @@
+.lab-section {
+  padding: 140px 0;
+  border-top: 1px solid var(--line-soft);
+  position: relative;
+}
+
+.lab-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 720px) {
+  .lab-grid {
+    grid-template-columns: 1fr;
+  }
+}

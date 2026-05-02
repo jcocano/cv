@@ -18,6 +18,14 @@ const heroLinks = z
   })
   .strict();
 
+const heroContact = z
+  .object({
+    headline: i18nString,
+    headlineAccent: i18nString,
+    lede: i18nString,
+  })
+  .strict();
+
 export const heroSchema = z
   .object({
     name: z.string().min(1),
@@ -28,8 +36,10 @@ export const heroSchema = z
     roleShort: z.string().min(1),
     aiTopics: i18nString,
     links: heroLinks,
+    contact: heroContact,
   })
   .strict();
 
 export type Hero = z.infer<typeof heroSchema>;
 export type HeroLinks = z.infer<typeof heroLinks>;
+export type HeroContact = z.infer<typeof heroContact>;

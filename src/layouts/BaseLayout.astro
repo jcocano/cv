@@ -102,6 +102,7 @@ const {
     </style>
 
     <script>
+      import { currentYear } from '@/lib/footer-utils/current-year';
       import { isThemeName, nextTheme, type ThemeName } from '@/lib/theme/next-theme';
       import { isLangCode, toggleLang, type LangCode } from '@/lib/theme/toggle-lang';
 
@@ -200,7 +201,7 @@ const {
       applyLang(readCurrentLang());
 
       const yearSlots = document.querySelectorAll<HTMLElement>('[data-current-year]');
-      const currentYearText = String(new Date().getFullYear());
+      const currentYearText = String(currentYear());
       yearSlots.forEach((node) => {
         node.textContent = currentYearText;
       });

@@ -1,0 +1,53 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
+import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
+import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
+import heroJson from '@/data/hero.json';
+import { t } from '@/lib/i18n/t';
+import { heroSchema, type Hero } from '@/lib/schemas/hero';
+import styles from './ContactSection.module.css';
+
+const hero: Hero = heroSchema.parse(heroJson);
+const { headline, headlineAccent, lede } = hero.contact;
+const { email, github, linkedin } = hero.links;
+
+const githubLabel = github.replace(/^https?:\/\//, '');
+const linkedinLabel = linkedin.replace(/^https?:\/\//, '');
+const emailLabel = email.replace(/^mailto:/, '');
+---
+
+<section id="contact" class={styles.contact}>
+  <div class="container">
+    <Eyebrow num="05" labelEs={t('contact.eyebrow', 'es')} labelEn={t('contact.eyebrow', 'en')} />
+
+    <h2 class={styles.headline}>
+      <span lang="es"
+        ><span class={styles.accent}>{headlineAccent.es}</span><br />{headline.es}</span
+      >
+      <span lang="en"
+        >{headline.en}<br /><span class={styles.accent}>{headlineAccent.en}</span></span
+      >
+    </h2>
+
+    <p class={styles.lede}>
+      <span lang="es">{lede.es}</span>
+      <span lang="en">{lede.en}</span>
+    </p>
+
+    <div class={styles.row}>
+      <a class={`${styles.cta} ${styles.ctaPrimary}`} href={email}>
+        <EmailIcon />
+        {emailLabel}
+      </a>
+      <a class={styles.cta} href={github} target="_blank" rel="noopener noreferrer">
+        <GithubIcon />
+        {githubLabel}
+      </a>
+      <a class={styles.cta} href={linkedin} target="_blank" rel="noopener noreferrer">
+        <LinkedinIcon />
+        {linkedinLabel}
+      </a>
+    </div>
+  </div>
+</section>

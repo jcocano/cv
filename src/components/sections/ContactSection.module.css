@@ -1,0 +1,69 @@
+.contact {
+  padding: 120px 0;
+  text-align: left;
+  border-bottom: none;
+}
+
+.headline {
+  font-size: clamp(48px, 9vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  margin-top: 24px;
+  margin-bottom: 32px;
+}
+
+.accent {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.lede {
+  font-size: 18px;
+  color: var(--fg-dim);
+  max-width: 56ch;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg);
+  transition: all 0.15s;
+}
+
+.cta:hover {
+  border-color: var(--fg);
+  background: var(--bg-elev);
+}
+
+.cta-primary {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.cta-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.cta svg,
+.cta-primary svg {
+  width: 14px;
+  height: 14px;
+}

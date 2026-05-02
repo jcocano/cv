@@ -1,0 +1,308 @@
+---
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Jesus Cocano — CV',
+  description = 'Senior Backend & Platform Engineer — CV and portfolio.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" data-theme="dark" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <script is:inline>
+      (function applyStoredPreferencesBeforePaint() {
+        const validThemes = ['dark', 'light', 'paper'];
+        const validLangs = ['es', 'en'];
+        const root = document.documentElement;
+        try {
+          const storedTheme = localStorage.getItem('theme');
+          const theme = validThemes.indexOf(storedTheme) >= 0 ? storedTheme : 'dark';
+          root.setAttribute('data-theme', theme);
+          const storedLang = localStorage.getItem('lang');
+          const lang = validLangs.indexOf(storedLang) >= 0 ? storedLang : 'es';
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang);
+        } catch {
+          root.setAttribute('data-theme', 'dark');
+          root.setAttribute('data-lang', 'es');
+          root.setAttribute('lang', 'es');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-nav__brand mono" href="#top">jc</a>
+        <nav class="site-nav__links" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="site-nav__toggles">
+          <button
+            id="toggle-theme"
+            class="site-nav__toggle mono"
+            type="button"
+            aria-label="Cycle theme"
+            data-shortcut="T"
+          >
+            <span data-toggle-theme-label>dark</span>
+          </button>
+          <button
+            id="toggle-lang"
+            class="site-nav__toggle mono"
+            type="button"
+            aria-label="Toggle language"
+            data-shortcut="L"
+          >
+            <span data-toggle-lang-label>ES</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer mono">
+      <div class="site-footer__inner">
+        <span class="site-footer__copy">© <span data-current-year></span> Jesus Cocano</span>
+        <span class="site-footer__hint">⌨ T theme · L lang</span>
+      </div>
+    </footer>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        padding: 8px 12px;
+        background: var(--bg-elev);
+        color: var(--fg);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+      .skip-link:focus {
+        left: 12px;
+        top: 12px;
+        z-index: 10;
+      }
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: color-mix(in oklab, var(--bg) 85%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .site-nav__inner {
+        max-width: var(--container);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 14px 28px;
+      }
+      .site-nav__brand {
+        font-size: 14px;
+        color: var(--fg);
+        letter-spacing: 0.04em;
+      }
+      .site-nav__links {
+        display: flex;
+        gap: 18px;
+        flex: 1;
+      }
+      .site-nav__links a {
+        font-size: 14px;
+        color: var(--fg-dim);
+        padding: 4px 2px;
+      }
+      .site-nav__links a:hover,
+      .site-nav__links a:focus-visible {
+        color: var(--fg);
+      }
+      .site-nav__toggles {
+        display: flex;
+        gap: 8px;
+      }
+      .site-nav__toggle {
+        font-size: 12px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        background: var(--bg-elev);
+        color: var(--fg);
+        border-radius: var(--radius);
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .site-nav__toggle:hover,
+      .site-nav__toggle:focus-visible {
+        border-color: var(--accent);
+      }
+      .site-footer {
+        border-top: 1px solid var(--line-soft);
+        margin-top: 96px;
+      }
+      .site-footer__inner {
+        max-width: var(--container);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 28px;
+        font-size: 12px;
+        color: var(--fg-mute);
+      }
+      @media (max-width: 640px) {
+        .site-nav__inner {
+          padding: 12px 16px;
+          gap: 12px;
+        }
+        .site-nav__links {
+          gap: 12px;
+        }
+        .site-footer__inner {
+          flex-direction: column;
+          gap: 6px;
+          padding: 16px;
+        }
+      }
+    </style>
+
+    <style is:global>
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 200ms;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation: none;
+        }
+      }
+    </style>
+
+    <script>
+      import { isThemeName, nextTheme, type ThemeName } from '@/lib/theme/next-theme';
+      import { isLangCode, toggleLang, type LangCode } from '@/lib/theme/toggle-lang';
+
+      const THEME_STORAGE_KEY = 'theme';
+      const LANG_STORAGE_KEY = 'lang';
+      const root = document.documentElement;
+
+      function readCurrentTheme(): ThemeName {
+        const attr = root.getAttribute('data-theme');
+        return isThemeName(attr) ? attr : 'dark';
+      }
+
+      function readCurrentLang(): LangCode {
+        const attr = root.getAttribute('data-lang');
+        return isLangCode(attr) ? attr : 'es';
+      }
+
+      function applyTheme(theme: ThemeName): void {
+        root.setAttribute('data-theme', theme);
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, theme);
+        } catch {
+          // localStorage may be unavailable (private mode); ignore.
+        }
+        const themeLabels = document.querySelectorAll<HTMLElement>('[data-toggle-theme-label]');
+        themeLabels.forEach((node) => {
+          node.textContent = theme;
+        });
+      }
+
+      function applyLang(lang: LangCode): void {
+        root.setAttribute('data-lang', lang);
+        root.setAttribute('lang', lang);
+        try {
+          localStorage.setItem(LANG_STORAGE_KEY, lang);
+        } catch {
+          // localStorage may be unavailable (private mode); ignore.
+        }
+        const langLabels = document.querySelectorAll<HTMLElement>('[data-toggle-lang-label]');
+        langLabels.forEach((node) => {
+          node.textContent = lang.toUpperCase();
+        });
+      }
+
+      function cycleTheme(): void {
+        const next = nextTheme(readCurrentTheme());
+        const supportsViewTransitions =
+          'startViewTransition' in document && typeof document.startViewTransition === 'function';
+        if (supportsViewTransitions) {
+          document.startViewTransition(() => applyTheme(next));
+          return;
+        }
+        applyTheme(next);
+      }
+
+      function flipLang(): void {
+        applyLang(toggleLang(readCurrentLang()));
+      }
+
+      const themeButton = document.getElementById('toggle-theme');
+      const langButton = document.getElementById('toggle-lang');
+      themeButton?.addEventListener('click', cycleTheme);
+      langButton?.addEventListener('click', flipLang);
+
+      function isTypingTarget(target: EventTarget | null): boolean {
+        if (!(target instanceof HTMLElement)) {
+          return false;
+        }
+        const tag = target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+          return true;
+        }
+        return target.isContentEditable;
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if (event.metaKey || event.ctrlKey || event.altKey) {
+          return;
+        }
+        if (isTypingTarget(event.target)) {
+          return;
+        }
+        const key = event.key.toLowerCase();
+        if (key === 't') {
+          event.preventDefault();
+          cycleTheme();
+          return;
+        }
+        if (key === 'l') {
+          event.preventDefault();
+          flipLang();
+        }
+      });
+
+      applyTheme(readCurrentTheme());
+      applyLang(readCurrentLang());
+
+      const yearSlots = document.querySelectorAll<HTMLElement>('[data-current-year]');
+      const currentYearText = String(new Date().getFullYear());
+      yearSlots.forEach((node) => {
+        node.textContent = currentYearText;
+      });
+    </script>
+  </body>
+</html>

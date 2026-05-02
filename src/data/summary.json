@@ -1,0 +1,70 @@
+{
+  "title": {
+    "es": "Backend profundo,\ninfraestructura más profunda.",
+    "en": "Deep backend,\ndeeper infrastructure."
+  },
+  "lede": {
+    "es": "7+ años en sistemas distribuidos · 12+ años en infraestructura y operaciones.",
+    "en": "7+ years in distributed systems · 12+ years in infrastructure & ops."
+  },
+  "stats": [
+    {
+      "value": "7",
+      "accent": "+",
+      "label": {
+        "es": "años en sistemas distribuidos",
+        "en": "years in distributed systems"
+      }
+    },
+    {
+      "value": "12",
+      "accent": "+",
+      "label": {
+        "es": "años en infra & ops",
+        "en": "years in infra & ops"
+      }
+    },
+    {
+      "value": "2",
+      "accent": "×",
+      "label": {
+        "es": "clouds en producción (AWS · GCP)",
+        "en": "production clouds (AWS · GCP)"
+      }
+    },
+    {
+      "value": "∞",
+      "accent": null,
+      "label": {
+        "es": "eventos procesados (Kafka · Pulsar)",
+        "en": "events shipped (Kafka · Pulsar)"
+      }
+    }
+  ],
+  "paragraphs": {
+    "es": [
+      "Combina profundidad en backend con experiencia en infraestructura para diseñar, operar y escalar sistemas resilientes. Plataformas cloud-native, entornos basados en Kubernetes y microservicios event-driven sobre AWS y GCP."
+    ],
+    "en": [
+      "Combines strong backend engineering with deep infrastructure expertise to design, operate, and scale resilient systems. Cloud-native platforms, Kubernetes-based environments, and event-driven microservices across AWS and GCP."
+    ]
+  },
+  "expertise": {
+    "es": [
+      "Sistemas backend cloud-native y arquitecturas distribuidas",
+      "Microservicios event-driven (Kafka, Pulsar, Pub/Sub)",
+      "Infraestructura Kubernetes e IaC (Terraform)",
+      "Diseño de APIs seguras y despliegues multi-cloud",
+      "Observabilidad y fiabilidad en producción (SRE)",
+      "Liderazgo técnico en respuesta a incidentes"
+    ],
+    "en": [
+      "Cloud-native backend systems & distributed architectures",
+      "Event-driven microservices (Kafka, Pulsar, Pub/Sub)",
+      "Kubernetes infrastructure & IaC (Terraform)",
+      "Secure API design & multi-cloud deployments",
+      "Observability & production reliability (SRE)",
+      "Technical leadership in incident response"
+    ]
+  }
+}

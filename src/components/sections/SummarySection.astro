@@ -1,0 +1,82 @@
+---
+import SectionHead from '@/components/ui/SectionHead.astro';
+import summaryJson from '@/data/summary.json';
+import { t } from '@/lib/i18n/t';
+import { summarySchema, type Summary } from '@/lib/schemas/summary';
+import type { LangCode } from '@/lib/theme/toggle-lang';
+import styles from './SummarySection.module.css';
+
+interface Props {
+  /** Accepted for consistency with sibling sections (e.g. HeroSection). The summary
+   *  is fully bilingual via paired <span lang="…"> blocks; the active language is
+   *  switched at the document level by base.css, so the component itself does not
+   *  branch on this prop. */
+  lang?: LangCode;
+}
+
+const { lang: _lang } = Astro.props;
+void _lang;
+
+const summary: Summary = summarySchema.parse(summaryJson);
+---
+
+<section id="summary">
+  <div class="container">
+    <SectionHead
+      num="01"
+      labelEs={t('summary.eyebrow', 'es')}
+      labelEn={t('summary.eyebrow', 'en')}
+      titleEs={summary.title.es}
+      titleEn={summary.title.en}
+      ledeEs={summary.lede.es}
+      ledeEn={summary.lede.en}
+    />
+
+    <div class={styles.stats}>
+      {
+        summary.stats.map((stat) => (
+          <div class={styles.stat}>
+            <span class={styles.statNum}>
+              {stat.value}
+              {stat.accent !== null && <span class={styles.statAccent}>{stat.accent}</span>}
+            </span>
+            <span class={styles.statLabel}>
+              <span lang="es">{stat.label.es}</span>
+              <span lang="en">{stat.label.en}</span>
+            </span>
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      summary.paragraphs.es.map((paragraphEs, index) => {
+        const paragraphEn = summary.paragraphs.en[index] ?? '';
+        return (
+          <>
+            <p class={styles.summaryBody} lang="es">
+              {paragraphEs}
+            </p>
+            <p class={styles.summaryBody} lang="en">
+              {paragraphEn}
+            </p>
+          </>
+        );
+      })
+    }
+
+    <ul class={styles.bullets}>
+      {
+        summary.expertise.es.map((itemEs, index) => {
+          const itemEn = summary.expertise.en[index] ?? '';
+          return (
+            <li>
+              <span lang="es">{itemEs}</span>
+              <span lang="en">{itemEn}</span>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>

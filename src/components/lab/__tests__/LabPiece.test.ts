@@ -36,6 +36,7 @@ const marqueePiece: LabPieceData = {
     en: 'Cursor drives speed.',
   },
   tags: ['CSS animations', 'pointer math'],
+  words: ['build', 'break', 'observe', 'iterate', 'ship'],
 };
 
 async function renderLabPiece(piece: LabPieceData): Promise<string> {
@@ -84,14 +85,24 @@ describe('LabPiece (render-test)', () => {
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Generative field<\/span>/);
   });
 
-  it('renders a "Coming soon" placeholder bilingually for the marquee piece (no kinetic stage)', async () => {
+  it('renders the marquee stage for the marquee piece (not the placeholder)', async () => {
     const html = await renderLabPiece(marqueePiece);
     expect(html).toMatch(/<article[^>]*data-piece="marquee"/);
     expect(html).not.toMatch(/id="stage-kinetic"/);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/);
+    expect(html).not.toMatch(/id="stage-canvas-field"/);
+    expect(html).toMatch(/id="stage-marquee"/);
+    expect(html).toMatch(/id="marquee-track"/);
+    expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Marquee con scrub<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Scrubbable marquee<\/span>/);
+    for (const word of marqueePiece.words ?? []) {
+      const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
+      expect(matches).not.toBeNull();
+      if (matches === null) {
+        throw new Error(`expected three spans for word "${word}"`);
+      }
+      expect(matches).toHaveLength(3);
+    }
   });
 
   it('renders the num verbatim for the grid piece (02)', async () => {

@@ -69,17 +69,25 @@ describe('LabSection (render-test)', () => {
     }
   });
 
-  it('renders the "Coming soon" placeholder bilingually for the marquee piece', async () => {
+  it('renders the marquee stage for the marquee piece (no Coming soon placeholder anywhere)', async () => {
     const html = await renderLabSection();
-    const esPlaceholders = html.match(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/g);
-    const enPlaceholders = html.match(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/g);
-    expect(esPlaceholders).not.toBeNull();
-    expect(enPlaceholders).not.toBeNull();
-    if (esPlaceholders === null || enPlaceholders === null) {
-      throw new Error('expected one coming-soon placeholder in each language');
+    expect(html).toMatch(/id="stage-marquee"/);
+    expect(html).toMatch(/id="marquee-track"/);
+    expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/);
+  });
+
+  it('renders the marquee piece with the five literal words from lab.json, repeated three times each', async () => {
+    const html = await renderLabSection();
+    const words = ['build', 'break', 'observe', 'iterate', 'ship'];
+    for (const word of words) {
+      const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
+      expect(matches).not.toBeNull();
+      if (matches === null) {
+        throw new Error(`expected three spans for word "${word}"`);
+      }
+      expect(matches).toHaveLength(3);
     }
-    expect(esPlaceholders).toHaveLength(1);
-    expect(enPlaceholders).toHaveLength(1);
   });
 
   it('renders the canvas-field stage for the grid piece (now interactive)', async () => {

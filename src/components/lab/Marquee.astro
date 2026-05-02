@@ -1,0 +1,77 @@
+---
+import styles from './Marquee.module.css';
+
+interface Props {
+  words: readonly string[];
+}
+
+const { words } = Astro.props;
+
+const REPEAT_COUNT = 3;
+const repeated = Array.from({ length: REPEAT_COUNT }, () => words).flat();
+---
+
+<div class={styles.stage} id="stage-marquee">
+  <div class={styles.track} id="marquee-track" data-dir="1" style="--speed: 40s">
+    {
+      repeated.map((word) => (
+        <>
+          <span>{word}</span>
+          <span>·</span>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  import { cursorXToSpeed } from '@/lib/lab/marquee-math';
+  import type { MarqueeDirection } from '@/lib/lab/marquee-math';
+
+  const BASE_SPEED_SECONDS = 40;
+  const BASE_DIR: MarqueeDirection = 1;
+
+  function bootMarquee(): void {
+    const stage = document.getElementById('stage-marquee');
+    const track = document.getElementById('marquee-track');
+    if (stage === null || track === null) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduceMotion.matches) {
+      return;
+    }
+
+    function applyState(speedSeconds: number, dir: MarqueeDirection): void {
+      track!.style.setProperty('--speed', `${speedSeconds.toString()}s`);
+      track!.dataset.dir = dir === -1 ? '-1' : '1';
+    }
+
+    function handleMouseMove(event: MouseEvent): void {
+      const rect = stage!.getBoundingClientRect();
+      if (rect.width <= 0) {
+        return;
+      }
+      const x = event.clientX - rect.left;
+      const { speed, dir } = cursorXToSpeed(x, rect.width);
+      applyState(speed, dir);
+    }
+
+    function handleMouseLeave(): void {
+      applyState(BASE_SPEED_SECONDS, BASE_DIR);
+    }
+
+    function teardown(): void {
+      stage!.removeEventListener('mousemove', handleMouseMove);
+      stage!.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('beforeunload', teardown);
+    }
+
+    stage.addEventListener('mousemove', handleMouseMove);
+    stage.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('beforeunload', teardown);
+  }
+
+  bootMarquee();
+</script>

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { i18nString, i18nStringArray } from '@/lib/schemas/i18n-string';
+import { i18nString } from '@/lib/schemas/i18n-string';
 
 export const experienceSchema = z
   .object({
@@ -10,7 +10,9 @@ export const experienceSchema = z
     dateStart: z.string().min(1),
     dateEnd: z.string().min(1).nullable(),
     order: z.number().int(),
-    bullets: i18nStringArray,
+    description: i18nString,
+    tags: z.array(z.string()).min(1),
+    displayDate: i18nString.optional(),
   })
   .strict();
 

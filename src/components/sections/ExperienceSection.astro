@@ -1,0 +1,79 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Tag from '@/components/ui/Tag.astro';
+import { formatExperienceDate } from '@/lib/content/format-experience-date';
+import { sortByDateDesc } from '@/lib/content/sort-by-date-desc';
+import { t } from '@/lib/i18n/t';
+import type { Experience } from '@/lib/schemas/experience';
+import type { LangCode } from '@/lib/theme/toggle-lang';
+import styles from './ExperienceSection.module.css';
+
+interface Props {
+  /** Accepted for consistency with sibling sections (e.g. SummarySection). The
+   *  Experience timeline is fully bilingual via paired <span lang="…"> blocks;
+   *  the active language is switched at the document level by base.css, so the
+   *  component itself does not branch on this prop. The displayDate is rendered
+   *  for both languages side-by-side. */
+  lang?: LangCode;
+}
+
+const { lang: _lang } = Astro.props;
+void _lang;
+
+const entries: CollectionEntry<'experience'>[] = await getCollection('experience');
+const items: Experience[] = entries.map((entry: CollectionEntry<'experience'>) => entry.data);
+const ordered: Experience[] = sortByDateDesc(items);
+---
+
+<section id="experience">
+  <div class="container">
+    <SectionHead
+      num="02"
+      labelEs={t('experience.eyebrow', 'es')}
+      labelEn={t('experience.eyebrow', 'en')}
+      titleEs={'Trayectoria\nprofesional.'}
+      titleEn={'Career\ntimeline.'}
+      ledeEs=""
+      ledeEn=""
+    />
+
+    <div class={styles.expList}>
+      {
+        ordered.map((item) => {
+          const whenEs = formatExperienceDate(item, 'es');
+          const whenEn = formatExperienceDate(item, 'en');
+          return (
+            <article class={styles.exp}>
+              <div class={styles.when}>
+                <span lang="es">{whenEs}</span>
+                <span lang="en">{whenEn}</span>
+                <span class={styles.where}>
+                  <span lang="es">{item.location.es}</span>
+                  <span lang="en">{item.location.en}</span>
+                </span>
+              </div>
+              <div>
+                <h3 class={styles.role}>
+                  <span lang="es">{item.role.es}</span>
+                  <span lang="en">{item.role.en}</span>
+                </h3>
+                <div class={styles.company}>{item.company}</div>
+                <p class={styles.desc}>
+                  <span lang="es">{item.description.es}</span>
+                  <span lang="en">{item.description.en}</span>
+                </p>
+              </div>
+              <div class={styles.tags}>
+                {item.tags.map((tag) => (
+                  <Tag label={tag} />
+                ))}
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

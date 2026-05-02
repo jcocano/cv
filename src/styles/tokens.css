@@ -11,8 +11,8 @@
   --accent-dim: oklch(0.82 0.16 145 / 0.12);
   --warn: oklch(0.78 0.15 60);
 
-  --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-sans: 'Geist Variable', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --radius: 8px;
   --radius-lg: 14px;

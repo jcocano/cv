@@ -1,0 +1,28 @@
+---
+import LabPiece from '@/components/lab/LabPiece.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import labJson from '@/data/lab.json';
+import { t } from '@/lib/i18n/t';
+import { labSchema, type Lab } from '@/lib/schemas/lab';
+import styles from './LabSection.module.css';
+
+const lab: Lab = labSchema.parse(labJson);
+---
+
+<section id="lab" class={styles.labSection}>
+  <div class="container">
+    <SectionHead
+      num="◢"
+      labelEs={t('lab.eyebrow', 'es')}
+      labelEn={t('lab.eyebrow', 'en')}
+      titleEs={lab.title.es}
+      titleEn={lab.title.en}
+      ledeEs={lab.lede.es}
+      ledeEn={lab.lede.en}
+    />
+
+    <div class={`${styles.labGrid} reveal`}>
+      {lab.pieces.map((piece) => <LabPiece piece={piece} />)}
+    </div>
+  </div>
+</section>

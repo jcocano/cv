@@ -1,0 +1,47 @@
+{
+  "categories": [
+    {
+      "label": { "es": "Lenguajes", "en": "Languages" },
+      "tags": ["TypeScript", "JavaScript", "Java", "C#", "Solidity", "SQL"]
+    },
+    {
+      "label": { "es": "Frameworks", "en": "Frameworks" },
+      "tags": ["NestJS", "Express.js", "Next.js", "React", ".NET Core", "Apex / Visualforce"]
+    },
+    {
+      "label": { "es": "Cloud & DevOps", "en": "Cloud & DevOps" },
+      "tags": [
+        "AWS · EKS · Lambda · SQS",
+        "GCP",
+        "Kubernetes",
+        "Docker",
+        "Terraform",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "label": { "es": "Mensajería & Datos", "en": "Messaging & Data" },
+      "tags": [
+        "PostgreSQL",
+        "MongoDB",
+        "Redis",
+        "Apache Kafka",
+        "Apache Pulsar",
+        "Google Pub/Sub",
+        "Salesforce"
+      ]
+    },
+    {
+      "label": { "es": "Herramientas", "en": "Tools" },
+      "tags": ["Git", "Prometheus", "Grafana", "ELK Stack", "JIRA · Agile"]
+    },
+    {
+      "label": { "es": "AI / LLMs", "en": "AI / LLMs" },
+      "tags": ["Claude / Anthropic", "OpenAI", "MCP", "RAG", "Vector DBs", "Agents"]
+    },
+    {
+      "label": { "es": "Especialización", "en": "Specialization" },
+      "tags": ["Microservices", "Event-driven", "SRE", "Web3 / DeFi", "CI/CD", "AI Engineering"]
+    }
+  ]
+}

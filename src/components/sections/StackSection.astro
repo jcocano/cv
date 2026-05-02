@@ -1,0 +1,44 @@
+---
+import SectionHead from '@/components/ui/SectionHead.astro';
+import { padNum } from '@/lib/content/pad-num';
+import { t } from '@/lib/i18n/t';
+import { getStack } from '@/lib/schemas/stack';
+import styles from './StackSection.module.css';
+
+const stack = getStack();
+---
+
+<section id="stack">
+  <div class="container">
+    <SectionHead
+      num="03"
+      labelEs={t('stack.eyebrow', 'es')}
+      labelEn={t('stack.eyebrow', 'en')}
+      titleEs={'Stack &\nespecialización.'}
+      titleEn={'Stack &\nspecialization.'}
+      ledeEs="Herramientas que uso a diario en producción."
+      ledeEn="Tools I use in production every day."
+    />
+
+    <div class={`${styles.stackGrid} reveal`}>
+      {
+        stack.categories.map((category) => (
+          <div class={styles.stackCat}>
+            <div class={styles.head}>
+              <span class={styles.title}>
+                <span lang="es">{category.label.es}</span>
+                <span lang="en">{category.label.en}</span>
+              </span>
+              <span class={styles.num}>{padNum(category.tags.length)}</span>
+            </div>
+            <div class={styles.stackItems}>
+              {category.tags.map((tag) => (
+                <span class={styles.chip}>{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

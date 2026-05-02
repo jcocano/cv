@@ -1,0 +1,14 @@
+{
+  "cta.toggleLang": "Cambiar idioma",
+  "cta.toggleTheme": "Cambiar tema",
+  "footer.copyright": "Jesus Cocano",
+  "footer.shortcutHint": "⌨ T tema · L idioma",
+  "greet.hello": "Hola, {name}",
+  "greet.repeat": "{name}, {name}, {name}",
+  "nav.about": "Sobre mí",
+  "nav.brand": "jc",
+  "nav.contact": "Contacto",
+  "nav.home": "Inicio",
+  "nav.work": "Trabajo",
+  "skip.toContent": "Saltar al contenido"
+}

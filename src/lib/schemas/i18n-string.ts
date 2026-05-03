@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const i18nString = z
   .object({
-    es: z.string(),
-    en: z.string(),
+    es: z.string().min(1),
+    en: z.string().min(1),
   })
   .strict();
 

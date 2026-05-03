@@ -213,6 +213,25 @@ describe('SectionHead (render-test)', () => {
     expect(pInner).not.toMatch(/<span[^>]*lang="en"/);
   });
 
+  it('emits the lede <p> with only the EN span when ledeEs is empty and ledeEn is provided', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+      ledeEs: '',
+      ledeEn: 'Lede EN visible.',
+    });
+    const pInner = findLedeParagraph(html);
+    expect(pInner).not.toBeNull();
+    if (pInner === null) {
+      throw new Error('expected the lede <p> to be rendered');
+    }
+    expect(pInner).toMatch(/<span[^>]*lang="en"[^>]*>Lede EN visible\.<\/span>/);
+    expect(pInner).not.toMatch(/<span[^>]*lang="es"/);
+  });
+
   it('renders both num and labels for arbitrary props (no hard-coded values)', async () => {
     const html = await renderSectionHead({
       num: '07',

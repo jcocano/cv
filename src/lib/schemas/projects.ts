@@ -14,6 +14,8 @@ export const projectSchema = z
     cover: z.string().min(1),
     tags: z.array(z.string()),
     order: z.number().int(),
+    eyebrow: i18nString,
+    stack: z.array(z.string().min(1)).min(1),
   })
   .strict();
 

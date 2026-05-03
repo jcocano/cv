@@ -56,4 +56,25 @@ describe('tokens-data and tokens.css alignment', () => {
       }
     },
   );
+
+  // iter 9 (feature #17): the project ASCII diagrams use unicode box-drawing
+  // chars (│, ▼, ──→). Geist Mono did not guarantee 1ch width for these,
+  // breaking the visual alignment, so we standardised on JetBrains Mono Variable
+  // as the only mono face. These two regressions guard against accidentally
+  // bringing Geist Mono back via --font-mono.
+  it('--font-mono uses JetBrains Mono Variable as primary face (iter 9)', () => {
+    const css = readFileSync(cssPath, 'utf8');
+    const monoMatch = /--font-mono\s*:\s*([^;]+);/.exec(css);
+    expect(monoMatch).not.toBeNull();
+    const value = monoMatch?.[1]?.trim() ?? '';
+    expect(value.startsWith("'JetBrains Mono Variable'")).toBe(true);
+  });
+
+  it('--font-mono no longer mentions Geist Mono (iter 9)', () => {
+    const css = readFileSync(cssPath, 'utf8');
+    const monoMatch = /--font-mono\s*:\s*([^;]+);/.exec(css);
+    expect(monoMatch).not.toBeNull();
+    const value = monoMatch?.[1] ?? '';
+    expect(value).not.toMatch(/Geist Mono/);
+  });
 });

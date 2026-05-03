@@ -1,0 +1,119 @@
+---
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import { padNum } from '@/lib/content/pad-num';
+import { t } from '@/lib/i18n/t';
+import type { Project } from '@/lib/schemas/projects';
+import styles from './ProjectLayout.module.css';
+
+interface Props {
+  project: Project;
+  prev: Project | null;
+  next: Project | null;
+  baseUrl: string;
+}
+
+const { project, prev, next, baseUrl } = Astro.props;
+
+const eyebrowNum = padNum(project.order);
+const portfolioHref = `${baseUrl}#work`;
+const prevHref = prev !== null ? `${baseUrl}projects/${prev.slug}` : null;
+const nextHref = next !== null ? `${baseUrl}projects/${next.slug}` : null;
+---
+
+<header class={styles.projHero}>
+  <div class="container">
+    <div class={styles.heroTop}>
+      <a class={styles.backLink} href={portfolioHref}>
+        ←
+        <span lang="es">{t('project.backToPortfolio', 'es')}</span>
+        <span lang="en">{t('project.backToPortfolio', 'en')}</span>
+      </a>
+      <Eyebrow num={eyebrowNum} labelEs={project.eyebrow.es} labelEn={project.eyebrow.en} reveal />
+    </div>
+
+    <div class={styles.heroGrid}>
+      <aside class={styles.heroMeta}>
+        <div class={styles.metaLine}>
+          <span class={styles.metaCompany}>{project.company}</span>
+          <span class={styles.metaSeparator}>/</span>
+          <span class={styles.metaYear}>{project.year}</span>
+        </div>
+        <div class={styles.pills}>
+          {project.stack.map((tech) => <span class={styles.pill}>{tech}</span>)}
+        </div>
+      </aside>
+
+      <div class={styles.heroMain}>
+        <h1 class={styles.title}>
+          <span lang="es">{project.title.es}</span>
+          <span lang="en">{project.title.en}</span>
+          <span class={styles.titleAccent}>.</span>
+        </h1>
+
+        <p class:list={[styles.tagline, 'reveal']}>
+          <span lang="es">{project.tagline.es}</span>
+          <span lang="en">{project.tagline.en}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class={styles.deepDive}>
+  <slot />
+</div>
+
+<nav class={styles.nextProj} aria-label="Project navigation">
+  <div class:list={['container', styles.nextProjInner]}>
+    {
+      prev !== null && prevHref !== null ? (
+        <a class={styles.nextProjLink} href={prevHref}>
+          <div class={styles.nextProjLab}>
+            ←<span lang="es">{t('project.nav.previous', 'es')}</span>
+            <span lang="en">{t('project.nav.previous', 'en')}</span>
+          </div>
+          <div class={styles.nextProjName}>
+            <span lang="es">{prev.title.es}</span>
+            <span lang="en">{prev.title.en}</span>
+          </div>
+        </a>
+      ) : (
+        <a class={styles.nextProjLink} href={portfolioHref}>
+          <div class={styles.nextProjLab}>
+            <span lang="es">← Todos los proyectos</span>
+            <span lang="en">← All projects</span>
+          </div>
+          <div class={styles.nextProjName}>
+            <span lang="es">{t('project.nav.portfolio', 'es')}</span>
+            <span lang="en">{t('project.nav.portfolio', 'en')}</span>
+          </div>
+        </a>
+      )
+    }
+    {
+      next !== null && nextHref !== null ? (
+        <a class:list={[styles.nextProjLink, styles.nextRight]} href={nextHref}>
+          <div class={styles.nextProjLab}>
+            <span lang="es">{t('project.nav.next', 'es')}</span>
+            <span lang="en">{t('project.nav.next', 'en')}</span>→
+          </div>
+          <div class={styles.nextProjName}>
+            <span lang="es">{next.title.es}</span>
+            <span lang="en">{next.title.en}</span>
+          </div>
+        </a>
+      ) : (
+        <a class:list={[styles.nextProjLink, styles.nextRight]} href={portfolioHref}>
+          <div class={styles.nextProjLab}>
+            <span lang="es">Volver →</span>
+            <span lang="en">Back →</span>
+          </div>
+          <div class={styles.nextProjName}>
+            <span lang="es">{t('project.nav.portfolio', 'es')}</span>
+            <span lang="en">{t('project.nav.portfolio', 'en')}</span>
+          </div>
+        </a>
+      )
+    }
+  </div>
+</nav>

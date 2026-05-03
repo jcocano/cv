@@ -1,0 +1,47 @@
+.section {
+  padding: 80px 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 60px;
+}
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  align-self: start;
+}
+.body {
+  max-width: 65ch;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.body :global(p) {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fg);
+  margin: 0;
+}
+.body :global([lang]) {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.body :global(p.dim) {
+  color: var(--fg-dim);
+  font-size: 15px;
+}
+.body :global(p:empty) {
+  display: none;
+}

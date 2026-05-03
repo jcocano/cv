@@ -1,0 +1,24 @@
+---
+import styles from './ProjectSection.module.css';
+
+interface Props {
+  labelEs: string;
+  labelEn: string;
+}
+
+const { labelEs, labelEn } = Astro.props;
+---
+
+<section class:list={[styles.section, 'reveal']}>
+  <div class="container">
+    <div class={styles.grid}>
+      <div class={styles.label}>
+        <span lang="es">// {labelEs}</span>
+        <span lang="en">// {labelEn}</span>
+      </div>
+      <div class={styles.body}>
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>

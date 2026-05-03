@@ -12,7 +12,7 @@
   --warn: oklch(0.78 0.15 60);
 
   --font-sans: 'Geist Variable', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: 'Geist Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --radius: 8px;
   --radius-lg: 14px;

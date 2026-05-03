@@ -1,0 +1,18 @@
+# Runs `astro check` (TypeScript + Astro template diagnostics). Isolated as
+# its own workflow so type regressions are visible at a glance in the Actions
+# tab and so this check can be required independently in branch protection.
+name: Typecheck
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  typecheck:
+    name: astro check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run astro check
+        run: npm run typecheck

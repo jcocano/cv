@@ -1,0 +1,32 @@
+# Runs the Playwright visual-regression suite against the built site.
+#
+# Two prerequisites that make this workflow slightly heavier than its peers:
+#   1. Chromium has to be installed *with system dependencies* (the bare
+#      browser binary is not enough on ubuntu-latest; Playwright's GUI libs
+#      come from apt). `--with-deps` covers both.
+#   2. `npm run test:visual` boots Playwright's webServer, which calls
+#      `npm run preview` and serves `dist/`. The site therefore needs to be
+#      built first; we do that in a dedicated step instead of relying on the
+#      preview server to do it implicitly.
+#
+# Snapshots committed under `tests/visual/__snapshots__/` are the source of
+# truth — see `docs/verification.md` for how to regenerate them locally.
+name: Visual tests
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  test-visual:
+    name: playwright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Install Chromium with system dependencies
+        run: npx playwright install chromium --with-deps
+      - name: Build site for preview server
+        run: npm run build
+      - name: Run visual tests
+        run: npm run test:visual

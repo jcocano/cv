@@ -1,0 +1,19 @@
+# Builds the static Astro site. Acts as the canonical "the production
+# artifact compiles" check on every PR. Kept separate from `deploy.yml` so
+# that PR runs validate the build without touching Pages, and so that a
+# build regression appears as its own red check.
+name: Build
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  build:
+    name: astro build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Build site
+        run: npm run build

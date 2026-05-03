@@ -1,0 +1,18 @@
+# Runs ESLint over every source file. Kept as a dedicated workflow so a lint
+# regression surfaces as an isolated red check instead of being buried inside
+# a multi-step CI job.
+name: Lint
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  lint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run eslint
+        run: npm run lint

@@ -6,6 +6,11 @@ dist/
 .astro/
 .cache/
 
+# Playwright test artifacts (snapshots are versioned in tests/visual/__snapshots__/)
+test-results/
+playwright-report/
+playwright/.cache/
+
 # Environment / secrets
 .env
 .env.local

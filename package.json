@@ -15,6 +15,7 @@
     "check:styles": "bash -c 'matches=$(grep -rEn \"<style\" src/components src/layouts 2>/dev/null | grep -v \"is:global\" || true); if [ -n \"$matches\" ]; then echo \"ERROR: Found <style> blocks in components/layouts (use <Componente>.module.css instead, see docs/conventions.md §3):\"; echo \"$matches\"; exit 1; fi'",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:visual": "node tooling/test-visual.mjs",
     "prepare": "husky"
   },
   "repository": {
@@ -29,15 +30,20 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^5.0.4",
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
+    "@types/jsdom": "^28.0.1",
     "@types/node": "^25.6.0",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
     "astro": "^6.2.1",
     "astro-eslint-parser": "^1.4.0",
+    "axe-core": "^4.11.4",
     "eslint": "^10.3.0",
     "eslint-plugin-astro": "^1.7.0",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",

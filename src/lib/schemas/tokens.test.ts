@@ -17,7 +17,7 @@ const darkTokens = {
   'bg-elev-2': '#18181b',
   fg: '#fafafa',
   'fg-dim': '#a1a1aa',
-  'fg-mute': '#52525b',
+  'fg-mute': '#7d7d86',
   line: '#27272a',
   'line-soft': '#1c1c1f',
   accent: 'oklch(0.82 0.16 145)',
@@ -31,11 +31,11 @@ const lightTokens = {
   'bg-elev-2': '#ebebe7',
   fg: '#0a0a0b',
   'fg-dim': '#52525b',
-  'fg-mute': '#a1a1aa',
+  'fg-mute': '#6e6e76',
   line: '#d4d4d4',
   'line-soft': '#e7e7e4',
-  accent: 'oklch(0.55 0.16 145)',
-  'accent-dim': 'oklch(0.55 0.16 145 / 0.1)',
+  accent: 'oklch(0.48 0.18 145)',
+  'accent-dim': 'oklch(0.48 0.18 145 / 0.1)',
   warn: 'oklch(0.78 0.15 60)',
 } as const;
 
@@ -45,11 +45,11 @@ const paperTokens = {
   'bg-elev-2': '#e3dcc6',
   fg: '#1a1612',
   'fg-dim': '#5c5447',
-  'fg-mute': '#8a8170',
+  'fg-mute': '#6f6757',
   line: '#c8bfa5',
   'line-soft': '#d8d0b8',
-  accent: 'oklch(0.55 0.18 50)',
-  'accent-dim': 'oklch(0.55 0.18 50 / 0.12)',
+  accent: 'oklch(0.5 0.2 50)',
+  'accent-dim': 'oklch(0.5 0.2 50 / 0.12)',
   warn: 'oklch(0.78 0.15 60)',
 } as const;
 
@@ -61,7 +61,7 @@ describe('themeTokensSchema', () => {
     expect(parsed['bg-elev-2']).toBe('#18181b');
     expect(parsed.fg).toBe('#fafafa');
     expect(parsed['fg-dim']).toBe('#a1a1aa');
-    expect(parsed['fg-mute']).toBe('#52525b');
+    expect(parsed['fg-mute']).toBe('#7d7d86');
     expect(parsed.line).toBe('#27272a');
     expect(parsed['line-soft']).toBe('#1c1c1f');
     expect(parsed.accent).toBe('oklch(0.82 0.16 145)');
@@ -72,7 +72,7 @@ describe('themeTokensSchema', () => {
   it('parses a valid paper theme', () => {
     const parsed = themeTokensSchema.parse(paperTokens);
     expect(parsed.bg).toBe('#f5f1e8');
-    expect(parsed.accent).toBe('oklch(0.55 0.18 50)');
+    expect(parsed.accent).toBe('oklch(0.5 0.2 50)');
     expect(parsed.warn).toBe('oklch(0.78 0.15 60)');
   });
 

@@ -8,14 +8,18 @@ interface Props {
   labelEn: string;
   titleEs: string;
   titleEn: string;
-  ledeEs: string;
-  ledeEn: string;
+  ledeEs?: string;
+  ledeEn?: string;
 }
 
 const { num, labelEs, labelEn, titleEs, titleEn, ledeEs, ledeEn } = Astro.props;
 
 const titleEsLines = titleEs.split('\n');
 const titleEnLines = titleEn.split('\n');
+
+const hasLedeEs = ledeEs !== undefined && ledeEs !== '';
+const hasLedeEn = ledeEn !== undefined && ledeEn !== '';
+const showLede = hasLedeEs || hasLedeEn;
 ---
 
 <div class:list={[styles.sectionHead, 'reveal']}>
@@ -43,9 +47,13 @@ const titleEnLines = titleEn.split('\n');
         }</span
       >
     </h2>
-    <p class={styles.lede}>
-      <span lang="es">{ledeEs}</span>
-      <span lang="en">{ledeEn}</span>
-    </p>
+    {
+      showLede && (
+        <p class={styles.lede}>
+          {hasLedeEs && <span lang="es">{ledeEs}</span>}
+          {hasLedeEn && <span lang="en">{ledeEn}</span>}
+        </p>
+      )
+    }
   </div>
 </div>

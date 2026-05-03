@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 
 import SectionHead from '@/components/ui/SectionHead.astro';
+import sectionHeadStyles from '@/components/ui/SectionHead.module.css';
 
 type SectionHeadProps = {
   num: string;
@@ -9,13 +10,32 @@ type SectionHeadProps = {
   labelEn: string;
   titleEs: string;
   titleEn: string;
-  ledeEs: string;
-  ledeEn: string;
+  ledeEs?: string;
+  ledeEn?: string;
 };
 
 async function renderSectionHead(props: SectionHeadProps): Promise<string> {
   const container = await AstroContainer.create();
   return container.renderToString(SectionHead, { props: { ...props } });
+}
+
+function ledeClassName(): string {
+  const className = sectionHeadStyles.lede;
+  if (className === undefined) {
+    throw new Error('sectionHeadStyles.lede must be defined');
+  }
+  return className;
+}
+
+function findLedeParagraph(html: string): string | null {
+  const className = ledeClassName();
+  // Build a regex that matches <p ... class="... <ledeClass> ..." ...>...</p>.
+  // The className is hashed (e.g. "_lede_abc123") and may appear alongside other
+  // tokens in the class attribute. Escape it for safe regex use.
+  const escaped = className.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`<p\\b[^>]*class="[^"]*\\b${escaped}\\b[^"]*"[^>]*>([\\s\\S]*?)<\\/p>`);
+  const match = html.match(re);
+  return match === null ? null : (match[1] ?? '');
 }
 
 const sampleProps: SectionHeadProps = {
@@ -112,6 +132,85 @@ describe('SectionHead (render-test)', () => {
     }
     const classTokens = classAttrMatch[1].split(/\s+/).filter((token) => token.length > 0);
     expect(classTokens).not.toContain('reveal');
+  });
+
+  it('does NOT render <p class=lede> when both ledeEs and ledeEn are absent (undefined)', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+    });
+    expect(findLedeParagraph(html)).toBeNull();
+  });
+
+  it('does NOT render <p class=lede> when both ledeEs and ledeEn are empty strings', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+      ledeEs: '',
+      ledeEn: '',
+    });
+    expect(findLedeParagraph(html)).toBeNull();
+  });
+
+  it('renders <p class=lede> with only the ES span when ledeEn is absent', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+      ledeEs: 'Solo en español.',
+    });
+    const pInner = findLedeParagraph(html);
+    expect(pInner).not.toBeNull();
+    if (pInner === null) {
+      throw new Error('expected the lede <p> to be rendered');
+    }
+    expect(pInner).toMatch(/<span[^>]*lang="es"[^>]*>Solo en español\.<\/span>/);
+    expect(pInner).not.toMatch(/<span[^>]*lang="en"/);
+  });
+
+  it('renders <p class=lede> with only the EN span when ledeEs is absent', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+      ledeEn: 'English only.',
+    });
+    const pInner = findLedeParagraph(html);
+    expect(pInner).not.toBeNull();
+    if (pInner === null) {
+      throw new Error('expected the lede <p> to be rendered');
+    }
+    expect(pInner).toMatch(/<span[^>]*lang="en"[^>]*>English only\.<\/span>/);
+    expect(pInner).not.toMatch(/<span[^>]*lang="es"/);
+  });
+
+  it('does NOT render the EN span inside the lede <p> when ledeEn is an empty string', async () => {
+    const html = await renderSectionHead({
+      num: '02',
+      labelEs: 'experiencia',
+      labelEn: 'experience',
+      titleEs: 'Trayectoria\nprofesional.',
+      titleEn: 'Career\ntimeline.',
+      ledeEs: 'Solo ES.',
+      ledeEn: '',
+    });
+    const pInner = findLedeParagraph(html);
+    expect(pInner).not.toBeNull();
+    if (pInner === null) {
+      throw new Error('expected the lede <p> to be rendered');
+    }
+    expect(pInner).toMatch(/<span[^>]*lang="es"[^>]*>Solo ES\.<\/span>/);
+    expect(pInner).not.toMatch(/<span[^>]*lang="en"/);
   });
 
   it('renders both num and labels for arbitrary props (no hard-coded values)', async () => {

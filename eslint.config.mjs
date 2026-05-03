@@ -19,9 +19,15 @@ export default [
     },
   },
   {
-    files: ['*.mjs', '*.cjs', '*.js', '*.config.mjs', '*.config.cjs', '*.config.js'],
+    files: ['**/*.{mjs,cjs,js}'],
     languageOptions: {
       globals: globals.node,
+    },
+  },
+  {
+    files: ['tooling/manual-verify.mjs'],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
     },
   },
   {

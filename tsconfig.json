@@ -12,6 +12,13 @@
     "types": ["vitest/globals", "node", "astro/client"],
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*", "vitest.config.ts", "astro.config.mjs"],
-  "exclude": ["node_modules", "dist", ".astro"]
+  "include": [
+    "src/**/*",
+    "tests/**/*.ts",
+    "tooling/**/*.mjs",
+    "playwright.config.ts",
+    "vitest.config.ts",
+    "astro.config.mjs"
+  ],
+  "exclude": ["node_modules", "dist", ".astro", "tests/visual/__snapshots__"]
 }

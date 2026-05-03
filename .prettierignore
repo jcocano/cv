@@ -7,6 +7,10 @@ refactor
 jesus_cocano_cv.pdf
 pfp.jpeg
 
+# Playwright artifacts (baselines live in tests/visual/__snapshots__/)
+test-results
+playwright-report
+
 # Sitio vanilla — coexiste en raíz hasta feature #19 (decision §8.5)
 index.html
 styles.css

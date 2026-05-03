@@ -142,3 +142,32 @@ section {
     margin-bottom: 48px;
   }
 }
+
+/*
+ * AI Ready (#ai) keeps its 80px breathing margins from the
+ * `#about > section + section` chain pattern, but renders its `--bg-elev`
+ * background symmetrically by promoting the top/bottom air into internal
+ * padding. The decorative `::before` divider is removed for #ai and for the
+ * section after it (Lab) because AiReadySection's own borders frame the
+ * elevated block visually. The `border-bottom` is re-declared here (not
+ * inherited from the CSS module) because `#about > section { border-bottom:
+ * none }` has higher specificity than the module's class selector and would
+ * otherwise win.
+ */
+#about > section#ai {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  border-bottom: 1px solid var(--line-soft);
+}
+#about > section#ai::before {
+  content: none;
+}
+#about > section#ai + section::before {
+  content: none;
+}
+@media (max-width: 720px) {
+  #about > section#ai {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}

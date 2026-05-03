@@ -1,10 +1,11 @@
-# Runs `astro check` (TypeScript + Astro template diagnostics). Isolated as
-# its own workflow so type regressions are visible at a glance in the Actions
-# tab and so this check can be required independently in branch protection.
+# Runs `astro check` (TypeScript + Astro template diagnostics). Reusable
+# workflow only: invoked by `ci.yml` on pull_request and by `deploy.yml` on
+# push to main. Kept as its own file so type regressions are visible at a
+# glance as a dedicated `typecheck` job and so the check can be required
+# independently in branch protection.
 name: Typecheck
 
 on:
-  pull_request:
   workflow_call:
 
 jobs:

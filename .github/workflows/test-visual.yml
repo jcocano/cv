@@ -1,4 +1,6 @@
 # Runs the Playwright visual-regression suite against the built site.
+# Reusable workflow only: invoked by `ci.yml` on pull_request and by
+# `deploy.yml` on push to main.
 #
 # Two prerequisites that make this workflow slightly heavier than its peers:
 #   1. Chromium has to be installed *with system dependencies* (the bare
@@ -14,7 +16,6 @@
 name: Visual tests
 
 on:
-  pull_request:
   workflow_call:
 
 jobs:

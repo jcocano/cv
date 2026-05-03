@@ -1,10 +1,11 @@
-# Runs the Vitest unit + render-test suite. Lives in its own workflow so test
-# failures surface as an isolated "Unit tests" check, which makes triage
-# obvious when both unit and visual suites exist in the same pipeline.
+# Runs the Vitest unit + render-test suite. Reusable workflow only: invoked
+# by `ci.yml` on pull_request and by `deploy.yml` on push to main. Kept as
+# its own file so test failures surface as an isolated `test-unit` job,
+# which makes triage obvious when both unit and visual suites exist in the
+# same pipeline.
 name: Unit tests
 
 on:
-  pull_request:
   workflow_call:
 
 jobs:

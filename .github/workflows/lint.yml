@@ -1,10 +1,10 @@
-# Runs ESLint over every source file. Kept as a dedicated workflow so a lint
-# regression surfaces as an isolated red check instead of being buried inside
-# a multi-step CI job.
+# Runs ESLint over every source file. Reusable workflow only: invoked by
+# `ci.yml` on pull_request and by `deploy.yml` on push to main. Kept as its
+# own file so a lint regression surfaces as an isolated red job inside the
+# `CI` run instead of being buried inside a multi-step monolith.
 name: Lint
 
 on:
-  pull_request:
   workflow_call:
 
 jobs:

@@ -58,6 +58,38 @@ describe('i18nString', () => {
     const issuesOnEs = result.error.issues.filter((issue) => issue.path.includes('es'));
     expect(issuesOnEs).toHaveLength(1);
   });
+
+  it('fails with a Zod error pointing at "en" when en is an empty string', () => {
+    const result = i18nString.safeParse({ es: 'Hola', en: '' });
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnEn = result.error.issues.filter((issue) => issue.path.includes('en'));
+    expect(issuesOnEn.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('fails with a Zod error pointing at "es" when es is an empty string', () => {
+    const result = i18nString.safeParse({ es: '', en: 'Hello' });
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnEs = result.error.issues.filter((issue) => issue.path.includes('es'));
+    expect(issuesOnEs.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('fails when both es and en are empty strings', () => {
+    const result = i18nString.safeParse({ es: '', en: '' });
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnEs = result.error.issues.filter((issue) => issue.path.includes('es'));
+    const issuesOnEn = result.error.issues.filter((issue) => issue.path.includes('en'));
+    expect(issuesOnEs.length).toBeGreaterThanOrEqual(1);
+    expect(issuesOnEn.length).toBeGreaterThanOrEqual(1);
+  });
 });
 
 describe('i18nStringArray', () => {

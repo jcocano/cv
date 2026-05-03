@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import ExperienceSection from '@/components/sections/ExperienceSection.astro';
 import experienceStyles from '@/components/sections/ExperienceSection.module.css';
+import sectionHeadStyles from '@/components/ui/SectionHead.module.css';
 
 async function renderExperience(lang: 'es' | 'en'): Promise<string> {
   const container = await AstroContainer.create();
@@ -171,6 +172,17 @@ describe('ExperienceSection (render-test)', () => {
     const htmlEs = await renderExperience('es');
     const htmlEn = await renderExperience('en');
     expect(htmlEs).toBe(htmlEn);
+  });
+
+  it('does NOT render a <p class=lede> in the SectionHead (Experience has no lede; feature #21)', async () => {
+    const html = await renderExperience('es');
+    const ledeClassName = sectionHeadStyles.lede;
+    if (ledeClassName === undefined) {
+      throw new Error('sectionHeadStyles.lede must be defined');
+    }
+    const escaped = ledeClassName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`<p\\b[^>]*class="[^"]*\\b${escaped}\\b[^"]*"`);
+    expect(html).not.toMatch(re);
   });
 
   it('adds the global "reveal" class on every <article class=exp> (5 articles, handoff L314/L332/L350/L368/L386)', async () => {

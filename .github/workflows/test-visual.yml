@@ -2,11 +2,34 @@
 # Reusable workflow only: invoked by `ci.yml` on pull_request and by
 # `deploy.yml` on push to main.
 #
-# Two prerequisites that make this workflow slightly heavier than its peers:
-#   1. Chromium has to be installed *with system dependencies* (the bare
-#      browser binary is not enough on ubuntu-latest; Playwright's GUI libs
-#      come from apt). `--with-deps` covers both.
-#   2. `npm run test:visual` boots Playwright's webServer, which calls
+# Why we run inside the official Playwright container
+# ---------------------------------------------------
+# `playwright.config.ts` enforces `maxDiffPixelRatio: 0.0` — a single byte
+# of pixel difference is enough to fail the suite. Snapshots are therefore
+# only meaningful when the renderer (Chromium + system fonts + libs) is
+# byte-identical between the machine that generated them and the machine
+# that asserts them. The official `mcr.microsoft.com/playwright:<version>`
+# image pins exactly that environment: Chromium build, system fonts and
+# every shared library Playwright needs are baked in, so CI renders the
+# same pixels a local developer renders when they run inside the same
+# image. This removes the "looks fine on my laptop, fails on ubuntu-latest"
+# class of failures that a bare runner is prone to.
+#
+# Practical consequences:
+#   1. We do NOT need `npx playwright install chromium --with-deps` here —
+#      the container already provides Chromium and apt-level GUI libs.
+#   2. Snapshot regeneration must happen inside the same container locally,
+#      or the freshly generated PNGs will not match what CI produces. The
+#      canonical command for the maintainer is:
+#
+#        docker run --rm -v "$PWD":/work -w /work \
+#          mcr.microsoft.com/playwright:v1.59.1-noble \
+#          bash -c "npm ci && npm run build && npm run test:visual -- --update-snapshots"
+#
+#      After running it, the updated snapshots under
+#      `tests/visual/__snapshots__/` MUST be committed in the same PR (or in
+#      a follow-up push on the same branch) so that CI matches them.
+#   3. `npm run test:visual` boots Playwright's webServer, which calls
 #      `npm run preview` and serves `dist/`. The site therefore needs to be
 #      built first; we do that in a dedicated step instead of relying on the
 #      preview server to do it implicitly.
@@ -15,6 +38,12 @@
 # truth — see `docs/verification.md` for how to regenerate them locally.
 name: Visual tests
 
+# Force GitHub-provided JavaScript actions (e.g. actions/checkout,
+# actions/setup-node) to run on Node 24 ahead of the 2026-06-02 deprecation
+# of Node 20. Value must be a string per GitHub's env contract.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 on:
   workflow_call:
 
@@ -22,11 +51,11 @@ jobs:
   test-visual:
     name: playwright
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Install Chromium with system dependencies
-        run: npx playwright install chromium --with-deps
       - name: Build site for preview server
         run: npm run build
       - name: Run visual tests

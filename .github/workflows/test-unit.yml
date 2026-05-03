@@ -3,7 +3,18 @@
 # its own file so test failures surface as an isolated `test-unit` job,
 # which makes triage obvious when both unit and visual suites exist in the
 # same pipeline.
+#
+# Build precedes `npm test` because the vitest suite includes accessibility
+# tests (`tests/a11y/axe.test.ts`) that audit the compiled HTML under
+# `dist/`. Without a prior `npm run build`, those tests fail with ENOENT
+# when reading the built artifacts.
 name: Unit tests
+
+# Force GitHub-provided JavaScript actions (e.g. actions/checkout,
+# actions/setup-node) to run on Node 24 ahead of the 2026-06-02 deprecation
+# of Node 20. Value must be a string per GitHub's env contract.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 on:
   workflow_call:
@@ -15,5 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - name: Build site for a11y audit
+        run: npm run build
       - name: Run vitest
         run: npm test

@@ -5,6 +5,12 @@
 # a dedicated `format` job next to its peers (lint, typecheck, ...).
 name: Format
 
+# Force GitHub-provided JavaScript actions (e.g. actions/checkout,
+# actions/setup-node) to run on Node 24 ahead of the 2026-06-02 deprecation
+# of Node 20. Value must be a string per GitHub's env contract.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 on:
   workflow_call:
 

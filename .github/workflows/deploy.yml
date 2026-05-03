@@ -1,0 +1,82 @@
+# Production pipeline: runs every CI check and, only if all six are green,
+# publishes `dist/` to GitHub Pages.
+#
+# Deployment strategy
+# -------------------
+# This workflow uses `actions/upload-pages-artifact` + `actions/deploy-pages`
+# (the modern, official Pages flow) instead of `withastro/action`. The
+# Astro-supplied composite is a thin wrapper around the same two actions; by
+# wiring them ourselves we keep the build step explicit and avoid the extra
+# indirection — which matters because every other workflow in this repo
+# already runs `npm run build` directly through the shared composite action.
+#
+# CI shape
+# --------
+# Each individual check (format, lint, typecheck, unit tests, visual tests,
+# build) is its own reusable workflow under `.github/workflows/*.yml` and is
+# invoked here via `uses:` so we never duplicate steps. The `deploy` job
+# `needs:` all six, so a single red check blocks the release.
+#
+# Setup notes for the maintainer
+# ------------------------------
+# 1. **Pages source must be set to "GitHub Actions"** under
+#    Settings → Pages. The first run of this workflow will fail until that
+#    toggle is flipped; re-run with `workflow_dispatch` afterwards.
+# 2. **Node 24.15.0** is pinned in the shared composite action at
+#    `.github/actions/setup/action.yml`. Bump it there, not here.
+# 3. **Branch protection on `main`** must mark the six jobs of the `CI`
+#    workflow as required status checks: `format`, `lint`, `typecheck`,
+#    `test-unit`, `test-visual`, `build`. PRs are gated by `ci.yml`
+#    (single orchestrator run) — this `Deploy` workflow does not run on
+#    PRs and therefore is not part of branch protection.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Only one production deploy may be in flight at a time. A new push to main
+# cancels any in-progress run so we never race two deploys against the same
+# Pages environment.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  format:
+    uses: ./.github/workflows/format.yml
+  lint:
+    uses: ./.github/workflows/lint.yml
+  typecheck:
+    uses: ./.github/workflows/typecheck.yml
+  test-unit:
+    uses: ./.github/workflows/test-unit.yml
+  test-visual:
+    uses: ./.github/workflows/test-visual.yml
+  build:
+    uses: ./.github/workflows/build.yml
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: [format, lint, typecheck, test-unit, test-visual, build]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Build site
+        run: npm run build
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

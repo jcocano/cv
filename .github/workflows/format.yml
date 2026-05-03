@@ -1,0 +1,19 @@
+# Verifies that every tracked file matches Prettier's expected formatting.
+# Reusable workflow only: invoked by `ci.yml` on pull_request and by
+# `deploy.yml` on push to main. Kept as its own file so the responsibility
+# (formatting check) lives in one place; the `CI` run on PRs shows it as
+# a dedicated `format` job next to its peers (lint, typecheck, ...).
+name: Format
+
+on:
+  workflow_call:
+
+jobs:
+  format:
+    name: prettier --check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Run prettier --check
+        run: npm run format:check

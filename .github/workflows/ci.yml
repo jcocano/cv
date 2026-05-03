@@ -1,0 +1,48 @@
+# Single orchestrator for pull-request validation.
+#
+# Why this file exists
+# --------------------
+# Each individual check (format, lint, typecheck, unit tests, visual tests,
+# build) lives in its own reusable workflow under `.github/workflows/*.yml`
+# so single-responsibility per file is preserved. However, having each one
+# also listen to `pull_request` produces six independent workflow runs per
+# PR in the Actions tab, which is noisy and hides the fact that they are
+# part of the same gate.
+#
+# This workflow is the single `pull_request` entrypoint: it composes the six
+# reusable workflows as jobs in one run, so each PR shows a single "CI" run
+# whose internal DAG exposes the six jobs side by side. The unit workflows
+# stay reusable and are still invoked from `deploy.yml` on push to main —
+# nothing about their responsibilities changes.
+#
+# Parallelism
+# -----------
+# The six jobs intentionally have no `needs:` between them: they are
+# independent checks and should run in parallel. The DAG is six leaves with
+# no edges (an inverted-V with no apex on PRs; the apex job exists only in
+# `deploy.yml`, where `deploy` needs all six).
+#
+# Branch protection
+# -----------------
+# Mark the six jobs of the `CI` workflow as required status checks on
+# `main`: `format`, `lint`, `typecheck`, `test-unit`, `test-visual`,
+# `build`. The `Deploy` workflow does not run on PRs and is not part of
+# branch protection.
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  format:
+    uses: ./.github/workflows/format.yml
+  lint:
+    uses: ./.github/workflows/lint.yml
+  typecheck:
+    uses: ./.github/workflows/typecheck.yml
+  test-unit:
+    uses: ./.github/workflows/test-unit.yml
+  test-visual:
+    uses: ./.github/workflows/test-visual.yml
+  build:
+    uses: ./.github/workflows/build.yml

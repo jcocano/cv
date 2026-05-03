@@ -1,0 +1,18 @@
+# Runs ESLint over every source file. Reusable workflow only: invoked by
+# `ci.yml` on pull_request and by `deploy.yml` on push to main. Kept as its
+# own file so a lint regression surfaces as an isolated red job inside the
+# `CI` run instead of being buried inside a multi-step monolith.
+name: Lint
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Run eslint
+        run: npm run lint

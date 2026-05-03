@@ -1,0 +1,19 @@
+# Runs `astro check` (TypeScript + Astro template diagnostics). Reusable
+# workflow only: invoked by `ci.yml` on pull_request and by `deploy.yml` on
+# push to main. Kept as its own file so type regressions are visible at a
+# glance as a dedicated `typecheck` job and so the check can be required
+# independently in branch protection.
+name: Typecheck
+
+on:
+  workflow_call:
+
+jobs:
+  typecheck:
+    name: astro check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Run astro check
+        run: npm run typecheck

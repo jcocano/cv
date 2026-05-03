@@ -1,0 +1,27 @@
+# Shared setup for every CI workflow in this repo.
+#
+# Why a composite action: the three steps below (checkout, pin Node, install
+# deps) are identical across every CI job. Centralising them here keeps the
+# individual workflows trivial — one real step each — and guarantees that all
+# jobs run against the same Node version and the same lockfile-resolved tree.
+#
+# Node version is pinned to match the local development environment so that
+# any tooling that relies on engine-specific behaviour (Vitest, Astro, ESLint
+# v10) sees the same runtime in CI as on the contributor's machine.
+name: Setup repository
+description: Checkout the repo, install Node 24.15.0 with npm cache, and run npm ci.
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.15.0
+        cache: npm
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

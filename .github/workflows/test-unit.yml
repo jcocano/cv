@@ -3,17 +3,15 @@
 # test failures surface as an isolated `test-unit` job, which makes triage
 # obvious when both unit and visual suites exist in the same pipeline.
 #
-# Why three setup steps before `npm test`:
-#   1. Warm up: a brief `astro dev` boot (killed via `timeout`) is the only
-#      reliable way to populate Astro v6's content layer data store so that
-#      `getCollection` works inside vitest's experimental_AstroContainer
-#      render-tests. `astro sync` and `astro build` alone are not enough
-#      (validated against Astro 6.2.1). Exit code 124 from `timeout` is
-#      expected and ignored via `|| true`.
-#   2. Build: produces `dist/` so the a11y axe tests in `tests/a11y/` can
+# Why two setup steps before `npm test`:
+#   1. Build: produces `dist/` so the a11y axe tests in `tests/a11y/` can
 #      audit the actual built HTML pages.
-#   3. Test: runs vitest against the now-warmed content layer and built
-#      artifact.
+#   2. Test: runs vitest. The Astro content layer data store
+#      (`.astro/data-store.json`) is regenerated automatically by the
+#      `pretest` hook in `package.json`, which invokes
+#      `tooling/sync-data-store.mjs`. See `docs/verification.md` §5.1 for
+#      the full rationale on why the data store needs an explicit refresh
+#      before vitest's `getCollection(...)` calls.
 name: Unit tests
 
 on:
@@ -26,8 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - name: Warm up Astro content layer
-        run: timeout 8 npx astro dev > /dev/null 2>&1 || true
       - name: Build site for a11y tests
         run: npm run build
       - name: Run vitest

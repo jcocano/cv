@@ -6,12 +6,6 @@
 # job inside the `CI` run.
 name: Build
 
-# Force GitHub-provided JavaScript actions (e.g. actions/checkout,
-# actions/setup-node) to run on Node 24 ahead of the 2026-06-02 deprecation
-# of Node 20. Value must be a string per GitHub's env contract.
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-
 on:
   workflow_call:
 
@@ -20,7 +14,7 @@ jobs:
     name: astro build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - name: Build site
         run: npm run build

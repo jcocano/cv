@@ -24,10 +24,11 @@
 #    toggle is flipped; re-run with `workflow_dispatch` afterwards.
 # 2. **Node 24.15.0** is pinned in the shared composite action at
 #    `.github/actions/setup/action.yml`. Bump it there, not here.
-# 3. **Branch protection on `main`** must mark the six PR checks as
-#    required: `Format`, `Lint`, `Typecheck`, `Unit tests`, `Visual tests`,
-#    `Build`. The deploy job itself does not run on PRs and therefore is
-#    not part of branch protection.
+# 3. **Branch protection on `main`** must mark the six jobs of the `CI`
+#    workflow as required status checks: `format`, `lint`, `typecheck`,
+#    `test-unit`, `test-visual`, `build`. PRs are gated by `ci.yml`
+#    (single orchestrator run) — this `Deploy` workflow does not run on
+#    PRs and therefore is not part of branch protection.
 name: Deploy
 
 on:

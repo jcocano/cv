@@ -1,13 +1,19 @@
-# Runs the Vitest unit + render-test suite. Reusable workflow only: invoked
-# by `ci.yml` on pull_request and by `deploy.yml` on push to main. Kept as
-# its own file so test failures surface as an isolated `test-unit` job,
-# which makes triage obvious when both unit and visual suites exist in the
-# same pipeline.
+# Runs the Vitest suite. Reusable workflow only: invoked by `ci.yml` on
+# pull_request and by `deploy.yml` on push to main. Kept as its own file so
+# test failures surface as an isolated `test-unit` job, which makes triage
+# obvious when both unit and visual suites exist in the same pipeline.
 #
-# Build precedes `npm test` because the vitest suite includes accessibility
-# tests (`tests/a11y/axe.test.ts`) that audit the compiled HTML under
-# `dist/`. Without a prior `npm run build`, those tests fail with ENOENT
-# when reading the built artifacts.
+# Why three setup steps before `npm test`:
+#   1. Warm up: a brief `astro dev` boot (killed via `timeout`) is the only
+#      reliable way to populate Astro v6's content layer data store so that
+#      `getCollection` works inside vitest's experimental_AstroContainer
+#      render-tests. `astro sync` and `astro build` alone are not enough
+#      (validated against Astro 6.2.1). Exit code 124 from `timeout` is
+#      expected and ignored via `|| true`.
+#   2. Build: produces `dist/` so the a11y axe tests in `tests/a11y/` can
+#      audit the actual built HTML pages.
+#   3. Test: runs vitest against the now-warmed content layer and built
+#      artifact.
 name: Unit tests
 
 # Force GitHub-provided JavaScript actions (e.g. actions/checkout,
@@ -26,7 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Build site for a11y audit
+      - name: Warm up Astro content layer
+        run: timeout 8 npx astro dev > /dev/null 2>&1 || true
+      - name: Build site for a11y tests
         run: npm run build
       - name: Run vitest
         run: npm test

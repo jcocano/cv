@@ -47,9 +47,8 @@
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
-    "@fontsource-variable/geist-mono": "^5.2.7",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource/geist": "^5.2.8",
-    "@fontsource/geist-mono": "^5.2.7",
     "zod": "^4.4.2"
   }
 }

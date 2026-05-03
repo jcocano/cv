@@ -19,6 +19,88 @@ tags:
   - 'Gas Opt'
   - 'Web3'
 order: 3
+eyebrow:
+  es: 'Web3'
+  en: 'Web3'
+stack:
+  - 'Solidity'
+  - 'Hardhat'
+  - 'Next.js'
+  - 'Ethers.js'
 ---
 
-Placeholder body — deep-dive entra en feature 17.
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import MetricGrid from '@/components/projects/MetricGrid.astro';
+import Metric from '@/components/projects/Metric.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="reto" labelEn="challenge">
+  <Lang lang="es">
+
+Lanzar una colección con whitelist amplia sin que los costos de gas mataran la experiencia.
+La opción ingenua —guardar la whitelist en storage on-chain— hubiese sido prohibitiva.
+Necesitábamos una prueba criptográfica compacta y verificable en un par de líneas de
+Solidity.
+
+  </Lang>
+  <Lang lang="en">
+
+Ship a collection with a large whitelist without gas costs killing the experience. The naive
+option — storing the whitelist in on-chain storage — would've been prohibitive. We needed a
+compact cryptographic proof verifiable in a couple of Solidity lines.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="impacto" labelEn="impact">
+  <MetricGrid>
+    <Metric
+      value="~95%"
+      labelEs="reducción de gas vs whitelist on-chain"
+      labelEn="gas reduction vs on-chain whitelist"
+    />
+    <Metric
+      value="1"
+      labelEs="root hash en lugar de N entradas"
+      labelEn="root hash instead of N entries"
+    />
+    <Metric value="O(log n)" labelEs="verificación por mint" labelEn="verification per mint" />
+  </MetricGrid>
+</ProjectSection>
+
+<ProjectSection labelEs="decisiones" labelEn="decisions">
+  <Lang lang="es">
+
+**Merkle Tree para whitelist.** Solo guardamos el root hash on-chain. El cliente envía la prueba con cada mint y el contrato la verifica. Resultado: costo de almacenamiento on-chain constante independientemente del tamaño de la whitelist.
+
+**Optimización de slots.** Los structs se empaquetaron para minimizar SSTOREs, y movimos lógica frecuente a funciones puras donde fue posible.
+
+**Web responsiva integrada.** Ethers.js + Next.js para una capa de UI que conecta wallets, genera la prueba localmente y dispara mints sin que el usuario tenga que entender la criptografía detrás.
+
+  </Lang>
+  <Lang lang="en">
+
+**Merkle Tree whitelist.** Only the root hash lives on-chain. The client submits the proof with each mint and the contract verifies it. Result: constant on-chain storage cost regardless of whitelist size.
+
+**Storage slot packing.** Structs were packed to minimize SSTOREs, and frequently called logic moved to pure functions where possible.
+
+**Tightly integrated responsive web.** Ethers.js + Next.js for a UI layer that connects wallets, generates the proof locally, and triggers mints without the user needing to understand the crypto behind it.
+
+  </Lang>
+  <ArchDiagram>
+    <span class="h">whitelist (off-chain)</span>      <span class="h">contract (on-chain)</span>
+   ┌──────────────┐             ┌──────────────────┐
+   │ addr_1       │             │ <span class="c">root: 0xABCD…</span>   │
+   │ addr_2       │   ──hash──▶ │                  │
+   │ …            │             │ verify(proof) {'{'}  │
+   │ addr_n       │             │   keccak chain   │
+   └──────────────┘             │   == root        │
+                                │ {'}'}                │
+                                └──────────────────┘
+                                          ▲
+                          <span class="h">mint(proof)</span>   │
+                                          │
+                                  <span class="c">user wallet</span>
+  </ArchDiagram>
+</ProjectSection>

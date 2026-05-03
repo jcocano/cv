@@ -1,0 +1,44 @@
+.arch {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  background: var(--bg-elev);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--fg-dim);
+  overflow-x: auto;
+}
+/*
+ * Slot highlights. The <span class="h"> and <span class="c"> spans live inside
+ * the slot content (.mdx), so we cannot reach them with a CSS-module-local
+ * descendant selector. We expose them via :global() under the hashed .arch
+ * root, which keeps the rule scoped to this component while letting the slot
+ * markup keep its semantic class names.
+ */
+.arch :global(.h) {
+  color: var(--accent);
+}
+.arch :global(.c) {
+  color: var(--fg);
+}
+/*
+ * Reset for the spurious <p> that MDX wraps around the inline text content
+ * of <ArchDiagram> (the `│`/`▼`/`──→` text nodes between the
+ * `<span class="h">` / `<span class="c">` spans). That <p> is a descendant
+ * of `.body :global(p)` in ProjectBody and would inherit the body
+ * typography (`font-size: 17px; line-height: 1.7; color: var(--fg)` — sans
+ * serif), breaking the `font-mono 12px` of the `.arch` <pre>. Default
+ * `white-space: normal` on <p> would also collapse the ASCII art whitespace.
+ * `inherit` pulls typography from the `<pre class={styles.arch}>` parent,
+ * `margin: 0` neutralises any vertical spacing, and `white-space: pre`
+ * preserves line breaks and consecutive spaces.
+ */
+.arch :global(p) {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  white-space: pre;
+}

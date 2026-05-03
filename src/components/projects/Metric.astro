@@ -1,0 +1,19 @@
+---
+import styles from './Metric.module.css';
+
+interface Props {
+  value: string;
+  labelEs: string;
+  labelEn: string;
+}
+
+const { value, labelEs, labelEn } = Astro.props;
+---
+
+<div class={styles.metric}>
+  <div class={styles.num}>{value}</div>
+  <div class={styles.lab}>
+    <span lang="es">{labelEs}</span>
+    <span lang="en">{labelEn}</span>
+  </div>
+</div>

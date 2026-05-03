@@ -20,6 +20,90 @@ tags:
   - 'Kubernetes'
   - 'Real-time'
 order: 1
+eyebrow:
+  es: 'proyecto destacado'
+  en: 'featured project'
+stack:
+  - 'TypeScript'
+  - 'NestJS'
+  - 'K8s'
+  - 'AWS'
+  - 'GCP'
 ---
 
-Placeholder body — deep-dive entra en feature 17.
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import MetricGrid from '@/components/projects/MetricGrid.astro';
+import Metric from '@/components/projects/Metric.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="contexto" labelEn="context">
+  <Lang lang="es">
+
+BAYC y MAYC son ecosistemas de IP donde miles de holders necesitan verificar la titularidad de sus derechos de licencia y monetizarlos comercialmente. La plataforma debía operar a escala, sostener cambios de propiedad on-chain en tiempo real, y eliminar fricción del flujo de auth.
+
+  </Lang>
+  <Lang lang="en">
+
+BAYC and MAYC are IP ecosystems where thousands of holders need to verify ownership of their licensing rights and monetize them commercially. The platform had to operate at scale, sustain real-time on-chain ownership changes, and remove friction from the auth flow.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="impacto" labelEn="impact">
+  <MetricGrid>
+    <Metric value="0" labelEs="firmas requeridas en auth" labelEn="signatures required for auth" />
+    <Metric value="<1s" labelEs="latencia de sync on-chain" labelEn="on-chain sync latency" />
+    <Metric value="100%" labelEs="validez de licencias en vivo" labelEn="live license validity" />
+  </MetricGrid>
+</ProjectSection>
+
+<ProjectSection labelEs="decisiones" labelEn="decisions">
+  <Lang lang="es">
+
+**Auth sin firma.** Diseñé un flujo de autenticación sin fricción que elimina la barrera de firmar transacciones cada vez. Esto significó repensar el modelo de confianza, apoyándonos en sesiones criptográficas de corta duración y verificación on-chain de propiedad por detrás del flujo de usuario.
+
+**Motor de sincronización en tiempo real.** Las licencias dependen de quién posee el NFT en el momento, así que cualquier transferencia debe propagarse instantáneamente. Construí un pipeline event-driven que reacciona a eventos on-chain y reconcilia el estado de licencias en toda la plataforma sin lag perceptible.
+
+<p class="dim">El reto técnico no fue solo correctitud — fue convivir con reorgs, latencia variable de RPC y fallback entre proveedores sin que el usuario lo note nunca.</p>
+
+  </Lang>
+  <Lang lang="en">
+
+**Signature-free auth.** Designed a friction-less authentication flow eliminating the barrier of signing transactions repeatedly. This meant rethinking the trust model — leaning on short-lived cryptographic sessions and behind-the-scenes on-chain ownership verification.
+
+**Real-time sync engine.** Licenses depend on who owns the NFT at this moment, so any transfer must propagate instantly. I built an event-driven pipeline that reacts to on-chain events and reconciles license state across the platform with no perceptible lag.
+
+<p class="dim">The technical challenge wasn't just correctness — it was living with reorgs, variable RPC latency, and provider fallback without the user ever noticing.</p>
+
+  </Lang>
+  <ArchDiagram>
+    <span class="h">[ on-chain events ]</span>
+       |
+       v
+ <span class="c">indexer</span> --> <span class="c">event bus (pub/sub)</span> --> <span class="c">license reconciler</span>
+                                          |
+                                          v
+                                  <span class="c">license cache (redis)</span>
+                                          |
+                          +---------------+---------------+
+                          v                               v
+                  <span class="c">licensing API</span>                <span class="c">audit log</span>
+                          |
+                          v
+                  <span class="h">[ holders / consumers ]</span>
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="resultado" labelEn="outcome">
+  <Lang lang="es">
+
+La plataforma se lanzó como el canal oficial de licencias del ecosistema, con auth sin fricción aumentando significativamente la adopción y un motor de sincronización que garantiza validez en tiempo real frente a cualquier transferencia on-chain.
+
+  </Lang>
+  <Lang lang="en">
+
+The platform launched as the official licensing channel for the ecosystem, with friction-less auth significantly increasing adoption and a sync engine guaranteeing real-time validity against any on-chain transfer.
+
+  </Lang>
+</ProjectSection>

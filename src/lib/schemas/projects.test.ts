@@ -22,6 +22,11 @@ const validProject = {
   cover: './cover.png',
   tags: ['NestJS', 'AWS', 'EVM'],
   order: 1,
+  eyebrow: {
+    es: 'proyecto destacado',
+    en: 'featured project',
+  },
+  stack: ['TypeScript', 'NestJS', 'K8s', 'AWS', 'GCP'],
 } as const;
 
 describe('projectSchema', () => {
@@ -44,6 +49,105 @@ describe('projectSchema', () => {
     expect(parsed.tags).toHaveLength(3);
     expect(parsed.tags[0]).toBe('NestJS');
     expect(parsed.order).toBe(1);
+    expect(parsed.eyebrow.es).toBe('proyecto destacado');
+    expect(parsed.eyebrow.en).toBe('featured project');
+    expect(parsed.stack).toEqual(['TypeScript', 'NestJS', 'K8s', 'AWS', 'GCP']);
+    expect(parsed.stack).toHaveLength(5);
+    expect(parsed.stack[0]).toBe('TypeScript');
+  });
+
+  it('fails when eyebrow is missing entirely', () => {
+    const { eyebrow: _eyebrow, ...withoutEyebrow } = validProject;
+    void _eyebrow;
+    const result = projectSchema.safeParse(withoutEyebrow);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnEyebrow = result.error.issues.filter((issue) => issue.path[0] === 'eyebrow');
+    expect(issuesOnEyebrow.length).toBeGreaterThan(0);
+  });
+
+  it('rejects an unknown role field (iter 5: role removed from schema)', () => {
+    // The role field was removed from the schema in iter 5 because the
+    // information lives in the experience section of the index page. The
+    // schema is `.strict()` so a frontmatter that still carries a `role`
+    // key must be rejected with an unrecognized_keys issue listing `role`.
+    const withRole: Record<string, unknown> = {
+      ...validProject,
+      role: { es: 'Senior Backend', en: 'Senior Backend' },
+    };
+    const result = projectSchema.safeParse(withRole);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const unrecognizedKeyIssues = result.error.issues.filter(
+      (issue): issue is typeof issue & { keys: string[] } =>
+        issue.code === 'unrecognized_keys' && Array.isArray((issue as { keys?: unknown }).keys),
+    );
+    expect(unrecognizedKeyIssues).toHaveLength(1);
+    const firstUnrecognized = unrecognizedKeyIssues[0];
+    if (firstUnrecognized === undefined) {
+      throw new Error('expected one unrecognized_keys issue');
+    }
+    expect(firstUnrecognized.keys).toContain('role');
+  });
+
+  it('fails when stack is missing entirely', () => {
+    const { stack: _stack, ...withoutStack } = validProject;
+    void _stack;
+    const result = projectSchema.safeParse(withoutStack);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnStack = result.error.issues.filter((issue) => issue.path[0] === 'stack');
+    expect(issuesOnStack.length).toBeGreaterThan(0);
+  });
+
+  it('rejects an empty stack array (must contain at least one entry)', () => {
+    const empty = { ...validProject, stack: [] };
+    const result = projectSchema.safeParse(empty);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnStack = result.error.issues.filter((issue) => issue.path[0] === 'stack');
+    expect(issuesOnStack.length).toBeGreaterThan(0);
+  });
+
+  it('rejects a stack array containing an empty-string entry', () => {
+    const blank = { ...validProject, stack: ['TypeScript', ''] };
+    const result = projectSchema.safeParse(blank);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnStackEntry = result.error.issues.filter(
+      (issue) => issue.path[0] === 'stack' && issue.path[1] === 1,
+    );
+    expect(issuesOnStackEntry.length).toBeGreaterThan(0);
+  });
+
+  it('rejects a stack passed as a plain string (legacy shape)', () => {
+    const legacy: Record<string, unknown> = {
+      ...validProject,
+      stack: 'TypeScript · NestJS',
+    };
+    const result = projectSchema.safeParse(legacy);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnStack = result.error.issues.filter((issue) => issue.path[0] === 'stack');
+    expect(issuesOnStack.length).toBeGreaterThan(0);
+  });
+
+  it('accepts a stack array of exactly one entry', () => {
+    const one = { ...validProject, stack: ['Solidity'] };
+    const parsed = projectSchema.parse(one);
+    expect(parsed.stack).toEqual(['Solidity']);
   });
 
   it('fails with a Zod error pointing at title.en when title only has es', () => {

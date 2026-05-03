@@ -1,0 +1,37 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectLayout from '@/layouts/ProjectLayout.astro';
+import { getPrevNext } from '@/lib/content/get-prev-next';
+import type { Project } from '@/lib/schemas/projects';
+
+export async function getStaticPaths() {
+  const entries: CollectionEntry<'projects'>[] = await getCollection('projects');
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+
+const allEntries: CollectionEntry<'projects'>[] = await getCollection('projects');
+const allProjects: Project[] = allEntries.map((item) => item.data);
+const { prev, next } = getPrevNext(entry.data, allProjects);
+
+const { Content } = await render(entry);
+
+const pageTitle = `${entry.data.title.es} — Jesus Cocano`;
+---
+
+<BaseLayout title={pageTitle} description={entry.data.tagline.es}>
+  <ProjectLayout project={entry.data} prev={prev} next={next} baseUrl={baseUrl}>
+    <Content />
+  </ProjectLayout>
+</BaseLayout>

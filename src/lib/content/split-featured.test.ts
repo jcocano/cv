@@ -15,6 +15,8 @@ function makeProject(overrides: Partial<Project> & Pick<Project, 'slug' | 'order
     cover: './cover.png',
     tags: [],
     order: overrides.order,
+    eyebrow: { es: 'eyebrow', en: 'eyebrow' },
+    stack: ['stack'],
   };
   return { ...base, ...overrides };
 }

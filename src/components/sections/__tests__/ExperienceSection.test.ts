@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 
 import ExperienceSection from '@/components/sections/ExperienceSection.astro';
+import experienceStyles from '@/components/sections/ExperienceSection.module.css';
 
 async function renderExperience(lang: 'es' | 'en'): Promise<string> {
   const container = await AstroContainer.create();
@@ -170,5 +171,19 @@ describe('ExperienceSection (render-test)', () => {
     const htmlEs = await renderExperience('es');
     const htmlEn = await renderExperience('en');
     expect(htmlEs).toBe(htmlEn);
+  });
+
+  it('adds the global "reveal" class on every <article class=exp> (5 articles, handoff L314/L332/L350/L368/L386)', async () => {
+    const html = await renderExperience('es');
+    const expClassName = experienceStyles.exp;
+    if (expClassName === undefined) {
+      throw new Error('experienceStyles.exp must be defined');
+    }
+    const articleMatches = html.match(/<article\b[^>]*>/g) ?? [];
+    expect(articleMatches).toHaveLength(5);
+    const articlesWithReveal = articleMatches.filter(
+      (tag) => tag.includes(expClassName) && /\breveal\b/.test(tag),
+    );
+    expect(articlesWithReveal).toHaveLength(5);
   });
 });

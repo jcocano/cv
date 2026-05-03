@@ -178,4 +178,53 @@ describe('ContactSection (render-test)', () => {
     const html = await renderContactSection();
     expect(html).not.toMatch(/<footer\b/);
   });
+
+  it('adds the global "reveal" class on the standalone Eyebrow (num="05", handoff L692)', async () => {
+    const html = await renderContactSection();
+    const numIdx = html.search(/<span[^>]*>05<\/span>/);
+    expect(numIdx).toBeGreaterThan(-1);
+    const before = html.slice(0, numIdx);
+    const lastSpanOpenIdx = before.lastIndexOf('<span');
+    expect(lastSpanOpenIdx).toBeGreaterThan(-1);
+    const eyebrowOpenTag = before.slice(lastSpanOpenIdx);
+    const closeTagIdx = eyebrowOpenTag.indexOf('>');
+    expect(closeTagIdx).toBeGreaterThan(-1);
+    const eyebrowOpenAttrs = eyebrowOpenTag.slice(0, closeTagIdx + 1);
+    expect(eyebrowOpenAttrs).toMatch(/class="[^"]*\breveal\b[^"]*"/);
+  });
+
+  it('adds the global "reveal" class on the .headline <h2> (handoff L693)', async () => {
+    const html = await renderContactSection();
+    const headlineClassName = contactStyles.headline;
+    if (headlineClassName === undefined) {
+      throw new Error('contactStyles.headline must be defined');
+    }
+    const h2Matches = html.match(/<h2\b[^>]*>/g) ?? [];
+    const headlineHit = h2Matches.find(
+      (tag) => tag.includes(headlineClassName) && /\breveal\b/.test(tag),
+    );
+    expect(headlineHit).toBeDefined();
+  });
+
+  it('adds the global "reveal" class on the .lede <p> (handoff L697)', async () => {
+    const html = await renderContactSection();
+    const ledeClassName = contactStyles.lede;
+    if (ledeClassName === undefined) {
+      throw new Error('contactStyles.lede must be defined');
+    }
+    const pMatches = html.match(/<p\b[^>]*>/g) ?? [];
+    const ledeHit = pMatches.find((tag) => tag.includes(ledeClassName) && /\breveal\b/.test(tag));
+    expect(ledeHit).toBeDefined();
+  });
+
+  it('adds the global "reveal" class on the .row CTA wrapper <div> (handoff L701)', async () => {
+    const html = await renderContactSection();
+    const rowClassName = contactStyles.row;
+    if (rowClassName === undefined) {
+      throw new Error('contactStyles.row must be defined');
+    }
+    const divMatches = html.match(/<div\b[^>]*>/g) ?? [];
+    const rowHit = divMatches.find((tag) => tag.includes(rowClassName) && /\breveal\b/.test(tag));
+    expect(rowHit).toBeDefined();
+  });
 });

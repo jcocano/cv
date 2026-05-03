@@ -45,7 +45,7 @@ const ordered: Experience[] = sortByDateDesc(items);
           const whenEs = formatExperienceDate(item, 'es');
           const whenEn = formatExperienceDate(item, 'en');
           return (
-            <article class={styles.exp}>
+            <article class:list={[styles.exp, 'reveal']}>
               <div class={styles.when}>
                 <span lang="es">{whenEs}</span>
                 <span lang="en">{whenEn}</span>

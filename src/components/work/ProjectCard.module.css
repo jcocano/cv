@@ -40,17 +40,22 @@
 }
 
 .arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--fg-dim);
-  transform: rotate(-45deg);
-  transition: transform 0.2s ease;
+  transition: all 0.2s;
 }
 
 .project-card:hover .arrow {
-  transform: rotate(0deg);
-  color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  transform: rotate(-45deg);
 }
 
 .project-card h3 {
@@ -96,20 +101,31 @@
   background: transparent;
 }
 
+/*
+ * Signature lives top-right per handoff (styles.css:866-876). Featured cards
+ * inherit the base opacity (0.5) — handoff line 886 only overrides
+ * width/height/right/top, so we keep opacity unified at 0.5 for full parity.
+ */
 .project-card :global(.signature) {
   position: absolute;
   right: -40px;
-  bottom: -40px;
-  width: 220px;
-  height: 220px;
-  opacity: 0.45;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.5;
   pointer-events: none;
+  transition: all 0.4s;
+}
+
+.project-card:hover :global(.signature) {
+  transform: rotate(15deg) scale(1.1);
+  opacity: 0.8;
 }
 
 .card-featured :global(.signature) {
-  width: 280px;
-  height: 280px;
+  width: 320px;
+  height: 320px;
   right: -60px;
-  bottom: -60px;
-  opacity: 0.55;
+  top: -60px;
+  opacity: 0.5;
 }

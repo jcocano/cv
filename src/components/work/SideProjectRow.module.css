@@ -2,20 +2,21 @@
   display: grid;
   grid-template-columns: 240px 1fr 200px;
   gap: 32px;
-  padding: 28px 0;
-  border-top: 1px solid var(--line-soft);
+  padding: 24px;
   align-items: start;
+  background: var(--bg);
+  transition: background 0.2s;
 }
 
-.side-row:last-child {
-  border-bottom: 1px solid var(--line-soft);
+.side-row:hover {
+  background: var(--bg-elev);
 }
 
 @media (max-width: 860px) {
   .side-row {
     grid-template-columns: 1fr;
     gap: 12px;
-    padding: 22px 0;
+    padding: 22px;
   }
 }
 

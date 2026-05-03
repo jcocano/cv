@@ -195,4 +195,20 @@ describe('WorkSection (render-test)', () => {
     expect(html).not.toMatch(/<span[^>]*>04\.5<\/span>/);
     expect(html).not.toMatch(/lang="es"[^>]*>open source<\/span>/);
   });
+
+  it('adds the global "reveal" class on the standalone side-block Eyebrow (num="04.6", handoff L647)', async () => {
+    const html = await renderWorkSection();
+    // The side-block Eyebrow contains a child <span class="num">04.6</span>; locate the
+    // outer Eyebrow span by walking back from "04.6" to the nearest enclosing <span class="…">.
+    const numIdx = html.search(/<span[^>]*>04\.6<\/span>/);
+    expect(numIdx).toBeGreaterThan(-1);
+    const before = html.slice(0, numIdx);
+    const lastSpanOpenIdx = before.lastIndexOf('<span');
+    expect(lastSpanOpenIdx).toBeGreaterThan(-1);
+    const eyebrowOpenTag = before.slice(lastSpanOpenIdx);
+    const closeTagIdx = eyebrowOpenTag.indexOf('>');
+    expect(closeTagIdx).toBeGreaterThan(-1);
+    const eyebrowOpenAttrs = eyebrowOpenTag.slice(0, closeTagIdx + 1);
+    expect(eyebrowOpenAttrs).toMatch(/class="[^"]*\breveal\b[^"]*"/);
+  });
 });

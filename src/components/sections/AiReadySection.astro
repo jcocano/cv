@@ -42,7 +42,7 @@ const iconByKey: Record<IconKey, typeof AssistedDevIcon> = {
       ledeEn={aiReady.lede.en}
     />
 
-    <div class={styles.aiGrid}>
+    <div class:list={[styles.aiGrid, 'reveal']}>
       {
         aiReady.cards.map((card) => {
           const Icon = iconByKey[card.iconKey];
@@ -70,7 +70,7 @@ const iconByKey: Record<IconKey, typeof AssistedDevIcon> = {
       }
     </div>
 
-    <p class={styles.myTake}>
+    <p class:list={[styles.myTake, 'reveal']}>
       <span class={styles.arrow}>→</span>
       <span lang="es">{aiReady.myTake.es}</span>
       <span lang="en">{aiReady.myTake.en}</span>

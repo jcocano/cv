@@ -57,6 +57,47 @@ a {
   }
 }
 
+/*
+ * Reveal-on-scroll. We drive the entrance with a @keyframes animation instead of
+ * a transition on .reveal/.reveal.in. Reason: components like .project-card and
+ * .exp ship their own `transition` (border-color, background) in their CSS
+ * modules, which load after base.css. A `transition` on .reveal would compete
+ * with theirs (specificity tie + later source wins, so the component's
+ * transition list would overwrite ours and the entrance would snap; if we lift
+ * .reveal's specificity instead, we overwrite *their* transition and lose the
+ * smooth hover). `animation` doesn't compose with `transition` the same way:
+ * each component keeps its own transition for hovers, and the .in class layers
+ * the keyframe entrance on top. Once the animation ends, `forwards` keeps the
+ * final state.
+ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.reveal.in {
+  animation: reveal-in 0.7s ease forwards;
+}
+@keyframes reveal-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal.in {
+    animation: none;
+  }
+}
+
+.nav-link.active {
+  color: var(--accent);
+}
+
 section {
   padding: 100px 0;
   border-bottom: 1px solid var(--line-soft);

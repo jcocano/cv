@@ -32,7 +32,7 @@ const summary: Summary = summarySchema.parse(summaryJson);
       ledeEn={summary.lede.en}
     />
 
-    <div class={styles.stats}>
+    <div class:list={[styles.stats, 'reveal']}>
       {
         summary.stats.map((stat) => (
           <div class={styles.stat}>
@@ -54,10 +54,10 @@ const summary: Summary = summarySchema.parse(summaryJson);
         const paragraphEn = summary.paragraphs.en[index] ?? '';
         return (
           <>
-            <p class={styles.summaryBody} lang="es">
+            <p class:list={[styles.summaryBody, 'reveal']} lang="es">
               {paragraphEs}
             </p>
-            <p class={styles.summaryBody} lang="en">
+            <p class:list={[styles.summaryBody, 'reveal']} lang="en">
               {paragraphEn}
             </p>
           </>
@@ -65,7 +65,7 @@ const summary: Summary = summarySchema.parse(summaryJson);
       })
     }
 
-    <ul class={styles.bullets}>
+    <ul class:list={[styles.bullets, 'reveal']}>
       {
         summary.expertise.es.map((itemEs, index) => {
           const itemEn = summary.expertise.en[index] ?? '';

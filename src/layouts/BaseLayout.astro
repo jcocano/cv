@@ -50,9 +50,9 @@ const {
       <div class={styles.siteNavInner}>
         <a class={`${styles.siteNavBrand} mono`} href="#top">jc</a>
         <nav class={styles.siteNavLinks} aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#contact">Contact</a>
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#work">Work</a>
+          <a class="nav-link" href="#contact">Contact</a>
         </nav>
         <div class={styles.siteNavToggles}>
           <button
@@ -103,6 +103,9 @@ const {
 
     <script>
       import { currentYear } from '@/lib/footer-utils/current-year';
+      import { mountReveal } from '@/lib/motion/reveal';
+      import { mountScrollspy } from '@/lib/motion/mount-scrollspy';
+      import { shouldReduceMotion } from '@/lib/motion/should-reduce-motion';
       import { isThemeName, nextTheme, type ThemeName } from '@/lib/theme/next-theme';
       import { isLangCode, toggleLang, type LangCode } from '@/lib/theme/toggle-lang';
 
@@ -205,6 +208,30 @@ const {
       yearSlots.forEach((node) => {
         node.textContent = currentYearText;
       });
+
+      const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!shouldReduceMotion(reducedMotionQuery)) {
+        mountReveal();
+      }
+
+      const scrollspyNavLinks =
+        document.querySelectorAll<HTMLAnchorElement>('header nav a.nav-link');
+      // Build the observed targets from the nav-link hrefs themselves so wrapper
+      // <div id="about"> is included alongside <section id="work"> / <section id="contact">.
+      // A plain array satisfies mountScrollspy's Iterable<HTMLElement> signature.
+      const scrollspyTargets: HTMLElement[] = [];
+      scrollspyNavLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (href === null || !href.startsWith('#')) {
+          return;
+        }
+        const id = href.slice(1);
+        const target = document.getElementById(id);
+        if (target !== null) {
+          scrollspyTargets.push(target);
+        }
+      });
+      mountScrollspy(scrollspyNavLinks, scrollspyTargets);
     </script>
   </body>
 </html>

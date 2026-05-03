@@ -19,9 +19,14 @@ const emailLabel = email.replace(/^mailto:/, '');
 
 <section id="contact" class={styles.contact}>
   <div class="container">
-    <Eyebrow num="05" labelEs={t('contact.eyebrow', 'es')} labelEn={t('contact.eyebrow', 'en')} />
+    <Eyebrow
+      num="05"
+      labelEs={t('contact.eyebrow', 'es')}
+      labelEn={t('contact.eyebrow', 'en')}
+      reveal={true}
+    />
 
-    <h2 class={styles.headline}>
+    <h2 class:list={[styles.headline, 'reveal']}>
       <span lang="es"
         ><span class={styles.accent}>{headlineAccent.es}</span><br />{headline.es}</span
       >
@@ -30,12 +35,12 @@ const emailLabel = email.replace(/^mailto:/, '');
       >
     </h2>
 
-    <p class={styles.lede}>
+    <p class:list={[styles.lede, 'reveal']}>
       <span lang="es">{lede.es}</span>
       <span lang="en">{lede.en}</span>
     </p>
 
-    <div class={styles.row}>
+    <div class:list={[styles.row, 'reveal']}>
       <a class={`${styles.cta} ${styles.ctaPrimary}`} href={email}>
         <EmailIcon />
         {emailLabel}

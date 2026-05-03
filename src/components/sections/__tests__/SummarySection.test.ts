@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 
 import SummarySection from '@/components/sections/SummarySection.astro';
+import summaryStyles from '@/components/sections/SummarySection.module.css';
 import summaryJson from '@/data/summary.json';
 
 async function renderSummary(lang: 'es' | 'en'): Promise<string> {
@@ -117,5 +118,47 @@ describe('SummarySection (render-test)', () => {
     const htmlEs = await renderSummary('es');
     const htmlEn = await renderSummary('en');
     expect(htmlEs).toBe(htmlEn);
+  });
+
+  it('adds the global "reveal" class on the SectionHead wrapper (handoff L109)', async () => {
+    const html = await renderSummary('es');
+    expect(html).toMatch(/<div\b[^>]*class="[^"]*\breveal\b[^"]*"[^>]*>\s*<span/);
+  });
+
+  it('adds the global "reveal" class on the .stats container (handoff L123)', async () => {
+    const html = await renderSummary('es');
+    const statsClassName = summaryStyles.stats;
+    if (statsClassName === undefined) {
+      throw new Error('summaryStyles.stats must be defined');
+    }
+    const statsMatches = html.match(/<div\b[^>]*class="([^"]+)"/g) ?? [];
+    const statsHit = statsMatches.find(
+      (tag) => tag.includes(statsClassName) && /\breveal\b/.test(tag),
+    );
+    expect(statsHit).toBeDefined();
+  });
+
+  it('adds the global "reveal" class on each summary-body paragraph (handoff L130/L133)', async () => {
+    const html = await renderSummary('es');
+    const summaryBodyClassName = summaryStyles.summaryBody;
+    if (summaryBodyClassName === undefined) {
+      throw new Error('summaryStyles.summaryBody must be defined');
+    }
+    const pTagMatches = html.match(/<p\b[^>]*>/g) ?? [];
+    const summaryBodyHits = pTagMatches.filter(
+      (tag) => tag.includes(summaryBodyClassName) && /\breveal\b/.test(tag),
+    );
+    expect(summaryBodyHits.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('adds the global "reveal" class on the .bullets <ul> (handoff L137)', async () => {
+    const html = await renderSummary('es');
+    const bulletsClassName = summaryStyles.bullets;
+    if (bulletsClassName === undefined) {
+      throw new Error('summaryStyles.bullets must be defined');
+    }
+    const ulMatches = html.match(/<ul\b[^>]*>/g) ?? [];
+    const ulHit = ulMatches.find((tag) => tag.includes(bulletsClassName) && /\breveal\b/.test(tag));
+    expect(ulHit).toBeDefined();
   });
 });

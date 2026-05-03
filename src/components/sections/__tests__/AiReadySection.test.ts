@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 
 import AiReadySection from '@/components/sections/AiReadySection.astro';
+import aiReadyStyles from '@/components/sections/AiReadySection.module.css';
 
 async function renderAiReady(lang: 'es' | 'en'): Promise<string> {
   const container = await AstroContainer.create();
@@ -101,5 +102,36 @@ describe('AiReadySection (render-test)', () => {
     const htmlEs = await renderAiReady('es');
     const htmlEn = await renderAiReady('en');
     expect(htmlEs).toBe(htmlEn);
+  });
+
+  it('adds the global "reveal" class on the SectionHead wrapper (handoff L151)', async () => {
+    const html = await renderAiReady('es');
+    expect(html).toMatch(/<div\b[^>]*class="[^"]*\breveal\b[^"]*"[^>]*>\s*<span/);
+  });
+
+  it('adds the global "reveal" class on the .ai-grid container (handoff L165)', async () => {
+    const html = await renderAiReady('es');
+    const aiGridClassName = aiReadyStyles.aiGrid;
+    if (aiGridClassName === undefined) {
+      throw new Error('aiReadyStyles.aiGrid must be defined');
+    }
+    const divMatches = html.match(/<div\b[^>]*>/g) ?? [];
+    const aiGridHit = divMatches.find(
+      (tag) => tag.includes(aiGridClassName) && /\breveal\b/.test(tag),
+    );
+    expect(aiGridHit).toBeDefined();
+  });
+
+  it('adds the global "reveal" class on the .my-take final paragraph (handoff L207)', async () => {
+    const html = await renderAiReady('es');
+    const myTakeClassName = aiReadyStyles.myTake;
+    if (myTakeClassName === undefined) {
+      throw new Error('aiReadyStyles.myTake must be defined');
+    }
+    const pMatches = html.match(/<p\b[^>]*>/g) ?? [];
+    const myTakeHit = pMatches.find(
+      (tag) => tag.includes(myTakeClassName) && /\breveal\b/.test(tag),
+    );
+    expect(myTakeHit).toBeDefined();
   });
 });

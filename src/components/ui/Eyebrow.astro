@@ -5,12 +5,13 @@ interface Props {
   num: string;
   labelEs: string;
   labelEn: string;
+  reveal?: boolean;
 }
 
-const { num, labelEs, labelEn } = Astro.props;
+const { num, labelEs, labelEn, reveal = false } = Astro.props;
 ---
 
-<span class={styles.eyebrow}>
+<span class:list={[styles.eyebrow, reveal && 'reveal']}>
   <span class={styles.num}>{num}</span> /
   <span lang="es">{labelEs}</span>
   <span lang="en">{labelEn}</span>

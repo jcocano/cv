@@ -81,6 +81,39 @@ describe('SectionHead (render-test)', () => {
     expect(pInner).toMatch(/<span[^>]*lang="en"[^>]*>7\+ years[\s\S]*<\/span>/);
   });
 
+  it('adds the global "reveal" class on the outer wrapper div', async () => {
+    const html = await renderSectionHead(sampleProps);
+    const wrapperMatch = html.match(/^\s*<div\b[^>]*>/);
+    expect(wrapperMatch).not.toBeNull();
+    if (wrapperMatch === null) {
+      throw new Error('expected an outer <div> wrapper');
+    }
+    const classAttrMatch = wrapperMatch[0].match(/class="([^"]+)"/);
+    expect(classAttrMatch).not.toBeNull();
+    if (classAttrMatch === null || classAttrMatch[1] === undefined) {
+      throw new Error('expected a class attribute on the outer <div>');
+    }
+    const classTokens = classAttrMatch[1].split(/\s+/).filter((token) => token.length > 0);
+    expect(classTokens).toContain('reveal');
+  });
+
+  it('does NOT pass reveal={true} to the inner Eyebrow (the outer wrapper already carries reveal)', async () => {
+    const html = await renderSectionHead(sampleProps);
+    // The first <span> in the rendered html is the Eyebrow root span.
+    const eyebrowSpanMatch = html.match(/<span\b[^>]*>/);
+    expect(eyebrowSpanMatch).not.toBeNull();
+    if (eyebrowSpanMatch === null) {
+      throw new Error('expected an Eyebrow root <span>');
+    }
+    const classAttrMatch = eyebrowSpanMatch[0].match(/class="([^"]+)"/);
+    expect(classAttrMatch).not.toBeNull();
+    if (classAttrMatch === null || classAttrMatch[1] === undefined) {
+      throw new Error('expected a class attribute on the Eyebrow root <span>');
+    }
+    const classTokens = classAttrMatch[1].split(/\s+/).filter((token) => token.length > 0);
+    expect(classTokens).not.toContain('reveal');
+  });
+
   it('renders both num and labels for arbitrary props (no hard-coded values)', async () => {
     const html = await renderSectionHead({
       num: '07',

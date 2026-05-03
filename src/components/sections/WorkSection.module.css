@@ -22,6 +22,10 @@
 
 .side-list {
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }

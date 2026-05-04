@@ -102,9 +102,8 @@
 }
 
 /*
- * Signature lives top-right per handoff (styles.css:866-876). Featured cards
- * inherit the base opacity (0.5) — handoff line 886 only overrides
- * width/height/right/top, so we keep opacity unified at 0.5 for full parity.
+ * Signature sits top-right of the card. Featured cards override only the
+ * size/position via the variant rules below, so opacity stays unified at 0.5.
  */
 .project-card :global(.signature) {
   position: absolute;

@@ -4,14 +4,14 @@ import styles from './SiteNav.module.css';
 ---
 
 <nav class={styles.nav} aria-label="Primary">
-  <div class:list={[styles['nav-inner'], 'container']}>
-    <a class={styles['nav-brand']} href="#top">
+  <div class:list={[styles.navInner, 'container']}>
+    <a class={styles.navBrand} href="#top">
       <span class="dot"></span>
       <span>jcocano</span>
       <span style="color: var(--fg-mute);">/</span>
       <span style="color: var(--fg-dim);">cv</span>
     </a>
-    <div class={styles['nav-links']}>
+    <div class={styles.navLinks}>
       <a class="nav-link" href="#about">
         <span class="num">01</span>
         <span lang="es">Acerca</span>
@@ -38,10 +38,10 @@ import styles from './SiteNav.module.css';
         <span lang="en">Contact</span>
       </a>
     </div>
-    <div class={styles['nav-tools']}>
+    <div class={styles.navTools}>
       <button
         type="button"
-        class={styles['lang-btn']}
+        class={styles.langBtn}
         id="lang-toggle"
         aria-label="Toggle language"
         data-shortcut="L"
@@ -51,7 +51,7 @@ import styles from './SiteNav.module.css';
       </button>
       <button
         type="button"
-        class={styles['icon-btn']}
+        class={styles.iconBtn}
         id="theme-toggle"
         aria-label="Toggle theme"
         title="Cycle theme (dark / light / paper)"

@@ -114,3 +114,67 @@ describe('SiteNav (render-test)', () => {
     expect(html.toLowerCase().includes(styleTag)).toBe(false);
   });
 });
+
+describe('SiteNav (CSS module class application)', () => {
+  // Vite emits CSS module locals with shape `_<camelCaseKey>_<hash>` (Vitest mock,
+  // e.g. `_navBrand_82c115`) or `_<camelCaseKey>_<hash>_<index>` (production build,
+  // e.g. `_navBrand_r76ka_16`). With `localsConvention: 'camelCaseOnly'` the
+  // kebab-case keys are dropped, so the CSS module file MUST declare the classes
+  // in camelCase and the component MUST consume them via dot notation; otherwise
+  // the kebab key resolves to `undefined` (build) or to a kebab-cased token
+  // (Vitest mock) and these assertions break.
+  const HASHED = (name: string): RegExp => new RegExp(`_${name}_[a-z0-9]+(?:_\\d+)?`);
+
+  it('applies the navInner CSS module class on the inner wrapper alongside the literal `container` class', async () => {
+    const html = await renderSiteNav();
+    const innerMatch = html.match(/<div\s+class="([^"]+)"[^>]*>\s*<a\s+[^>]*href="#top"/);
+    expect(innerMatch).not.toBeNull();
+    if (innerMatch === null) return;
+    const classAttr = innerMatch[1] ?? '';
+    expect(classAttr).toMatch(HASHED('navInner'));
+    expect(classAttr.split(/\s+/)).toContain('container');
+  });
+
+  it('applies the navBrand CSS module class on the brand <a href="#top">', async () => {
+    const html = await renderSiteNav();
+    const brandMatch = html.match(/<a\s+class="([^"]+)"\s+href="#top"/);
+    expect(brandMatch).not.toBeNull();
+    if (brandMatch === null) return;
+    expect(brandMatch[1]).toMatch(HASHED('navBrand'));
+  });
+
+  it('applies the navLinks CSS module class on the nav-links wrapper <div>', async () => {
+    const html = await renderSiteNav();
+    // nav-links wrapper: the <div> whose first child is the `<a class="nav-link" href="#about">`.
+    const linksMatch = html.match(
+      /<div\s+class="([^"]+)"[^>]*>\s*<a[^>]*class="nav-link"[^>]*href="#about"/,
+    );
+    expect(linksMatch).not.toBeNull();
+    if (linksMatch === null) return;
+    expect(linksMatch[1]).toMatch(HASHED('navLinks'));
+  });
+
+  it('applies the navTools CSS module class on the tools wrapper <div>', async () => {
+    const html = await renderSiteNav();
+    const toolsMatch = html.match(/<div\s+class="([^"]+)"[^>]*>\s*<button[^>]*id="lang-toggle"/);
+    expect(toolsMatch).not.toBeNull();
+    if (toolsMatch === null) return;
+    expect(toolsMatch[1]).toMatch(HASHED('navTools'));
+  });
+
+  it('applies the langBtn CSS module class on the <button id="lang-toggle">', async () => {
+    const html = await renderSiteNav();
+    const langMatch = html.match(/<button[^>]*\sclass="([^"]+)"[^>]*id="lang-toggle"/);
+    expect(langMatch).not.toBeNull();
+    if (langMatch === null) return;
+    expect(langMatch[1]).toMatch(HASHED('langBtn'));
+  });
+
+  it('applies the iconBtn CSS module class on the <button id="theme-toggle">', async () => {
+    const html = await renderSiteNav();
+    const themeMatch = html.match(/<button[^>]*\sclass="([^"]+)"[^>]*id="theme-toggle"/);
+    expect(themeMatch).not.toBeNull();
+    if (themeMatch === null) return;
+    expect(themeMatch[1]).toMatch(HASHED('iconBtn'));
+  });
+});

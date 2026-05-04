@@ -1,0 +1,130 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--line-soft);
+}
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.navBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.navBrandLogo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.navBrand :global(.dot) {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
+  animation: global(nav-dot-pulse) 2.4s ease-in-out infinite;
+}
+.navBrandCv {
+  color: var(--fg-dim);
+  transition: color 0.15s;
+}
+.navBrandCv:hover,
+.navBrandCv:focus-visible {
+  color: var(--fg);
+}
+.navLinks {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.navLinks :global(a.nav-link) {
+  color: var(--fg-dim);
+  transition: color 0.15s;
+  position: relative;
+}
+.navLinks :global(a.nav-link):hover,
+.navLinks :global(a.nav-link):focus-visible {
+  color: var(--fg);
+}
+.navLinks :global(.num) {
+  color: var(--fg-mute);
+  margin-right: 6px;
+  font-size: 10px;
+}
+.navTools {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.iconBtn,
+.langBtn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--fg-dim);
+  border-radius: 6px;
+  padding: 7px 9px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background-color 0.15s;
+  height: 32px;
+}
+.iconBtn:hover,
+.iconBtn:focus-visible,
+.langBtn:hover,
+.langBtn:focus-visible {
+  color: var(--fg);
+  border-color: var(--fg-dim);
+}
+.iconBtn svg {
+  width: 14px;
+  height: 14px;
+}
+.themeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+:global(html[data-theme='dark']) .themeIcon[data-theme-icon='light'],
+:global(html[data-theme='dark']) .themeIcon[data-theme-icon='paper'],
+:global(html[data-theme='light']) .themeIcon[data-theme-icon='dark'],
+:global(html[data-theme='light']) .themeIcon[data-theme-icon='paper'],
+:global(html[data-theme='paper']) .themeIcon[data-theme-icon='dark'],
+:global(html[data-theme='paper']) .themeIcon[data-theme-icon='light'] {
+  display: none;
+}
+.langBtn :global(.opt) {
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+.langBtn :global(.opt.active) {
+  background: var(--fg);
+  color: var(--bg);
+}
+@media (max-width: 720px) {
+  .navLinks {
+    display: none;
+  }
+}

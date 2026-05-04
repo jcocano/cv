@@ -1,6 +1,7 @@
 ---
 import '@/styles/tokens.css';
 import '@/styles/base.css';
+import SiteNav from '@/components/nav/SiteNav.astro';
 import styles from './BaseLayout.module.css';
 
 interface Props {
@@ -46,36 +47,7 @@ const {
   <body>
     <a class={styles.skipLink} href="#main">Skip to content</a>
 
-    <header class={styles.siteNav}>
-      <div class={styles.siteNavInner}>
-        <a class={`${styles.siteNavBrand} mono`} href="#top">jc</a>
-        <nav class={styles.siteNavLinks} aria-label="Primary">
-          <a class="nav-link" href="#about">About</a>
-          <a class="nav-link" href="#work">Work</a>
-          <a class="nav-link" href="#contact">Contact</a>
-        </nav>
-        <div class={styles.siteNavToggles}>
-          <button
-            id="toggle-theme"
-            class={`${styles.siteNavToggle} mono`}
-            type="button"
-            aria-label="Cycle theme"
-            data-shortcut="T"
-          >
-            <span data-toggle-theme-label>dark</span>
-          </button>
-          <button
-            id="toggle-lang"
-            class={`${styles.siteNavToggle} mono`}
-            type="button"
-            aria-label="Toggle language"
-            data-shortcut="L"
-          >
-            <span data-toggle-lang-label>ES</span>
-          </button>
-        </div>
-      </div>
-    </header>
+    <SiteNav />
 
     <main id="main">
       <slot />
@@ -106,6 +78,7 @@ const {
       import { mountReveal } from '@/lib/motion/reveal';
       import { mountScrollspy } from '@/lib/motion/mount-scrollspy';
       import { shouldReduceMotion } from '@/lib/motion/should-reduce-motion';
+      import { applyLangActive } from '@/lib/theme/apply-lang-active';
       import { isThemeName, nextTheme, type ThemeName } from '@/lib/theme/next-theme';
       import { isLangCode, toggleLang, type LangCode } from '@/lib/theme/toggle-lang';
 
@@ -130,10 +103,6 @@ const {
         } catch {
           // localStorage may be unavailable (private mode); ignore.
         }
-        const themeLabels = document.querySelectorAll<HTMLElement>('[data-toggle-theme-label]');
-        themeLabels.forEach((node) => {
-          node.textContent = theme;
-        });
       }
 
       function applyLang(lang: LangCode): void {
@@ -144,10 +113,8 @@ const {
         } catch {
           // localStorage may be unavailable (private mode); ignore.
         }
-        const langLabels = document.querySelectorAll<HTMLElement>('[data-toggle-lang-label]');
-        langLabels.forEach((node) => {
-          node.textContent = lang.toUpperCase();
-        });
+        const langOptions = document.querySelectorAll<HTMLElement>('#lang-toggle .opt');
+        applyLangActive(langOptions, lang);
       }
 
       function cycleTheme(): void {
@@ -165,8 +132,8 @@ const {
         applyLang(toggleLang(readCurrentLang()));
       }
 
-      const themeButton = document.getElementById('toggle-theme');
-      const langButton = document.getElementById('toggle-lang');
+      const themeButton = document.getElementById('theme-toggle');
+      const langButton = document.getElementById('lang-toggle');
       themeButton?.addEventListener('click', cycleTheme);
       langButton?.addEventListener('click', flipLang);
 
@@ -214,8 +181,7 @@ const {
         mountReveal();
       }
 
-      const scrollspyNavLinks =
-        document.querySelectorAll<HTMLAnchorElement>('header nav a.nav-link');
+      const scrollspyNavLinks = document.querySelectorAll<HTMLAnchorElement>('nav a.nav-link');
       // Build the observed targets from the nav-link hrefs themselves so wrapper
       // <div id="about"> is included alongside <section id="work"> / <section id="contact">.
       // A plain array satisfies mountScrollspy's Iterable<HTMLElement> signature.

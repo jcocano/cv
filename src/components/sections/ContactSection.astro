@@ -1,5 +1,6 @@
 ---
 import Eyebrow from '@/components/ui/Eyebrow.astro';
+import DocumentIcon from '@/components/ui/icons/DocumentIcon.astro';
 import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
 import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
 import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
@@ -15,6 +16,8 @@ const { email, github, linkedin } = hero.links;
 const githubLabel = github.replace(/^https?:\/\//, '');
 const linkedinLabel = linkedin.replace(/^https?:\/\//, '');
 const emailLabel = email.replace(/^mailto:/, '');
+
+const cvHref = `${import.meta.env.BASE_URL}jesus_cocano_cv.pdf`;
 ---
 
 <section id="contact" class={styles.contact}>
@@ -44,6 +47,11 @@ const emailLabel = email.replace(/^mailto:/, '');
       <a class={`${styles.cta} ${styles.ctaPrimary}`} href={email}>
         <EmailIcon />
         {emailLabel}
+      </a>
+      <a class={styles.cta} href={cvHref} target="_blank" rel="noopener" download>
+        <DocumentIcon />
+        <span lang="es">Descargar CV</span>
+        <span lang="en">Download CV</span>
       </a>
       <a class={styles.cta} href={github} target="_blank" rel="noopener noreferrer">
         <GithubIcon />

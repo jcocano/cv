@@ -30,6 +30,14 @@
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
   animation: global(nav-dot-pulse) 2.4s ease-in-out infinite;
 }
+.navBrandCv {
+  color: var(--fg-dim);
+  transition: color 0.15s;
+}
+.navBrandCv:hover,
+.navBrandCv:focus-visible {
+  color: var(--fg);
+}
 .navLinks {
   display: flex;
   gap: 26px;

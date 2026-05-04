@@ -3,16 +3,28 @@ import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
 import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
 import SunIcon from '@/components/ui/icons/SunIcon.astro';
 import styles from './SiteNav.module.css';
+
+const cvHref = `${import.meta.env.BASE_URL}jesus_cocano_cv.pdf`;
 ---
 
 <nav class={styles.nav} aria-label="Primary">
   <div class:list={[styles.navInner, 'container']}>
-    <a class={styles.navBrand} href="#top">
-      <span class="dot"></span>
-      <span>jcocano</span>
+    <div class={styles.navBrand}>
+      <a href="#top">
+        <span class="dot"></span>
+        <span>jcocano</span>
+      </a>
       <span style="color: var(--fg-mute);">/</span>
-      <span style="color: var(--fg-dim);">cv</span>
-    </a>
+      <a
+        class={styles.navBrandCv}
+        href={cvHref}
+        target="_blank"
+        rel="noopener"
+        download
+        aria-label="Download CV"
+        title="Download CV">cv</a
+      >
+    </div>
     <div class={styles.navLinks}>
       <a class="nav-link" href="#about">
         <span class="num">01</span>

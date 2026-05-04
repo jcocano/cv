@@ -16,21 +16,70 @@ describe('SiteNav (render-test)', () => {
     expect(navMatches).toHaveLength(1);
   });
 
-  it('renders the brand anchor href="#top" with 4 child <span>s in order: dot, "jcocano", "/", "cv"', async () => {
+  it('renders the brand wrapper as a <div> (not an <a>) containing exactly 2 anchors', async () => {
+    const html = await renderSiteNav();
+    // Match the brand wrapper: a <div class="..._navBrand_..."> ... </div>
+    const brandMatch = html.match(/<div\s+class="[^"]*_navBrand_[^"]*"[^>]*>([\s\S]*?)<\/div>/);
+    expect(brandMatch).not.toBeNull();
+    if (brandMatch === null) return;
+    const inner = brandMatch[1] ?? '';
+    const anchorMatches = Array.from(inner.matchAll(/<a\b[^>]*>/g));
+    expect(anchorMatches).toHaveLength(2);
+  });
+
+  it('renders the brand logo sub-link <a href="#top"> wrapping the dot and "jcocano" span (no "/" or "cv" inside)', async () => {
     const html = await renderSiteNav();
     expect(html).toMatch(
-      /<a[^>]*href="#top"[^>]*>\s*<span[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<span[^>]*>\/<\/span>\s*<span[^>]*>cv<\/span>\s*<\/a>/,
+      /<a[^>]*href="#top"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<\/a>/,
     );
   });
 
-  it('renders the brand "/" separator with inline style color: var(--fg-mute)', async () => {
+  it('renders the brand "/" separator span with inline style color: var(--fg-mute) outside any anchor', async () => {
     const html = await renderSiteNav();
-    expect(html).toMatch(/<span[^>]*style="[^"]*color:\s*var\(--fg-mute\)[^"]*"[^>]*>\/<\/span>/);
+    // Locate the brand wrapper and search the separator within it.
+    const brandMatch = html.match(/<div\s+class="[^"]*_navBrand_[^"]*"[^>]*>([\s\S]*?)<\/div>/);
+    expect(brandMatch).not.toBeNull();
+    if (brandMatch === null) return;
+    const inner = brandMatch[1] ?? '';
+    expect(inner).toMatch(/<span[^>]*style="[^"]*color:\s*var\(--fg-mute\)[^"]*"[^>]*>\/<\/span>/);
+    // The separator must NOT be wrapped inside an <a>.
+    // Strip everything inside <a>...</a> blocks and assert the separator is still present.
+    const innerWithoutAnchors = inner.replace(/<a\b[\s\S]*?<\/a>/g, '');
+    expect(innerWithoutAnchors).toMatch(
+      /<span[^>]*style="[^"]*color:\s*var\(--fg-mute\)[^"]*"[^>]*>\/<\/span>/,
+    );
   });
 
-  it('renders the brand "cv" suffix with inline style color: var(--fg-dim)', async () => {
+  it('renders the brand CV sub-link <a> with cv-pdf href, download, target="_blank", rel="noopener", aria-label, title, literal text "cv"', async () => {
     const html = await renderSiteNav();
-    expect(html).toMatch(/<span[^>]*style="[^"]*color:\s*var\(--fg-dim\)[^"]*"[^>]*>cv<\/span>/);
+    // The CV anchor: text content is the literal `cv`, contains all required attributes.
+    const cvAnchorMatch = html.match(/<a\b([^>]*)>cv<\/a>/);
+    expect(cvAnchorMatch).not.toBeNull();
+    if (cvAnchorMatch === null) return;
+    const attrs = cvAnchorMatch[1] ?? '';
+    // href ends with jesus_cocano_cv.pdf
+    const hrefMatch = attrs.match(/href="([^"]+)"/);
+    expect(hrefMatch).not.toBeNull();
+    if (hrefMatch === null) return;
+    expect(hrefMatch[1]).toMatch(/jesus_cocano_cv\.pdf$/);
+    // target, rel, download, aria-label, title.
+    expect(attrs).toMatch(/\btarget="_blank"/);
+    expect(attrs).toMatch(/\brel="noopener"/);
+    expect(attrs).toMatch(/\bdownload\b/);
+    expect(attrs).toMatch(/\baria-label="Download CV"/);
+    expect(attrs).toMatch(/\btitle="Download CV"/);
+  });
+
+  it('applies the navBrandCv CSS module class on the CV sub-link', async () => {
+    const html = await renderSiteNav();
+    const cvAnchorMatch = html.match(/<a\b([^>]*)>cv<\/a>/);
+    expect(cvAnchorMatch).not.toBeNull();
+    if (cvAnchorMatch === null) return;
+    const attrs = cvAnchorMatch[1] ?? '';
+    const classMatch = attrs.match(/class="([^"]+)"/);
+    expect(classMatch).not.toBeNull();
+    if (classMatch === null) return;
+    expect(classMatch[1]).toMatch(/_navBrandCv_[a-z0-9]+(?:_\d+)?/);
   });
 
   it('renders exactly 5 nav-link anchors with the expected hrefs in order', async () => {
@@ -171,7 +220,7 @@ describe('SiteNav (CSS module class application)', () => {
 
   it('applies the navInner CSS module class on the inner wrapper alongside the literal `container` class', async () => {
     const html = await renderSiteNav();
-    const innerMatch = html.match(/<div\s+class="([^"]+)"[^>]*>\s*<a\s+[^>]*href="#top"/);
+    const innerMatch = html.match(/<div\s+class="([^"]+)"[^>]*>\s*<div\s+class="[^"]*_navBrand_/);
     expect(innerMatch).not.toBeNull();
     if (innerMatch === null) return;
     const classAttr = innerMatch[1] ?? '';
@@ -179,9 +228,9 @@ describe('SiteNav (CSS module class application)', () => {
     expect(classAttr.split(/\s+/)).toContain('container');
   });
 
-  it('applies the navBrand CSS module class on the brand <a href="#top">', async () => {
+  it('applies the navBrand CSS module class on the brand <div> wrapper', async () => {
     const html = await renderSiteNav();
-    const brandMatch = html.match(/<a\s+class="([^"]+)"\s+href="#top"/);
+    const brandMatch = html.match(/<div\s+class="([^"]+)"[^>]*>\s*<a[^>]*href="#top"/);
     expect(brandMatch).not.toBeNull();
     if (brandMatch === null) return;
     expect(brandMatch[1]).toMatch(HASHED('navBrand'));

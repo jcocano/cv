@@ -1,0 +1,13 @@
+---
+import { t } from '@/lib/i18n/t';
+import styles from './LabSystemLink.module.css';
+
+const href = `${import.meta.env.BASE_URL}design-system/`;
+---
+
+<div class={styles.systemLinkWrap}>
+  <a class={styles.systemLink} href={href}>
+    <span lang="es">{t('lab.systemLink', 'es')}</span>
+    <span lang="en">{t('lab.systemLink', 'en')}</span>
+  </a>
+</div>

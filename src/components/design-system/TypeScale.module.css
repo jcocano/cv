@@ -1,0 +1,104 @@
+.type-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.specimen {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.specimen:last-child {
+  border-bottom: 0;
+}
+
+.specimen-content {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  color: var(--fg);
+}
+
+.label-h1 {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.label-h2 {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.label-h3 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.label-h4 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.label-h5 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.label-h6 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+
+.label-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--fg-dim);
+}
+
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg-dim);
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4px 12px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  text-align: right;
+}
+
+.meta dt {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.meta dd {
+  margin: 0;
+  color: var(--fg-dim);
+}

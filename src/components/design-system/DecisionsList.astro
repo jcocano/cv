@@ -1,0 +1,33 @@
+---
+import designSystemDecisionsJson from '@/data/design-system-decisions.json';
+import {
+  designSystemDecisionsSchema,
+  type DesignSystemDecisions,
+} from '@/lib/schemas/design-system-decisions';
+import styles from './DecisionsList.module.css';
+
+const decisions: DesignSystemDecisions =
+  designSystemDecisionsSchema.parse(designSystemDecisionsJson);
+---
+
+<div class={styles.decisionsList}>
+  {
+    decisions.decisions.map((decision) => {
+      const anchorId = `decision-${decision.id}`;
+      return (
+        <article class={styles.entry} data-decision-entry={decision.id}>
+          <div class={styles.head}>
+            <h3 class={styles.title} id={anchorId}>
+              <span lang="es">{decision.title.es}</span>
+              <span lang="en">{decision.title.en}</span>
+            </h3>
+          </div>
+          <p class={styles.rationale}>
+            <span lang="es">{decision.rationale.es}</span>
+            <span lang="en">{decision.rationale.en}</span>
+          </p>
+        </article>
+      );
+    })
+  }
+</div>

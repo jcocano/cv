@@ -3,21 +3,10 @@ dist
 .astro
 .cache
 package-lock.json
-refactor
-jesus_cocano_cv.pdf
-pfp.jpeg
 
 # Playwright artifacts (baselines live in tests/visual/__snapshots__/)
 test-results
 playwright-report
-
-# Sitio vanilla — coexiste en raíz hasta feature #19 (decision §8.5)
-index.html
-styles.css
-accordion.js
-lang.js
-tabs.js
-theme.js
 
 # Docs y coordinación: redactados a mano en español, no son parte del producto.
 # Quedan fuera del check de Prettier para no introducir reflows no deseados.

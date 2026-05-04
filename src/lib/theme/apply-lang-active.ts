@@ -6,8 +6,7 @@ const LANG_DATA_ATTR = 'data-l';
 /**
  * Toggles the `.active` class across the lang-pill `.opt` children so the
  * one whose `data-l` attribute matches `lang` gains it and the others lose
- * it. Mirrors the bilingual lang toggle described in
- * `refactor/design_handoff_cv_portfolio/design/index.html` lines 32-35.
+ * it. Mirrors the bilingual lang toggle from the original design.
  */
 export function applyLangActive(langOptions: Iterable<HTMLElement>, lang: LangCode): void {
   for (const option of langOptions) {

@@ -1,0 +1,131 @@
+---
+import AgentsMcpIcon from '@/components/ui/icons/AgentsMcpIcon.astro';
+import AssistedDevIcon from '@/components/ui/icons/AssistedDevIcon.astro';
+import DocumentIcon from '@/components/ui/icons/DocumentIcon.astro';
+import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
+import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
+import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
+import LlmBackendsIcon from '@/components/ui/icons/LlmBackendsIcon.astro';
+import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
+import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
+import RepoIcon from '@/components/ui/icons/RepoIcon.astro';
+import SparkleIcon from '@/components/ui/icons/SparkleIcon.astro';
+import SunIcon from '@/components/ui/icons/SunIcon.astro';
+import Eyebrow from '@/components/ui/Eyebrow.astro';
+import Lang from '@/components/ui/Lang.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Tag from '@/components/ui/Tag.astro';
+import styles from './UiGallery.module.css';
+
+interface IconEntry {
+  readonly id: string;
+  readonly name: string;
+}
+
+const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
+  { id: 'ui-agents-mcp-icon', name: 'AgentsMcpIcon' },
+  { id: 'ui-assisted-dev-icon', name: 'AssistedDevIcon' },
+  { id: 'ui-document-icon', name: 'DocumentIcon' },
+  { id: 'ui-email-icon', name: 'EmailIcon' },
+  { id: 'ui-github-icon', name: 'GithubIcon' },
+  { id: 'ui-linkedin-icon', name: 'LinkedinIcon' },
+  { id: 'ui-llm-backends-icon', name: 'LlmBackendsIcon' },
+  { id: 'ui-moon-icon', name: 'MoonIcon' },
+  { id: 'ui-paper-icon', name: 'PaperIcon' },
+  { id: 'ui-repo-icon', name: 'RepoIcon' },
+  { id: 'ui-sparkle-icon', name: 'SparkleIcon' },
+  { id: 'ui-sun-icon', name: 'SunIcon' },
+];
+---
+
+<div class={styles.gallery}>
+  {
+    /*
+    Sub-group 1: direct primitives (Eyebrow, Lang, SectionHead, Tag).
+    SectionHead is display-size and would stretch every cell, so it is
+    promoted to a full-width row via `data-ui-span="full"`. The other
+    three primitives sit in a regular auto-fit row above it.
+  */
+  }
+  <div class={styles.subgroup} data-ui-group="primitives">
+    <article class={styles.entry} data-ui-entry="ui-eyebrow">
+      <div class={styles.head}>
+        <h3 class={styles.name} id="ui-eyebrow">Eyebrow</h3>
+      </div>
+      <div class={styles.demo}>
+        <Eyebrow num="01" labelEs="muestra" labelEn="preview" />
+      </div>
+    </article>
+
+    <article class={styles.entry} data-ui-entry="ui-lang">
+      <div class={styles.head}>
+        <h3 class={styles.name} id="ui-lang">Lang</h3>
+      </div>
+      <div class={styles.demo}>
+        <Lang lang="es">muestra bilingüe</Lang>
+        <Lang lang="en">bilingual preview</Lang>
+      </div>
+    </article>
+
+    <article class={styles.entry} data-ui-entry="ui-tag">
+      <div class={styles.head}>
+        <h3 class={styles.name} id="ui-tag">Tag</h3>
+      </div>
+      <div class={styles.demo}>
+        <Tag label="Tag preview" />
+      </div>
+    </article>
+
+    <article class={styles.entry} data-ui-entry="ui-section-head" data-ui-span="full">
+      <div class={styles.head}>
+        <h3 class={styles.name} id="ui-section-head">SectionHead</h3>
+      </div>
+      <div class={styles.demoWide}>
+        <SectionHead
+          num="01"
+          labelEs="muestra"
+          labelEn="preview"
+          titleEs="Título de muestra"
+          titleEn="Sample title"
+        />
+      </div>
+    </article>
+  </div>
+
+  {
+    /*
+    Sub-group 2: icons. A dense grid of compact, uniform cells so the 12
+    icons stay on the same visual rhythm without inheriting the height of
+    SectionHead.
+  */
+  }
+  <div class={styles.subgroupIcons} data-ui-group="icons">
+    {
+      ICON_ENTRIES.map((iconEntry) => (
+        <article class={styles.entry} data-ui-entry={iconEntry.id}>
+          <div class={styles.head}>
+            <h3 class={styles.name} id={iconEntry.id}>
+              {iconEntry.name}
+            </h3>
+          </div>
+          <div class={styles.demoIcon}>
+            <span class={styles.iconDemo}>
+              {iconEntry.id === 'ui-agents-mcp-icon' && <AgentsMcpIcon />}
+              {iconEntry.id === 'ui-assisted-dev-icon' && <AssistedDevIcon />}
+              {iconEntry.id === 'ui-document-icon' && <DocumentIcon />}
+              {iconEntry.id === 'ui-email-icon' && <EmailIcon />}
+              {iconEntry.id === 'ui-github-icon' && <GithubIcon />}
+              {iconEntry.id === 'ui-linkedin-icon' && <LinkedinIcon />}
+              {iconEntry.id === 'ui-llm-backends-icon' && <LlmBackendsIcon />}
+              {iconEntry.id === 'ui-moon-icon' && <MoonIcon />}
+              {iconEntry.id === 'ui-paper-icon' && <PaperIcon />}
+              {iconEntry.id === 'ui-repo-icon' && <RepoIcon />}
+              {iconEntry.id === 'ui-sparkle-icon' && <SparkleIcon />}
+              {iconEntry.id === 'ui-sun-icon' && <SunIcon />}
+            </span>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>

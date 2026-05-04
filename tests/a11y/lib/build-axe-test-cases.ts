@@ -12,6 +12,7 @@ const PAGE_PATHS: readonly string[] = [
   'projects/cluster-separation/index.html',
   'projects/incommers-nft/index.html',
   'projects/made-by-apes/index.html',
+  'design-system/index.html',
 ];
 
 const THEMES: readonly ThemeName[] = ['dark', 'light', 'paper'];

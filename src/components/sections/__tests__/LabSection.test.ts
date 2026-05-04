@@ -109,4 +109,11 @@ describe('LabSection (render-test)', () => {
     expect(html).toMatch(/<article[^>]*data-piece="grid"/);
     expect(html).toMatch(/<article[^>]*data-piece="marquee"/);
   });
+
+  it('renders the discreet design-system link at the end of the lab grid', async () => {
+    const html = await renderLabSection();
+    expect(html).toMatch(/<a[^>]*href="[^"]*design-system\/"/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>El sistema detrás de estas piezas →<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>The system behind these pieces →<\/span>/);
+  });
 });

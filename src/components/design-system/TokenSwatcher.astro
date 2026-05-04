@@ -1,0 +1,48 @@
+---
+import styles from './TokenSwatcher.module.css';
+
+const TOKEN_NAMES = [
+  'bg',
+  'bg-elev',
+  'bg-elev-2',
+  'fg',
+  'fg-dim',
+  'fg-mute',
+  'line',
+  'line-soft',
+  'accent',
+  'accent-dim',
+  'warn',
+] as const;
+
+const THEMES = ['dark', 'light', 'paper'] as const;
+---
+
+<div class={styles.tokenSwatcher}>
+  <div class={styles.activeLine}>
+    <p class={styles.activeLabel}>
+      Active theme: <span data-toggle-theme-label>dark</span>
+    </p>
+    <p class={styles.activeNote}>
+      Cycle the theme with the button in the nav or by pressing <kbd>T</kbd>.
+    </p>
+  </div>
+
+  {
+    THEMES.map((theme) => (
+      <section class={styles.themeBlock} data-theme-preview={theme}>
+        <h2 class={styles.themeHeading} id={`token-theme-${theme}`}>
+          {theme}
+        </h2>
+        <div class={styles.swatches} data-theme={theme}>
+          {TOKEN_NAMES.map((token) => (
+            <article class={styles.swatch}>
+              <span class={styles.chip} style={`background: var(--${token});`} aria-hidden="true" />
+              <span class={styles.name}>{token}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+</div>

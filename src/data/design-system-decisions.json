@@ -1,0 +1,92 @@
+{
+  "decisions": [
+    {
+      "id": "token-set-extended",
+      "title": {
+        "es": "Set extendido de 11 tokens (no mínimo de 5)",
+        "en": "Extended set of 11 tokens (not a minimal set of 5)"
+      },
+      "rationale": {
+        "es": "Cubrir superficies (bg, bg-elev, bg-elev-2), texto (fg, fg-dim, fg-mute), líneas (line, line-soft) y acento (accent, accent-dim, warn) permite jerarquías visuales finas sin volver a hardcodear valores.",
+        "en": "Covering surfaces (bg, bg-elev, bg-elev-2), text (fg, fg-dim, fg-mute), lines (line, line-soft) and accent (accent, accent-dim, warn) gives fine visual hierarchy without hardcoding fallbacks."
+      }
+    },
+    {
+      "id": "tokens-warned-per-theme",
+      "title": {
+        "es": "Tokens declarados por theme, sin herencia en cascada",
+        "en": "Tokens declared per theme, no cascade inheritance"
+      },
+      "rationale": {
+        "es": "Cada theme redeclara los 11 tokens explícitamente; un theme no hereda del anterior. Cambios fuera del set canónico se detectan al revisar el archivo.",
+        "en": "Each theme redeclares all 11 tokens explicitly; no theme inherits from another. Changes outside the canonical set are obvious when reviewing the file."
+      }
+    },
+    {
+      "id": "geist-fontsource",
+      "title": {
+        "es": "Geist self-hosted vía @fontsource",
+        "en": "Geist self-hosted via @fontsource"
+      },
+      "rationale": {
+        "es": "Sin Google Fonts en runtime: cero requests externos en cold-load de GH Pages, paridad de fuentes con CI, y cero dependencia de privacidad de terceros.",
+        "en": "No Google Fonts at runtime: zero external requests on GH Pages cold-load, font parity with CI, and no third-party privacy dependency."
+      }
+    },
+    {
+      "id": "view-transitions-with-css-fallback",
+      "title": {
+        "es": "View transitions del navegador con fallback CSS",
+        "en": "Browser view transitions with CSS fallback"
+      },
+      "rationale": {
+        "es": "El cambio de theme usa document.startViewTransition cuando está disponible y cae a transiciones CSS en navegadores que aún no lo soportan, sin saltos perceptibles.",
+        "en": "Theme switching uses document.startViewTransition when available and falls back to CSS transitions on browsers without support, with no jarring jump."
+      }
+    },
+    {
+      "id": "theme-cycle-dark-light-paper",
+      "title": {
+        "es": "Ciclo dark → light → paper con shortcut T",
+        "en": "Cycle dark → light → paper with T shortcut"
+      },
+      "rationale": {
+        "es": "Un solo botón cíclico es más simple que un selector con dropdown; el orden empieza por el theme default (dark) y termina por el más exótico (paper). La tecla T da acceso rápido sin tocar el ratón.",
+        "en": "A single cyclic button is simpler than a dropdown selector; the order starts at the default theme (dark) and ends at the most exotic one (paper). T gives keyboard-first access without reaching for the mouse."
+      }
+    },
+    {
+      "id": "theme-toggle-shows-next",
+      "title": {
+        "es": "El theme-toggle muestra el icono del NEXT theme",
+        "en": "The theme toggle shows the NEXT theme icon"
+      },
+      "rationale": {
+        "es": "El icono representa la acción (al pulsar irás aquí), no el estado actual. Reduce confusión cuando alguien ve el botón sin contexto previo.",
+        "en": "The icon represents the action (clicking takes you here), not the current state. Reduces confusion for anyone seeing the button without prior context."
+      }
+    },
+    {
+      "id": "brand-cv-split-link",
+      "title": {
+        "es": "Brand jc con split-link en el nav",
+        "en": "Brand jc with split-link in the nav"
+      },
+      "rationale": {
+        "es": "El monograma jc es a la vez identidad y home-link, separado de los anchors de sección para que el primer click no requiera precisión de píxel.",
+        "en": "The jc monogram acts as identity and home link at once, kept separate from the section anchors so the first click does not require pixel precision."
+      }
+    },
+    {
+      "id": "lab-system-discreet-link",
+      "title": {
+        "es": "Link discreto del Lab al design system",
+        "en": "Discreet link from Lab to the design system"
+      },
+      "rationale": {
+        "es": "El sistema detrás de las piezas del Lab vive en /design-system/. Un link mono pequeño al final del grid invita a explorar sin gritar; quien busca craft lo encuentra, el resto sigue de largo.",
+        "en": "The system behind the Lab pieces lives at /design-system/. A small mono link at the end of the grid invites exploration without shouting; those looking for craft find it, the rest move on."
+      }
+    }
+  ]
+}

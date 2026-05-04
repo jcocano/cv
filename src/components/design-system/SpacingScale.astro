@@ -1,0 +1,44 @@
+---
+import styles from './SpacingScale.module.css';
+
+type SpacingPreviewKey = 'radius' | 'radius-lg' | 'container';
+
+interface SpacingEntry {
+  readonly id: string;
+  readonly token: string;
+  readonly value: string;
+  readonly previewKey: SpacingPreviewKey;
+}
+
+const PREVIEW_CLASS_BY_KEY: Record<SpacingPreviewKey, string | undefined> = {
+  radius: styles.previewRadius,
+  'radius-lg': styles.previewRadiusLg,
+  container: styles.previewContainer,
+};
+
+const ENTRIES: ReadonlyArray<SpacingEntry> = [
+  { id: 'spacing-radius', token: '--radius', value: '8px', previewKey: 'radius' },
+  { id: 'spacing-radius-lg', token: '--radius-lg', value: '14px', previewKey: 'radius-lg' },
+  { id: 'spacing-container', token: '--container', value: '1180px', previewKey: 'container' },
+];
+---
+
+<div class={styles.spacingScale}>
+  {
+    ENTRIES.map((entry) => (
+      <article class={styles.entry} data-spacing-entry={entry.id}>
+        <div>
+          <div class={styles.head}>
+            <h3 class={styles.tokenName} id={entry.id}>
+              {entry.token}
+            </h3>
+          </div>
+          <p class={styles.value}>{entry.value}</p>
+        </div>
+        <div class={styles.preview}>
+          <div class={PREVIEW_CLASS_BY_KEY[entry.previewKey]} aria-hidden="true" />
+        </div>
+      </article>
+    ))
+  }
+</div>

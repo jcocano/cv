@@ -1,0 +1,61 @@
+---
+import DecisionsList from '@/components/design-system/DecisionsList.astro';
+import SpacingScale from '@/components/design-system/SpacingScale.astro';
+import TokenSwatcher from '@/components/design-system/TokenSwatcher.astro';
+import TypeScale from '@/components/design-system/TypeScale.astro';
+import UiGallery from '@/components/design-system/UiGallery.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import styles from './index.module.css';
+---
+
+<BaseLayout title="Design system — Jesús Cocaño">
+  <article class={`container ${styles.pageShell}`}>
+    <header class={styles.pageHead}>
+      <h1 class={styles.pageTitle}>
+        <span lang="es">Design system</span>
+        <span lang="en">Design system</span>
+      </h1>
+      <p class={styles.pageLede}>
+        <span lang="es"
+          >Tokens, tipografía, primitives de UI, espaciado y decisiones del sistema.</span
+        >
+        <span lang="en">Tokens, typography, UI primitives, spacing, and system decisions.</span>
+      </p>
+    </header>
+
+    <section id="block-tokens" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Tokens</span><span lang="en">Tokens</span>
+      </h2>
+      <TokenSwatcher />
+    </section>
+
+    <section id="block-typography" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Tipografía</span><span lang="en">Typography</span>
+      </h2>
+      <TypeScale />
+    </section>
+
+    <section id="block-ui-primitives" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">UI primitives</span><span lang="en">UI primitives</span>
+      </h2>
+      <UiGallery />
+    </section>
+
+    <section id="block-spacing" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Espaciado y radios</span><span lang="en">Spacing & radii</span>
+      </h2>
+      <SpacingScale />
+    </section>
+
+    <section id="block-decisions" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Decisiones</span><span lang="en">Decisions</span>
+      </h2>
+      <DecisionsList />
+    </section>
+  </article>
+</BaseLayout>

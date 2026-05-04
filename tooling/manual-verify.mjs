@@ -22,6 +22,7 @@ const PATHS = [
   { path: 'projects/cluster-separation/', slug: 'project-cluster-separation' },
   { path: 'projects/incommers-nft/', slug: 'project-incommers-nft' },
   { path: 'projects/made-by-apes/', slug: 'project-made-by-apes' },
+  { path: 'design-system/', slug: 'design-system' },
 ];
 
 /**

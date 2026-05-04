@@ -1,5 +1,6 @@
 ---
 import LabPiece from '@/components/lab/LabPiece.astro';
+import LabSystemLink from '@/components/lab/LabSystemLink.astro';
 import SectionHead from '@/components/ui/SectionHead.astro';
 import labJson from '@/data/lab.json';
 import { t } from '@/lib/i18n/t';
@@ -23,6 +24,7 @@ const lab: Lab = labSchema.parse(labJson);
 
     <div class={`${styles.labGrid} reveal`}>
       {lab.pieces.map((piece) => <LabPiece piece={piece} />)}
+      <LabSystemLink />
     </div>
   </div>
 </section>

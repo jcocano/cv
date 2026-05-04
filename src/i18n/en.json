@@ -29,5 +29,6 @@
   "stack.eyebrow": "technical",
   "summary.eyebrow": "summary",
   "work.eyebrow": "selected work",
+  "work.ossEyebrow": "open source",
   "work.sideEyebrow": "side projects"
 }

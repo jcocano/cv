@@ -190,10 +190,33 @@ describe('WorkSection (render-test)', () => {
     expect(draguimaSlice).not.toMatch(/<a[^>]*target="_blank"/);
   });
 
-  it('does not render the OSS (open source) block in this section (out of scope, feature 25)', async () => {
+  it('renders the OSS block eyebrow with num="04.5" and bilingual "open source" labels', async () => {
     const html = await renderWorkSection();
-    expect(html).not.toMatch(/<span[^>]*>04\.5<\/span>/);
-    expect(html).not.toMatch(/lang="es"[^>]*>open source<\/span>/);
+    expect(html).toMatch(/<span[^>]*>04\.5<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>open source<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>open source<\/span>/);
+  });
+
+  it('renders the OssCardList grid (3 oss cards) inside the section', async () => {
+    const html = await renderWorkSection();
+    const cardMatches = html.match(/class="[^"]*ossCard/g);
+    expect(cardMatches).not.toBeNull();
+    if (cardMatches === null) {
+      throw new Error('expected three oss cards');
+    }
+    expect(cardMatches).toHaveLength(3);
+  });
+
+  it('places the OSS block AFTER the featured/grid projects and BEFORE the side-projects block', async () => {
+    const html = await renderWorkSection();
+    const featuredIdx = html.search(/class="[^"]*cardFeatured/);
+    const ossEyebrowIdx = html.search(/<span[^>]*>04\.5<\/span>/);
+    const sideEyebrowIdx = html.search(/<span[^>]*>04\.6<\/span>/);
+    expect(featuredIdx).toBeGreaterThan(-1);
+    expect(ossEyebrowIdx).toBeGreaterThan(-1);
+    expect(sideEyebrowIdx).toBeGreaterThan(-1);
+    expect(featuredIdx).toBeLessThan(ossEyebrowIdx);
+    expect(ossEyebrowIdx).toBeLessThan(sideEyebrowIdx);
   });
 
   it('adds the global "reveal" class on the standalone side-block Eyebrow (num="04.6", handoff L647)', async () => {

@@ -1,0 +1,165 @@
+.oss-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+@media (max-width: 860px) {
+  .oss-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.oss-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  background: var(--bg-elev);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 260px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.oss-card:hover {
+  border-color: var(--accent);
+  background: var(--bg);
+  transform: translateY(-2px);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+}
+
+.glyph {
+  width: 14px;
+  height: 14px;
+  color: var(--fg-dim);
+  flex: none;
+}
+
+.lic {
+  margin-left: auto;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 10px;
+  color: var(--fg-dim);
+}
+
+.repo-name {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.org {
+  color: var(--fg-mute);
+  font-weight: 400;
+}
+
+.slash {
+  color: var(--fg-mute);
+  font-weight: 400;
+}
+
+.name {
+  color: var(--accent);
+}
+
+.desc {
+  margin: 0;
+  color: var(--fg-dim);
+  font-size: 13px;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.langs {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+}
+
+.lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.swatch-ts {
+  background: oklch(0.7 0.13 240);
+}
+
+.swatch-js {
+  background: oklch(0.85 0.16 95);
+}
+
+.swatch-dock {
+  background: oklch(0.7 0.12 220);
+}
+
+.swatch-electron {
+  background: oklch(0.7 0.13 200);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 14px;
+}
+
+.action-cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+  transition: all 0.15s;
+}
+
+.oss-card:hover .action-cta {
+  color: var(--fg);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.action-cta svg {
+  width: 12px;
+  height: 12px;
+}

@@ -1,4 +1,5 @@
 ---
+import { readableHost } from '@/lib/content/readable-host';
 import type { SideProject } from '@/lib/schemas/side-projects';
 import styles from './SideProjectRow.module.css';
 
@@ -7,14 +8,6 @@ interface Props {
 }
 
 const { project } = Astro.props;
-
-// Strip protocol + leading "www." for the human-readable label of the external link.
-function readableHost(url: string): string {
-  return url
-    .replace(/^https?:\/\//, '')
-    .replace(/^www\./, '')
-    .replace(/\/$/, '');
-}
 ---
 
 <div class={styles.sideRow}>

@@ -43,11 +43,38 @@ describe('pages/projects/[...slug].astro (render-test)', () => {
     expect(html).toContain('2025');
   });
 
-  it('renders the made-by-apes back-link href to the work section of the index', async () => {
+  it('renders the made-by-apes back-link with the page-aware default href to home (BASE_URL "/")', async () => {
+    // Default (server-render): the back link points to home `/` and shows the
+    // "Inicio / Home" labels. JS at runtime mutates the link to
+    // `/projects/` with "Todos los proyectos / All projects" labels when
+    // `document.referrer` matches the projects index. The HTML emitted here
+    // is the default. BASE_URL in vitest is "/".
     const html = await renderSlug('made-by-apes');
-    // BASE_URL in vitest is "/" because astro.config.mjs `base: '/cv/'` is not
-    // applied. The production build uses `/cv/`. We assert the path tail.
-    expect(html).toMatch(/<a[^>]*href="\/#work"/);
+    expect(html).toMatch(/<a[^>]*data-back-link[^>]*href="\/"/);
+  });
+
+  it('emits both home/projects label variants, with the home variant visible and the projects variant hidden by default', async () => {
+    const html = await renderSlug('made-by-apes');
+    expect(html).toMatch(/<span[^>]*data-back-variant="home"[^>]*lang="es"[^>]*>Inicio<\/span>/);
+    expect(html).toMatch(/<span[^>]*data-back-variant="home"[^>]*lang="en"[^>]*>Home<\/span>/);
+    expect(html).toMatch(
+      /<span[^>]*data-back-variant="projects"[^>]*lang="es"[^>]*hidden[^>]*>Todos los proyectos<\/span>/,
+    );
+    expect(html).toMatch(
+      /<span[^>]*data-back-variant="projects"[^>]*lang="en"[^>]*hidden[^>]*>All projects<\/span>/,
+    );
+  });
+
+  it('emits the data-home-href and data-projects-href attributes on the back-link anchor', async () => {
+    const html = await renderSlug('made-by-apes');
+    expect(html).toMatch(/<a[^>]*data-back-link[^>]*data-home-href="\/"/);
+    expect(html).toMatch(/<a[^>]*data-back-link[^>]*data-projects-href="\/projects\/"/);
+  });
+
+  it('emits a referrer-aware <script> alongside the back-link to mutate it when document.referrer matches /projects/', async () => {
+    const html = await renderSlug('made-by-apes');
+    expect(html).toMatch(/<script[\s\S]*document\.referrer[\s\S]*<\/script>/);
+    expect(html).toMatch(/<script[\s\S]*data-back-link[\s\S]*<\/script>/);
   });
 
   it('renders all 4 deep-dive sections of made-by-apes (context, impact, decisions, outcome)', async () => {
@@ -76,35 +103,48 @@ describe('pages/projects/[...slug].astro (render-test)', () => {
     expect(html).toContain('on-chain sync latency');
   });
 
-  it('renders the prev=null and next=cluster-separation nav for made-by-apes (first by order)', async () => {
+  it('renders the circular prev=cluster-separation and next=incommers-nft nav for made-by-apes (first by order, wraps prev to last)', async () => {
     const html = await renderSlug('made-by-apes');
-    // No "Anterior/Previous" — only the back-to-portfolio CTA on the left.
-    const previousMatches = html.match(/Previous/g);
-    expect(previousMatches).toBeNull();
-    // The right CTA links to the next project (cluster-separation).
-    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Siguiente/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Next/);
-  });
-
-  it('renders the prev=made-by-apes and next=incommers-nft nav for cluster-separation (middle)', async () => {
-    const html = await renderSlug('cluster-separation');
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Anterior/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Previous/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Anterior/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Previous/);
     expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Siguiente/);
     expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Next/);
   });
 
-  it('renders the prev=cluster-separation and next=null nav for incommers-nft (last by order)', async () => {
+  it('renders the prev=made-by-apes and next=cluster-separation nav for incommers-nft (middle)', async () => {
     const html = await renderSlug('incommers-nft');
-    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Anterior/);
-    // The right CTA goes back to the portfolio (no next project), so no "Siguiente/Next" label.
-    const siguienteMatches = html.match(/Siguiente/g);
-    expect(siguienteMatches).toBeNull();
-    // Iter 4: the legacy `>Next` regex would also match the "Next.js" stack
-    // pill (`<span ...>Next.js</span>`). We tighten the assertion to the
-    // exact closing tag of the nav label `<span lang="en" ...>Next</span>`.
-    const nextLabelMatches = html.match(/<span[^>]*lang="en"[^>]*>Next<\/span>/g);
-    expect(nextLabelMatches).toBeNull();
+    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Anterior/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Previous/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Siguiente/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/cluster-separation"[\s\S]*Next/);
+  });
+
+  it('renders the circular prev=incommers-nft and next=made-by-apes nav for cluster-separation (last by order, wraps next to first)', async () => {
+    const html = await renderSlug('cluster-separation');
+    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Anterior/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Previous/);
+    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Siguiente/);
+    // Tighten the assertion: a legacy `>Next` regex would match a "Next.js"
+    // stack pill. We pin the nav label to the exact closing tag.
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Next<\/span>/);
+  });
+
+  it('does not render the legacy "Todos los proyectos / All projects" fallback inside the bottom nav (circular: never falls back to the portfolio)', async () => {
+    for (const slug of ['made-by-apes', 'incommers-nft', 'cluster-separation']) {
+      const html = await renderSlug(slug);
+      // The legacy fallback labels lived inside the nextProj nav when prev or
+      // next was null. With circular rotation those branches are gone.
+      // The same labels are emitted for the back-link variant, so we narrow
+      // the search to the nextProj nav block.
+      const navMatch = html.match(/<nav[^>]*aria-label="Project navigation"[\s\S]*?<\/nav>/);
+      expect(navMatch).not.toBeNull();
+      const navHtml = navMatch?.[0] ?? '';
+      expect(navHtml).not.toContain('Todos los proyectos');
+      expect(navHtml).not.toContain('All projects');
+      expect(navHtml).not.toContain('Volver');
+      // No anchor inside the nav points to the portfolio anchor #work.
+      expect(navHtml).not.toContain('#work');
+    }
   });
 
   it('uses the project order to render the eyebrow num (made-by-apes -> 01)', async () => {

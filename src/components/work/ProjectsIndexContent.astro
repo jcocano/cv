@@ -1,0 +1,43 @@
+---
+import BackToHomeLink from '@/components/work/BackToHomeLink.astro';
+import ProjectRow from '@/components/work/ProjectRow.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import { t } from '@/lib/i18n/t';
+import type { Project } from '@/lib/schemas/projects';
+import styles from './ProjectsIndexContent.module.css';
+
+interface Props {
+  projects: Project[];
+  baseUrl: string;
+}
+
+const { projects, baseUrl } = Astro.props;
+
+const sortedCaseStudies: Project[] = [...projects].sort((a, b) => b.year - a.year);
+---
+
+<section id="projects" class={styles.page}>
+  <div class="container">
+    <BackToHomeLink />
+
+    <SectionHead
+      num="◆"
+      labelEs={t('projects.eyebrow', 'es')}
+      labelEn={t('projects.eyebrow', 'en')}
+      titleEs={t('projects.title', 'es')}
+      titleEn={t('projects.title', 'en')}
+      ledeEs={t('projects.lede', 'es')}
+      ledeEn={t('projects.lede', 'en')}
+    />
+
+    {
+      sortedCaseStudies.length > 0 && (
+        <div class={`${styles.caseList} reveal`}>
+          {sortedCaseStudies.map((project) => (
+            <ProjectRow project={project} baseUrl={baseUrl} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

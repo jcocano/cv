@@ -9,9 +9,10 @@ export interface AxeTestCase {
 
 const PAGE_PATHS: readonly string[] = [
   'index.html',
-  'projects/cluster-separation/index.html',
-  'projects/incommers-nft/index.html',
+  'projects/index.html',
   'projects/made-by-apes/index.html',
+  'projects/incommers-nft/index.html',
+  'projects/cluster-separation/index.html',
   'design-system/index.html',
 ];
 

@@ -1,0 +1,30 @@
+---
+import type { Project } from '@/lib/schemas/projects';
+import styles from './ProjectRow.module.css';
+
+interface Props {
+  project: Project;
+  baseUrl: string;
+}
+
+const { project, baseUrl } = Astro.props;
+const href = `${baseUrl}projects/${project.slug}`;
+---
+
+<a class={styles.row} href={href}>
+  <div class={styles.when}>{project.year}</div>
+  <div>
+    <h3 class={styles.title}>
+      <span lang="es">{project.title.es}</span>
+      <span lang="en">{project.title.en}</span>
+    </h3>
+    <div class={styles.company}>{project.company}</div>
+    <p class={styles.tagline}>
+      <span lang="es">{project.tagline.es}</span>
+      <span lang="en">{project.tagline.en}</span>
+    </p>
+  </div>
+  <div class={styles.tags}>
+    {project.tags.map((tag) => <span class={styles.tag}>{tag}</span>)}
+  </div>
+</a>

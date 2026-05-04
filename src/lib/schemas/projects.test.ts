@@ -237,10 +237,80 @@ describe('projectSchema', () => {
     expect(issuesOnTags.length).toBeGreaterThan(0);
   });
 
-  it('parses an entry with featured: false', () => {
-    const notFeatured = { ...validProject, featured: false };
+  it('parses an entry with featured: false (and no order)', () => {
+    const { order: _order, ...withoutOrder } = validProject;
+    void _order;
+    const notFeatured = { ...withoutOrder, featured: false };
     const parsed = projectSchema.parse(notFeatured);
     expect(parsed.featured).toBe(false);
+    expect(parsed.order).toBeUndefined();
+  });
+
+  it('parses a featured entry with order in [1, 2, 3]', () => {
+    const featuredTwo = { ...validProject, featured: true, order: 2 };
+    const parsed = projectSchema.parse(featuredTwo);
+    expect(parsed.featured).toBe(true);
+    expect(parsed.order).toBe(2);
+  });
+
+  it('rejects a featured entry without order (refine cross-field)', () => {
+    const { order: _order, ...withoutOrder } = validProject;
+    void _order;
+    const featuredNoOrder = { ...withoutOrder, featured: true };
+    const result = projectSchema.safeParse(featuredNoOrder);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    // The refine fires even when its `path` resolves to `order`; print issues for diagnosis.
+    expect(result.error.issues.length).toBeGreaterThan(0);
+    const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
+    expect(issuesOnOrder.length).toBeGreaterThan(0);
+    expect(issuesOnOrder[0]?.message).toMatch(/order|featured/);
+  });
+
+  it('rejects a non-featured entry that has order set (refine cross-field)', () => {
+    const notFeaturedWithOrder = { ...validProject, featured: false, order: 1 };
+    const result = projectSchema.safeParse(notFeaturedWithOrder);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
+    expect(issuesOnOrder.length).toBeGreaterThan(0);
+  });
+
+  it('rejects order = 0 (out of [1, 3] range) on a featured entry', () => {
+    const featuredZero = { ...validProject, featured: true, order: 0 };
+    const result = projectSchema.safeParse(featuredZero);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
+    expect(issuesOnOrder.length).toBeGreaterThan(0);
+  });
+
+  it('rejects order = 4 (out of [1, 3] range) on a featured entry', () => {
+    const featuredFour = { ...validProject, featured: true, order: 4 };
+    const result = projectSchema.safeParse(featuredFour);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
+    expect(issuesOnOrder.length).toBeGreaterThan(0);
+  });
+
+  it('rejects a non-integer order (1.5)', () => {
+    const featuredFractional = { ...validProject, featured: true, order: 1.5 };
+    const result = projectSchema.safeParse(featuredFractional);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
+    expect(issuesOnOrder.length).toBeGreaterThan(0);
   });
 
   it('fails with a Zod error pointing at description.en when description only has es', () => {

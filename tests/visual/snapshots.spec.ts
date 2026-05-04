@@ -12,9 +12,10 @@ interface VisualCase {
 
 const PAGES: ReadonlyArray<{ path: string; slug: string }> = [
   { path: '', slug: 'home' },
-  { path: 'projects/cluster-separation/', slug: 'project-cluster-separation' },
-  { path: 'projects/incommers-nft/', slug: 'project-incommers-nft' },
+  { path: 'projects/', slug: 'projects' },
   { path: 'projects/made-by-apes/', slug: 'project-made-by-apes' },
+  { path: 'projects/incommers-nft/', slug: 'project-incommers-nft' },
+  { path: 'projects/cluster-separation/', slug: 'project-cluster-separation' },
   { path: 'design-system/', slug: 'design-system' },
 ];
 const THEMES: readonly ThemeName[] = ['dark', 'light', 'paper'];

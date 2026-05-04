@@ -69,24 +69,51 @@ describe('ContactSection (render-test)', () => {
     expect(html).toContain('Available for senior roles in backend, platform, or infrastructure.');
   });
 
-  it('renders exactly three anchors in document order: email (mailto), github, linkedin', async () => {
+  it('renders exactly four anchors in document order: email (mailto), cv (pdf), github, linkedin', async () => {
     const html = await renderContactSection();
     const emailIdx = html.indexOf('mailto:jesus.cocano@gmail.com');
+    const cvIdx = html.search(/href="[^"]*jesus_cocano_cv\.pdf"/);
     const githubIdx = html.indexOf('https://github.com/jcocano');
     const linkedinIdx = html.indexOf('https://linkedin.com/in/jcocano');
     expect(emailIdx).toBeGreaterThan(-1);
+    expect(cvIdx).toBeGreaterThan(-1);
     expect(githubIdx).toBeGreaterThan(-1);
     expect(linkedinIdx).toBeGreaterThan(-1);
-    expect(emailIdx).toBeLessThan(githubIdx);
+    expect(emailIdx).toBeLessThan(cvIdx);
+    expect(cvIdx).toBeLessThan(githubIdx);
     expect(githubIdx).toBeLessThan(linkedinIdx);
     const anchorMatches = html.match(
-      /<a[^>]*href="(mailto:[^"]+|https:\/\/(?:github|linkedin)[^"]+)"/g,
+      /<a[^>]*href="(mailto:[^"]+|[^"]*jesus_cocano_cv\.pdf|https:\/\/(?:github|linkedin)[^"]+)"/g,
     );
     expect(anchorMatches).not.toBeNull();
     if (anchorMatches === null) {
-      throw new Error('expected exactly three CTA anchors');
+      throw new Error('expected exactly four CTA anchors');
     }
-    expect(anchorMatches).toHaveLength(3);
+    expect(anchorMatches).toHaveLength(4);
+  });
+
+  it('places the four CTA hrefs inside .row in order email → cv → github → linkedin', async () => {
+    const html = await renderContactSection();
+    const rowClassName = contactStyles.row;
+    if (rowClassName === undefined) {
+      throw new Error('contactStyles.row must be defined');
+    }
+    const rowOpenIdx = html.search(new RegExp(`<div[^>]*class="[^"]*\\b${rowClassName}\\b[^"]*"`));
+    expect(rowOpenIdx).toBeGreaterThan(-1);
+    const rowSlice = html.slice(rowOpenIdx);
+    const hrefMatches = rowSlice.match(/href="([^"]+)"/g) ?? [];
+    expect(hrefMatches.length).toBeGreaterThanOrEqual(4);
+    const hrefs = hrefMatches.slice(0, 4).map((tag) => {
+      const captured = tag.match(/href="([^"]+)"/);
+      if (captured === null || captured[1] === undefined) {
+        throw new Error('expected an href value');
+      }
+      return captured[1];
+    });
+    expect(hrefs[0]).toMatch(/^mailto:jesus\.cocano@gmail\.com$/);
+    expect(hrefs[1]).toMatch(/jesus_cocano_cv\.pdf$/);
+    expect(hrefs[2]).toBe('https://github.com/jcocano');
+    expect(hrefs[3]).toBe('https://linkedin.com/in/jcocano');
   });
 
   it('marks the email CTA with the ctaPrimary CSS-module class so it gets the primary look', async () => {
@@ -155,9 +182,9 @@ describe('ContactSection (render-test)', () => {
     const svgMatches = html.match(/<svg[^>]*>/g);
     expect(svgMatches).not.toBeNull();
     if (svgMatches === null) {
-      throw new Error('expected at least three svg icons (one per CTA)');
+      throw new Error('expected at least four svg icons (one per CTA)');
     }
-    expect(svgMatches.length).toBeGreaterThanOrEqual(3);
+    expect(svgMatches.length).toBeGreaterThanOrEqual(4);
   });
 
   it('uses the shared EmailIcon component (no inline svg with stroke-width="1.8") so SVGs live in src/components/ui/icons', async () => {
@@ -167,11 +194,33 @@ describe('ContactSection (render-test)', () => {
     expect(html).toMatch(/<svg[^>]*aria-hidden="true"/);
   });
 
-  it('does NOT render a Download CV CTA (out of scope per decision D2)', async () => {
+  it('renders the Download CV CTA pointing to jesus_cocano_cv.pdf (the BASE_URL prefix is applied at build time so the href ends in the PDF filename)', async () => {
     const html = await renderContactSection();
-    expect(html).not.toMatch(/href="[^"]*jesus_cocano_cv\.pdf/);
-    expect(html).not.toMatch(/lang="es"[^>]*>Descargar CV/);
-    expect(html).not.toMatch(/lang="en"[^>]*>Download CV/);
+    expect(html).toMatch(/<a[^>]*href="[^"]*jesus_cocano_cv\.pdf"/);
+  });
+
+  it('renders the Download CV CTA with target="_blank" and a download attribute', async () => {
+    const html = await renderContactSection();
+    const cvAnchorMatch = html.match(/<a[^>]*href="[^"]*jesus_cocano_cv\.pdf"[^>]*>/);
+    expect(cvAnchorMatch).not.toBeNull();
+    if (cvAnchorMatch === null) {
+      throw new Error('expected a CV CTA anchor');
+    }
+    const cvAnchor = cvAnchorMatch[0];
+    expect(cvAnchor).toMatch(/target="_blank"/);
+    expect(cvAnchor).toMatch(/\bdownload\b/);
+  });
+
+  it('renders the Download CV CTA with bilingual labels (Descargar CV / Download CV)', async () => {
+    const html = await renderContactSection();
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Descargar CV<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Download CV<\/span>/);
+  });
+
+  it('renders the Download CV CTA with the DocumentIcon (folded-page svg) using the handoff path d="M14 3H6..." + corner fold "M14 3v6h6"', async () => {
+    const html = await renderContactSection();
+    expect(html).toContain('M14 3H6');
+    expect(html).toContain('M14 3v6h6');
   });
 
   it('does NOT render a footer of its own (the footer is global, lives in BaseLayout)', async () => {

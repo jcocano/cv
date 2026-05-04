@@ -22,6 +22,11 @@
   font-weight: 500;
   color: var(--fg);
 }
+.navBrandLogo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
 .navBrand :global(.dot) {
   width: 8px;
   height: 8px;

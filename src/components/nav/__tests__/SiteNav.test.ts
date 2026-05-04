@@ -82,6 +82,21 @@ describe('SiteNav (render-test)', () => {
     expect(classMatch[1]).toMatch(/_navBrandCv_[a-z0-9]+(?:_\d+)?/);
   });
 
+  it('applies the navBrandLogo CSS module class on the brand logo sub-link <a href="#top"> (so the inner anchor is a flex container and the .dot span renders with its 8x8 size)', async () => {
+    const html = await renderSiteNav();
+    // Match the brand logo anchor (the one wrapping the .dot + jcocano span).
+    const logoAnchorMatch = html.match(
+      /<a\b([^>]*)href="#top"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>/,
+    );
+    expect(logoAnchorMatch).not.toBeNull();
+    if (logoAnchorMatch === null) return;
+    const attrs = logoAnchorMatch[1] ?? '';
+    const classMatch = attrs.match(/class="([^"]+)"/);
+    expect(classMatch).not.toBeNull();
+    if (classMatch === null) return;
+    expect(classMatch[1]).toMatch(/_navBrandLogo_[a-z0-9]+(?:_\d+)?/);
+  });
+
   it('renders exactly 5 nav-link anchors with the expected hrefs in order', async () => {
     const html = await renderSiteNav();
     const navLinkMatches = Array.from(

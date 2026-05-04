@@ -23,8 +23,16 @@
 #      canonical command for the maintainer is:
 #
 #        docker run --rm -v "$PWD":/work -w /work \
+#          --user "$(id -u):$(id -g)" \
 #          mcr.microsoft.com/playwright:v1.59.1-noble \
 #          bash -c "npm ci && npm run build && npm run test:visual -- --update-snapshots"
+#
+#      `--user "$(id -u):$(id -g)"` is mandatory: without it the container
+#      runs as root and every file `npm ci` / `npm run build` writes to the
+#      bind mount (node_modules/, dist/, test-results/, .astro/) ends up
+#      owned by root on the host, which breaks subsequent `astro check` /
+#      `vite` runs with EACCES. The real `container:` block below does not
+#      need the flag because GitHub Actions runners are ephemeral.
 #
 #      After running it, the updated snapshots under
 #      `tests/visual/__snapshots__/` MUST be committed in the same PR (or in

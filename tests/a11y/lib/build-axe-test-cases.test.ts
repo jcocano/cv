@@ -3,12 +3,12 @@ import { describe, expect, it } from 'vitest';
 import { buildAxeTestCases } from './build-axe-test-cases';
 
 describe('buildAxeTestCases', () => {
-  it('returns 30 cases (5 pages × 3 themes × 2 langs)', () => {
+  it('returns 36 cases (6 pages × 3 themes × 2 langs)', () => {
     const cases = buildAxeTestCases();
-    expect(cases).toHaveLength(30);
+    expect(cases).toHaveLength(36);
   });
 
-  it('covers exactly the 5 expected page paths', () => {
+  it('covers exactly the 6 expected page paths', () => {
     const cases = buildAxeTestCases();
     const pagePaths = Array.from(new Set(cases.map((entry) => entry.pagePath))).sort();
     expect(pagePaths).toEqual([
@@ -16,6 +16,7 @@ describe('buildAxeTestCases', () => {
       'index.html',
       'projects/cluster-separation/index.html',
       'projects/incommers-nft/index.html',
+      'projects/index.html',
       'projects/made-by-apes/index.html',
     ]);
   });
@@ -40,6 +41,6 @@ describe('buildAxeTestCases', () => {
       expect(seen.has(key)).toBe(false);
       seen.add(key);
     }
-    expect(seen.size).toBe(30);
+    expect(seen.size).toBe(36);
   });
 });

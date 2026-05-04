@@ -108,6 +108,50 @@ describe('SiteNav (render-test)', () => {
     expect(html).toMatch(/<path[^>]*d="M21 12\.79A9 9 0 1 1 11\.21 3 7 7 0 0 0 21 12\.79z"[^>]*>/);
   });
 
+  it('renders three theme-icon wrappers inside #theme-toggle, one per theme (dark, light, paper)', async () => {
+    const html = await renderSiteNav();
+    const buttonMatch = html.match(/<button[^>]*id="theme-toggle"[\s\S]*?<\/button>/);
+    expect(buttonMatch).not.toBeNull();
+    if (buttonMatch === null) return;
+    const buttonHtml = buttonMatch[0];
+    const wrapperMatches = Array.from(buttonHtml.matchAll(/<span[^>]*data-theme-icon="([^"]+)"/g));
+    expect(wrapperMatches).toHaveLength(3);
+    const themes = wrapperMatches.map((m) => m[1]);
+    expect(themes).toEqual(['dark', 'light', 'paper']);
+  });
+
+  it('renders the SunIcon (circle + 8 rays) inside the data-theme-icon="dark" wrapper', async () => {
+    const html = await renderSiteNav();
+    // Sun: <circle cx="12" cy="12" r="4"/> identifies it uniquely vs moon path / paper rect.
+    const sunWrapper = html.match(/<span[^>]*data-theme-icon="dark"[^>]*>[\s\S]*?<\/span>/);
+    expect(sunWrapper).not.toBeNull();
+    if (sunWrapper === null) return;
+    expect(sunWrapper[0]).toMatch(/<circle[^>]*cx="12"[^>]*cy="12"[^>]*r="4"[^>]*\/?>/);
+    // At least one of the 8 ray paths (top: M12 2v2).
+    expect(sunWrapper[0]).toMatch(/<path[^>]*d="M12 2v2"[^>]*\/?>/);
+  });
+
+  it('renders the PaperIcon (rect + horizontal lines) inside the data-theme-icon="light" wrapper', async () => {
+    const html = await renderSiteNav();
+    const paperWrapper = html.match(/<span[^>]*data-theme-icon="light"[^>]*>[\s\S]*?<\/span>/);
+    expect(paperWrapper).not.toBeNull();
+    if (paperWrapper === null) return;
+    expect(paperWrapper[0]).toMatch(
+      /<rect[^>]*x="6"[^>]*y="3"[^>]*width="12"[^>]*height="18"[^>]*rx="1"[^>]*\/?>/,
+    );
+    expect(paperWrapper[0]).toMatch(/<line[^>]*x1="9"[^>]*y1="8"[^>]*x2="15"[^>]*y2="8"[^>]*\/?>/);
+  });
+
+  it('renders the MoonIcon (handoff path) inside the data-theme-icon="paper" wrapper', async () => {
+    const html = await renderSiteNav();
+    const moonWrapper = html.match(/<span[^>]*data-theme-icon="paper"[^>]*>[\s\S]*?<\/span>/);
+    expect(moonWrapper).not.toBeNull();
+    if (moonWrapper === null) return;
+    expect(moonWrapper[0]).toMatch(
+      /<path[^>]*d="M21 12\.79A9 9 0 1 1 11\.21 3 7 7 0 0 0 21 12\.79z"[^>]*\/?>/,
+    );
+  });
+
   it('does NOT render any inline stylesheet block (CSS modules must be used; cf docs/conventions.md §3)', async () => {
     const html = await renderSiteNav();
     const styleTag = ['<', 'style'].join('');

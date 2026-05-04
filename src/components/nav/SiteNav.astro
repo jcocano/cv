@@ -1,5 +1,7 @@
 ---
 import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
+import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
+import SunIcon from '@/components/ui/icons/SunIcon.astro';
 import styles from './SiteNav.module.css';
 ---
 
@@ -57,7 +59,9 @@ import styles from './SiteNav.module.css';
         title="Cycle theme (dark / light / paper)"
         data-shortcut="T"
       >
-        <MoonIcon />
+        <span class={styles.themeIcon} data-theme-icon="dark"><SunIcon /></span>
+        <span class={styles.themeIcon} data-theme-icon="light"><PaperIcon /></span>
+        <span class={styles.themeIcon} data-theme-icon="paper"><MoonIcon /></span>
       </button>
     </div>
   </div>

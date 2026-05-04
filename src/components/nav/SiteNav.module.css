@@ -1,0 +1,104 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.nav-brand :global(.dot) {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
+  animation: global(nav-dot-pulse) 2.4s ease-in-out infinite;
+}
+.nav-links {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.nav-links :global(a.nav-link) {
+  color: var(--fg-dim);
+  transition: color 0.15s;
+  position: relative;
+}
+.nav-links :global(a.nav-link):hover,
+.nav-links :global(a.nav-link):focus-visible {
+  color: var(--fg);
+}
+.nav-links :global(.num) {
+  color: var(--fg-mute);
+  margin-right: 6px;
+  font-size: 10px;
+}
+.nav-tools {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.icon-btn,
+.lang-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--fg-dim);
+  border-radius: 6px;
+  padding: 7px 9px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background-color 0.15s;
+  height: 32px;
+}
+.icon-btn:hover,
+.icon-btn:focus-visible,
+.lang-btn:hover,
+.lang-btn:focus-visible {
+  color: var(--fg);
+  border-color: var(--fg-dim);
+}
+.icon-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.lang-btn :global(.opt) {
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+.lang-btn :global(.opt.active) {
+  background: var(--fg);
+  color: var(--bg);
+}
+@media (max-width: 720px) {
+  .nav-links {
+    display: none;
+  }
+}

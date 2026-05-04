@@ -57,6 +57,16 @@ a {
   }
 }
 
+@keyframes nav-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /*
  * Reveal-on-scroll. We drive the entrance with a @keyframes animation instead of
  * a transition on .reveal/.reveal.in. Reason: components like .project-card and

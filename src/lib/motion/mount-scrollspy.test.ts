@@ -304,6 +304,89 @@ describe('mountScrollspy', () => {
     expect(workLink.classList.contains('active')).toBe(false);
   });
 
+  it('moves "active" across the 5 nav-redesign sections (about → experience → stack → work → contact)', () => {
+    const aboutLink = createMockNavLink('#about');
+    const experienceLink = createMockNavLink('#experience');
+    const stackLink = createMockNavLink('#stack');
+    const workLink = createMockNavLink('#work');
+    const contactLink = createMockNavLink('#contact');
+    const aboutSection = createMockSection('about');
+    const experienceSection = createMockSection('experience');
+    const stackSection = createMockSection('stack');
+    const workSection = createMockSection('work');
+    const contactSection = createMockSection('contact');
+
+    const allLinks = [aboutLink, experienceLink, stackLink, workLink, contactLink];
+    const allSections = [
+      aboutSection,
+      experienceSection,
+      stackSection,
+      workSection,
+      contactSection,
+    ];
+
+    const { observers } = installIntersectionObserverMock();
+    mountScrollspy(asNavLinks(allLinks), asSections(allSections));
+
+    const observer = observers[0];
+    if (observer === undefined) {
+      throw new Error('expected an observer to be created');
+    }
+    expect(observer.observed.size).toBe(5);
+
+    function activeHrefs(): string[] {
+      return allLinks.filter((link) => link.classList.contains('active')).map((link) => link.href);
+    }
+
+    observer.callback(
+      [
+        makeIntersectionEntry(aboutSection, 0.9),
+        makeIntersectionEntry(experienceSection, 0.05),
+        makeIntersectionEntry(stackSection, 0),
+        makeIntersectionEntry(workSection, 0),
+        makeIntersectionEntry(contactSection, 0),
+      ] as unknown as IntersectionObserverEntry[],
+      observer as unknown as IntersectionObserver,
+    );
+    expect(activeHrefs()).toEqual(['#about']);
+
+    observer.callback(
+      [
+        makeIntersectionEntry(aboutSection, 0.05),
+        makeIntersectionEntry(experienceSection, 0.85),
+      ] as unknown as IntersectionObserverEntry[],
+      observer as unknown as IntersectionObserver,
+    );
+    expect(activeHrefs()).toEqual(['#experience']);
+
+    observer.callback(
+      [
+        makeIntersectionEntry(experienceSection, 0.05),
+        makeIntersectionEntry(stackSection, 0.92),
+      ] as unknown as IntersectionObserverEntry[],
+      observer as unknown as IntersectionObserver,
+    );
+    expect(activeHrefs()).toEqual(['#stack']);
+
+    observer.callback(
+      [
+        makeIntersectionEntry(stackSection, 0.05),
+        makeIntersectionEntry(workSection, 0.7),
+      ] as unknown as IntersectionObserverEntry[],
+      observer as unknown as IntersectionObserver,
+    );
+    expect(activeHrefs()).toEqual(['#work']);
+
+    observer.callback(
+      [
+        makeIntersectionEntry(workSection, 0.05),
+        makeIntersectionEntry(contactSection, 0.95),
+      ] as unknown as IntersectionObserverEntry[],
+      observer as unknown as IntersectionObserver,
+    );
+    expect(activeHrefs()).toEqual(['#contact']);
+  });
+
   it('accepts a plain HTMLElement[] as the sections argument (not just NodeListOf)', () => {
     const aboutLink = createMockNavLink('#about');
     const workLink = createMockNavLink('#work');

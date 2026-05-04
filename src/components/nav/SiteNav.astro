@@ -1,0 +1,64 @@
+---
+import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
+import styles from './SiteNav.module.css';
+---
+
+<nav class={styles.nav} aria-label="Primary">
+  <div class:list={[styles['nav-inner'], 'container']}>
+    <a class={styles['nav-brand']} href="#top">
+      <span class="dot"></span>
+      <span>jcocano</span>
+      <span style="color: var(--fg-mute);">/</span>
+      <span style="color: var(--fg-dim);">cv</span>
+    </a>
+    <div class={styles['nav-links']}>
+      <a class="nav-link" href="#about">
+        <span class="num">01</span>
+        <span lang="es">Acerca</span>
+        <span lang="en">About</span>
+      </a>
+      <a class="nav-link" href="#experience">
+        <span class="num">02</span>
+        <span lang="es">Experiencia</span>
+        <span lang="en">Experience</span>
+      </a>
+      <a class="nav-link" href="#stack">
+        <span class="num">03</span>
+        <span lang="es">Stack</span>
+        <span lang="en">Stack</span>
+      </a>
+      <a class="nav-link" href="#work">
+        <span class="num">04</span>
+        <span lang="es">Proyectos</span>
+        <span lang="en">Work</span>
+      </a>
+      <a class="nav-link" href="#contact">
+        <span class="num">05</span>
+        <span lang="es">Contacto</span>
+        <span lang="en">Contact</span>
+      </a>
+    </div>
+    <div class={styles['nav-tools']}>
+      <button
+        type="button"
+        class={styles['lang-btn']}
+        id="lang-toggle"
+        aria-label="Toggle language"
+        data-shortcut="L"
+      >
+        <span class="opt" data-l="es">ES</span>
+        <span class="opt" data-l="en">EN</span>
+      </button>
+      <button
+        type="button"
+        class={styles['icon-btn']}
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        title="Cycle theme (dark / light / paper)"
+        data-shortcut="T"
+      >
+        <MoonIcon />
+      </button>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,66 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
+import RepoIcon from '@/components/ui/icons/RepoIcon.astro';
+import type { OssProject } from '@/lib/schemas/oss-projects';
+import styles from './OssCardList.module.css';
+
+const swatchModifierByKey: Record<string, string | undefined> = {
+  ts: styles.swatchTs,
+  js: styles.swatchJs,
+  dock: styles.swatchDock,
+  electron: styles.swatchElectron,
+};
+
+function swatchClassList(swatch: string): readonly (string | undefined)[] {
+  return [styles.swatch, swatchModifierByKey[swatch]];
+}
+
+const ossEntries: CollectionEntry<'oss-projects'>[] = await getCollection('oss-projects');
+const ossProjects: OssProject[] = ossEntries
+  .map((entry: CollectionEntry<'oss-projects'>) => entry.data)
+  .sort((a, b) => a.order - b.order);
+---
+
+<div class:list={[styles.ossGrid, 'reveal']}>
+  {
+    ossProjects.map((project) => (
+      <a class={styles.ossCard} href={project.url} target="_blank" rel="noopener noreferrer">
+        <div class={styles.top}>
+          <span class={styles.glyph}>
+            <RepoIcon />
+          </span>
+          <span>
+            <span lang="es">Repo público</span>
+            <span lang="en">Public repo</span>
+          </span>
+          <span class={styles.lic}>{project.license}</span>
+        </div>
+        <div class={styles.repoName}>
+          <span class={styles.org}>{project.org}</span>
+          <span class={styles.slash}>/</span>
+          <span class={styles.name}>{project.repo}</span>
+        </div>
+        <p class={styles.desc}>
+          <span lang="es">{project.description.es}</span>
+          <span lang="en">{project.description.en}</span>
+        </p>
+        <div class={styles.langs}>
+          {project.languages.map((language) => (
+            <span class={styles.lang}>
+              <span class:list={swatchClassList(language.swatch)} />
+              {language.label}
+            </span>
+          ))}
+        </div>
+        <div class={styles.actions}>
+          <span class={styles.actionCta}>
+            <GithubIcon />
+            GitHub →
+          </span>
+        </div>
+      </a>
+    ))
+  }
+</div>

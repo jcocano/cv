@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 import Eyebrow from '@/components/ui/Eyebrow.astro';
 import SectionHead from '@/components/ui/SectionHead.astro';
+import OssCardList from '@/components/work/OssCardList.astro';
 import ProjectCard from '@/components/work/ProjectCard.astro';
 import SideProjectRow from '@/components/work/SideProjectRow.astro';
 import { splitFeatured } from '@/lib/content/split-featured';
@@ -47,6 +48,16 @@ const sideProjects: SideProject[] = sideEntries
           ))
         }
       </div>
+    </div>
+
+    <div class={styles.ossBlock}>
+      <Eyebrow
+        num="04.5"
+        labelEs={t('work.ossEyebrow', 'es')}
+        labelEn={t('work.ossEyebrow', 'en')}
+        reveal={true}
+      />
+      <OssCardList />
     </div>
 
     <div class={styles.sideBlock}>

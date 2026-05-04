@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 import { experienceSchema } from '@/lib/schemas/experience';
+import { ossProjectSchema } from '@/lib/schemas/oss-projects';
 import { projectSchema } from '@/lib/schemas/projects';
 import { sideProjectSchema } from '@/lib/schemas/side-projects';
 
@@ -20,8 +21,14 @@ const sideProjects = defineCollection({
   schema: sideProjectSchema,
 });
 
+const ossProjects = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/oss-projects' }),
+  schema: ossProjectSchema,
+});
+
 export const collections = {
   experience,
   projects,
   'side-projects': sideProjects,
+  'oss-projects': ossProjects,
 };

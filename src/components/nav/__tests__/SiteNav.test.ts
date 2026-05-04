@@ -3,9 +3,16 @@ import { describe, expect, it } from 'vitest';
 
 import SiteNav from '@/components/nav/SiteNav.astro';
 
-async function renderSiteNav(): Promise<string> {
+// In Vitest, `import.meta.env.BASE_URL` resolves to `/` (Astro Container does
+// not apply the project's `base: '/cv/'` from astro.config.mjs). So tests that
+// want to simulate "on home" pass a pathname matching that base (`/`), and
+// tests that want "off home" pass a non-root pathname. The lib functions are
+// independently tested with both `'/cv/'` and `'/'` baseUrl variants.
+async function renderSiteNav(pathname: string = '/'): Promise<string> {
   const container = await AstroContainer.create();
-  return container.renderToString(SiteNav);
+  return container.renderToString(SiteNav, {
+    request: new Request(`http://localhost${pathname}`),
+  });
 }
 
 describe('SiteNav (render-test)', () => {
@@ -220,6 +227,98 @@ describe('SiteNav (render-test)', () => {
     const html = await renderSiteNav();
     const styleTag = ['<', 'style'].join('');
     expect(html.toLowerCase().includes(styleTag)).toBe(false);
+  });
+});
+
+describe('SiteNav (page-aware hrefs)', () => {
+  // In the Vitest environment `import.meta.env.BASE_URL` is `/`, so "on home"
+  // is `/` and "off home" is any non-root pathname. In production (where
+  // baseUrl is `/cv/`), the same logic produces hashes-only on `/cv/` and
+  // `/cv/#xxx` on `/cv/design-system/` etc. — see the standalone tests for
+  // `isHomePath` and `resolveSectionHref` for that coverage.
+  it('renders hash-only hrefs when rendered on home (`/`)', async () => {
+    const html = await renderSiteNav('/');
+    const navLinkMatches = Array.from(
+      html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
+    );
+    expect(navLinkMatches).toHaveLength(5);
+    const hrefs = navLinkMatches.map((match) => {
+      const hrefMatch = match[0].match(/href="([^"]+)"/);
+      if (hrefMatch === null || hrefMatch[1] === undefined) {
+        throw new Error('expected href on nav-link');
+      }
+      return hrefMatch[1];
+    });
+    expect(hrefs).toEqual(['#about', '#experience', '#stack', '#work', '#contact']);
+  });
+
+  it('renders the brand logo with `href="#top"` when on home', async () => {
+    const html = await renderSiteNav('/');
+    expect(html).toMatch(
+      /<a[^>]*href="#top"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<\/a>/,
+    );
+  });
+
+  it('renders absolute hrefs (`/#xxx`) when rendered off home (`/design-system/`)', async () => {
+    const html = await renderSiteNav('/design-system/');
+    const navLinkMatches = Array.from(
+      html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
+    );
+    expect(navLinkMatches).toHaveLength(5);
+    const hrefs = navLinkMatches.map((match) => {
+      const hrefMatch = match[0].match(/href="([^"]+)"/);
+      if (hrefMatch === null || hrefMatch[1] === undefined) {
+        throw new Error('expected href on nav-link');
+      }
+      return hrefMatch[1];
+    });
+    expect(hrefs).toEqual(['/#about', '/#experience', '/#stack', '/#work', '/#contact']);
+  });
+
+  it('renders the brand logo with `href="/"` (no hash) when off home', async () => {
+    const html = await renderSiteNav('/design-system/');
+    const logoMatch = html.match(
+      /<a\b[^>]*href="([^"]+)"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<\/a>/,
+    );
+    expect(logoMatch).not.toBeNull();
+    if (logoMatch === null) return;
+    expect(logoMatch[1]).toBe('/');
+  });
+
+  it('renders absolute hrefs when rendered on a project page (`/projects/foo/`)', async () => {
+    const html = await renderSiteNav('/projects/incommers-nft/');
+    const navLinkMatches = Array.from(
+      html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
+    );
+    const hrefs = navLinkMatches.map((match) => {
+      const hrefMatch = match[0].match(/href="([^"]+)"/);
+      if (hrefMatch === null || hrefMatch[1] === undefined) {
+        throw new Error('expected href on nav-link');
+      }
+      return hrefMatch[1];
+    });
+    expect(hrefs).toEqual(['/#about', '/#experience', '/#stack', '/#work', '/#contact']);
+    const logoMatch = html.match(
+      /<a\b[^>]*href="([^"]+)"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<\/a>/,
+    );
+    expect(logoMatch).not.toBeNull();
+    if (logoMatch === null) return;
+    expect(logoMatch[1]).toBe('/');
+  });
+
+  it('preserves hash hrefs when on home `/index.html` (server-rendered build)', async () => {
+    const html = await renderSiteNav('/index.html');
+    const navLinkMatches = Array.from(
+      html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
+    );
+    const hrefs = navLinkMatches.map((match) => {
+      const hrefMatch = match[0].match(/href="([^"]+)"/);
+      if (hrefMatch === null || hrefMatch[1] === undefined) {
+        throw new Error('expected href on nav-link');
+      }
+      return hrefMatch[1];
+    });
+    expect(hrefs).toEqual(['#about', '#experience', '#stack', '#work', '#contact']);
   });
 });
 

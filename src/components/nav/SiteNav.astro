@@ -2,15 +2,25 @@
 import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
 import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
 import SunIcon from '@/components/ui/icons/SunIcon.astro';
+import { isHomePath } from '@/lib/nav/is-home-path';
+import { resolveBrandHref, resolveSectionHref } from '@/lib/nav/resolve-nav-href';
 import styles from './SiteNav.module.css';
 
-const cvHref = `${import.meta.env.BASE_URL}jesus_cocano_cv.pdf`;
+const baseUrl = import.meta.env.BASE_URL;
+const cvHref = `${baseUrl}jesus_cocano_cv.pdf`;
+const isHome = isHomePath(Astro.url.pathname, baseUrl);
+const brandHref = resolveBrandHref(isHome, baseUrl);
+const aboutHref = resolveSectionHref('#about', isHome, baseUrl);
+const experienceHref = resolveSectionHref('#experience', isHome, baseUrl);
+const stackHref = resolveSectionHref('#stack', isHome, baseUrl);
+const workHref = resolveSectionHref('#work', isHome, baseUrl);
+const contactHref = resolveSectionHref('#contact', isHome, baseUrl);
 ---
 
 <nav class={styles.nav} aria-label="Primary">
   <div class:list={[styles.navInner, 'container']}>
     <div class={styles.navBrand}>
-      <a class={styles.navBrandLogo} href="#top">
+      <a class={styles.navBrandLogo} href={brandHref}>
         <span class="dot"></span>
         <span>jcocano</span>
       </a>
@@ -26,27 +36,27 @@ const cvHref = `${import.meta.env.BASE_URL}jesus_cocano_cv.pdf`;
       >
     </div>
     <div class={styles.navLinks}>
-      <a class="nav-link" href="#about">
+      <a class="nav-link" href={aboutHref}>
         <span class="num">01</span>
         <span lang="es">Acerca</span>
         <span lang="en">About</span>
       </a>
-      <a class="nav-link" href="#experience">
+      <a class="nav-link" href={experienceHref}>
         <span class="num">02</span>
         <span lang="es">Experiencia</span>
         <span lang="en">Experience</span>
       </a>
-      <a class="nav-link" href="#stack">
+      <a class="nav-link" href={stackHref}>
         <span class="num">03</span>
         <span lang="es">Stack</span>
         <span lang="en">Stack</span>
       </a>
-      <a class="nav-link" href="#work">
+      <a class="nav-link" href={workHref}>
         <span class="num">04</span>
         <span lang="es">Proyectos</span>
         <span lang="en">Work</span>
       </a>
-      <a class="nav-link" href="#contact">
+      <a class="nav-link" href={contactHref}>
         <span class="num">05</span>
         <span lang="es">Contacto</span>
         <span lang="en">Contact</span>

@@ -1,0 +1,12 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding: 80px 0 120px;
+}
+
+.case-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}

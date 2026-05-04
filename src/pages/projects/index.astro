@@ -1,0 +1,21 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectsIndexContent from '@/components/work/ProjectsIndexContent.astro';
+import { validateProjects } from '@/lib/content/validate-projects';
+import type { Project } from '@/lib/schemas/projects';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const projectEntries: CollectionEntry<'projects'>[] = await getCollection('projects');
+const projects: Project[] = projectEntries.map((entry: CollectionEntry<'projects'>) => entry.data);
+validateProjects(projects);
+
+const pageTitle = 'Proyectos — Jesus Cocano';
+const pageDescription = 'Listado completo de case studies.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <ProjectsIndexContent projects={projects} baseUrl={baseUrl} />
+</BaseLayout>

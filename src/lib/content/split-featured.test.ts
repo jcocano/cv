@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { splitFeatured } from '@/lib/content/split-featured';
 import type { Project } from '@/lib/schemas/projects';
 
-function makeProject(overrides: Partial<Project> & Pick<Project, 'slug' | 'order'>): Project {
+function makeProject(overrides: Partial<Project> & Pick<Project, 'slug'>): Project {
   const base: Project = {
     slug: overrides.slug,
     title: { es: overrides.slug, en: overrides.slug },
@@ -14,7 +14,6 @@ function makeProject(overrides: Partial<Project> & Pick<Project, 'slug' | 'order
     description: { es: 'desc', en: 'desc' },
     cover: './cover.png',
     tags: [],
-    order: overrides.order,
     eyebrow: { es: 'eyebrow', en: 'eyebrow' },
     stack: ['stack'],
   };
@@ -24,49 +23,60 @@ function makeProject(overrides: Partial<Project> & Pick<Project, 'slug' | 'order
 describe('splitFeatured', () => {
   it('returns the only featured project as featured and the rest in order ascending', () => {
     const projects: Project[] = [
-      makeProject({ slug: 'cluster', order: 2 }),
-      makeProject({ slug: 'made-by-apes', order: 1, featured: true }),
-      makeProject({ slug: 'incommers', order: 3 }),
+      makeProject({ slug: 'cluster', featured: true, order: 1 }),
+      makeProject({ slug: 'made-by-apes', featured: true, order: 2 }),
+      makeProject({ slug: 'incommers', featured: true, order: 3 }),
     ];
 
     const result = splitFeatured(projects);
 
-    expect(result.featured.slug).toBe('made-by-apes');
+    expect(result.featured?.slug).toBe('cluster');
     expect(result.rest).toHaveLength(2);
-    expect(result.rest[0]?.slug).toBe('cluster');
+    expect(result.rest[0]?.slug).toBe('made-by-apes');
     expect(result.rest[1]?.slug).toBe('incommers');
   });
 
-  it('throws with the exact contract message when there are zero featured projects', () => {
+  it('returns featured: null and rest: [] when given an empty array (no throw)', () => {
+    const result = splitFeatured([]);
+    expect(result.featured).toBeNull();
+    expect(result.rest).toEqual([]);
+  });
+
+  it('returns featured: null and rest: [] when there are zero featured projects (no throw)', () => {
     const projects: Project[] = [
-      makeProject({ slug: 'cluster', order: 1 }),
-      makeProject({ slug: 'incommers', order: 2 }),
+      makeProject({ slug: 'cluster' }),
+      makeProject({ slug: 'incommers' }),
     ];
 
-    expect(() => splitFeatured(projects)).toThrow(
-      'splitFeatured requires at least one featured project, got 0',
-    );
+    const result = splitFeatured(projects);
+
+    expect(result.featured).toBeNull();
+    expect(result.rest).toEqual([]);
   });
 
   it('returns the featured project with the lowest order when there are two featured projects, the other goes to rest', () => {
     const projects: Project[] = [
-      makeProject({ slug: 'incommers', order: 3 }),
-      makeProject({ slug: 'beta', order: 5, featured: true }),
-      makeProject({ slug: 'alpha', order: 2, featured: true }),
+      makeProject({ slug: 'beta', featured: true, order: 3 }),
+      makeProject({ slug: 'alpha', featured: true, order: 2 }),
     ];
 
     const result = splitFeatured(projects);
 
-    expect(result.featured.slug).toBe('alpha');
-    expect(result.rest).toHaveLength(2);
-    // rest is order-asc: incommers (3), beta (5)
-    expect(result.rest[0]?.slug).toBe('incommers');
-    expect(result.rest[1]?.slug).toBe('beta');
+    expect(result.featured?.slug).toBe('alpha');
+    expect(result.rest).toHaveLength(1);
+    expect(result.rest[0]?.slug).toBe('beta');
   });
 
-  it('throws with the exact message when given an empty array', () => {
-    expect(() => splitFeatured([])).toThrow(
-      'splitFeatured requires at least one featured project, got 0',
-    );
+  it('only accepts featured entries; non-featured items are ignored entirely', () => {
+    const projects: Project[] = [
+      makeProject({ slug: 'cluster' }),
+      makeProject({ slug: 'made-by-apes', featured: true, order: 1 }),
+      makeProject({ slug: 'incommers' }),
+    ];
+
+    const result = splitFeatured(projects);
+
+    expect(result.featured?.slug).toBe('made-by-apes');
+    expect(result.rest).toEqual([]);
   });
 });

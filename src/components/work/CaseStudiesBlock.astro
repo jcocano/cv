@@ -1,0 +1,27 @@
+---
+import ProjectCard from '@/components/work/ProjectCard.astro';
+import { splitFeatured } from '@/lib/content/split-featured';
+import type { Project } from '@/lib/schemas/projects';
+import styles from './CaseStudiesBlock.module.css';
+
+interface Props {
+  projects: Project[];
+  baseUrl?: string;
+}
+
+const { projects, baseUrl = import.meta.env.BASE_URL } = Astro.props;
+const { featured, rest } = splitFeatured(projects);
+---
+
+{
+  featured !== null && (
+    <div class={styles.projects}>
+      <ProjectCard project={featured} featured={true} baseUrl={baseUrl} />
+      <div class={styles.projectsGrid}>
+        {rest.map((project) => (
+          <ProjectCard project={project} featured={false} baseUrl={baseUrl} />
+        ))}
+      </div>
+    </div>
+  )
+}

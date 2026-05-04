@@ -1,40 +1,38 @@
 import type { Project } from '@/lib/schemas/projects';
 
 interface SplitFeaturedResult {
-  featured: Project;
+  featured: Project | null;
   rest: Project[];
 }
 
 /**
- * Splits a list of projects into the single hero `featured` card and the rest
- * of the grid. When more than one project is marked as featured, the one with
- * the lowest `order` wins and the others fall through to `rest`. The `rest`
- * array is always sorted by `order` ascending so callers can render the grid
- * deterministically.
+ * Splits a list of FEATURED projects into the hero card (lowest `order`) and
+ * the rest of the grid (sorted by `order` ascending).
  *
- * Contract: throws when there are zero featured projects — the Work section
- * assumes a featured card always exists, so a missing one is a content bug
- * we want to surface during build, not a silent UI degradation.
+ * Contract (relaxed in feature #37):
+ * - The collection may be empty or have zero featured entries; in either case
+ *   the function returns `{ featured: null, rest: [] }` without throwing. The
+ *   caller decides whether to render the bloque.
+ * - Non-featured entries are ignored — they belong to the "More projects"
+ *   bucket (`src/data/more_projects.json`), not to the case-studies grid.
  */
-export function splitFeatured(projects: Project[]): SplitFeaturedResult {
+export function splitFeatured(projects: readonly Project[]): SplitFeaturedResult {
   const featuredCandidates = projects.filter((project) => project.featured);
 
   if (featuredCandidates.length === 0) {
-    throw new Error('splitFeatured requires at least one featured project, got 0');
+    return { featured: null, rest: [] };
   }
 
-  const sortedFeatured = [...featuredCandidates].sort((a, b) => a.order - b.order);
-  const featured = sortedFeatured[0];
+  const sortedFeatured = [...featuredCandidates].sort((a, b) => {
+    const aOrder = a.order ?? Number.MAX_SAFE_INTEGER;
+    const bOrder = b.order ?? Number.MAX_SAFE_INTEGER;
+    return aOrder - bOrder;
+  });
+
+  const [featured, ...rest] = sortedFeatured;
   if (featured === undefined) {
-    // Defensive: filter().length === 0 already returned above; this branch is
-    // unreachable but keeps the type non-undefined without a non-null assertion.
-    throw new Error('splitFeatured requires at least one featured project, got 0');
+    return { featured: null, rest: [] };
   }
-
-  const rest = projects
-    .filter((project) => project !== featured)
-    .slice()
-    .sort((a, b) => a.order - b.order);
 
   return { featured, rest };
 }

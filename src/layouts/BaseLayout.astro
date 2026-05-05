@@ -2,6 +2,8 @@
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 import SiteNav from '@/components/nav/SiteNav.astro';
+import { CONSOLE_SIGNATURE } from '@/lib/runtime/console-signature';
+import { WINDOW_ENVS_PAYLOAD } from '@/lib/runtime/window-envs';
 import styles from './BaseLayout.module.css';
 
 interface Props {
@@ -13,6 +15,10 @@ const {
   title = 'Jesus Cocano — CV',
   description = 'Senior Fullstack & Platform Engineer — CV and portfolio.',
 } = Astro.props;
+
+const consoleSignatureFormat = CONSOLE_SIGNATURE.format;
+const consoleSignatureStyles = CONSOLE_SIGNATURE.styles;
+const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
 ---
 
 <!doctype html>
@@ -41,6 +47,26 @@ const {
           root.setAttribute('data-lang', 'es');
           root.setAttribute('lang', 'es');
         }
+      })();
+    </script>
+
+    <script is:inline define:vars={{ consoleSignatureFormat, consoleSignatureStyles }}>
+      (function showConsoleSignatureOnce() {
+        if (window.__cv_signature_shown === true) {
+          return;
+        }
+        window.__cv_signature_shown = true;
+        // Feature #43 devtools_console_signature — `console.info` is the
+        // semantically correct method for the developer-facing greeting;
+        // acceptance #1 mandates it.
+        // eslint-disable-next-line no-console
+        console.info(consoleSignatureFormat, ...consoleSignatureStyles);
+      })();
+    </script>
+
+    <script is:inline define:vars={{ windowEnvsPayload }}>
+      (function applyWindowEnvsOnLoad() {
+        window.envs = windowEnvsPayload;
       })();
     </script>
   </head>

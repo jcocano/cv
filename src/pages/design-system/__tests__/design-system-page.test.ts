@@ -22,19 +22,21 @@ describe('pages/design-system/index.astro (render-test)', () => {
     expect(html).toMatch(/<h1[^>]*>[\s\S]*Design system/);
   });
 
-  it('renders the five blocks in order: tokens → typography → ui primitives → spacing → decisions', async () => {
+  it('renders the six blocks in order: tokens → typography → ui primitives → spacing → decisions → status', async () => {
     const html = await renderDesignSystemPage();
     const tokensIndex = html.indexOf('id="block-tokens"');
     const typeIndex = html.indexOf('id="block-typography"');
     const uiIndex = html.indexOf('id="block-ui-primitives"');
     const spacingIndex = html.indexOf('id="block-spacing"');
     const decisionsIndex = html.indexOf('id="block-decisions"');
+    const statusIndex = html.indexOf('id="block-status"');
 
     expect(tokensIndex).toBeGreaterThan(-1);
     expect(typeIndex).toBeGreaterThan(tokensIndex);
     expect(uiIndex).toBeGreaterThan(typeIndex);
     expect(spacingIndex).toBeGreaterThan(uiIndex);
     expect(decisionsIndex).toBeGreaterThan(spacingIndex);
+    expect(statusIndex).toBeGreaterThan(decisionsIndex);
   });
 
   it('mounts the TokenSwatcher inside the tokens block (3 theme-blocks)', async () => {
@@ -70,5 +72,17 @@ describe('pages/design-system/index.astro (render-test)', () => {
     const html = await renderDesignSystemPage();
     expect(html).toMatch(/id="decision-token-set-extended"/);
     expect(html).toMatch(/id="decision-geist-fontsource"/);
+  });
+
+  it('mounts the SiteStatus block with the build-and-runtime heading and skeleton attributes', async () => {
+    const html = await renderDesignSystemPage();
+    expect(html).toMatch(/id="block-status"/);
+    // Iteration-2 architecture: the SSR skeleton wraps the <dl> in a
+    // <div role="status" aria-busy="true" data-component="site-status">. The
+    // values arrive at runtime from the client module, so we only assert
+    // structural hooks here.
+    expect(html).toMatch(/<div[^>]*data-component="site-status"/);
+    expect(html).toMatch(/<div[^>]*aria-busy="true"/);
+    expect(html).toMatch(/<div[^>]*role="status"/);
   });
 });

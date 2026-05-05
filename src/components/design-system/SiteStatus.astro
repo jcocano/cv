@@ -1,0 +1,124 @@
+---
+// Iteration-2 architecture (see docs/learnings_dependencia_circular_site_status.md):
+// the component renders a SEMANTIC SKELETON. It does NOT read the filesystem
+// at SSR time and has NO dependency on the build pipeline output. The values
+// are painted at runtime by the client module `src/scripts/site-status.ts`
+// after fetching `/cv/status.json`.
+//
+// DOM shape:
+//   <div role="status" aria-live="polite" aria-busy="true" data-component="site-status" data-status-state="loading">
+//     <dl>                                  ← native dlitem semantics preserved
+//       <dt id="status-row-…">…</dt>        ← direct child of <dl>
+//       <dd data-status-key="…">…</dd>      ← direct child of <dl>
+//       …
+//     </dl>
+//   </div>
+//
+// Why a wrapper <div> for the live region instead of role="status" on the
+// <dl> itself: axe-core's "dlitem" rule treats a <dl> with an overridden
+// role (anything other than the implicit list role) as if its <dt>/<dd>
+// children were orphans. A wrapper keeps both semantics intact: the <dl> is a
+// definition list, the <div> is the polite live region the client module
+// updates.
+//
+// Why a skeleton (not server-rendered values):
+//   - One-pass build (`astro build && build:status`) — no chicken-and-egg.
+//   - Producer/consumer separation — HTML is stable, payload travels sidecar.
+//   - Graceful degradation — clients without JS still see the bilingual
+//     "Loading status…" copy, screen readers announce role="status" updates,
+//     and the layout footprint is preserved (no CLS).
+import enStrings from '@/i18n/en.json';
+import esStrings from '@/i18n/es.json';
+import styles from './SiteStatus.module.css';
+
+interface MetricRow {
+  readonly id: string;
+  readonly statusKey:
+    | 'build_sha'
+    | 'build_time'
+    | 'schema_version'
+    | 'page_weight_kb'
+    | 'js_payload_kb'
+    | 'css_payload_kb'
+    | 'routes_count';
+  readonly labelKey:
+    | 'designSystem.statusLabels.build'
+    | 'designSystem.statusLabels.deployed'
+    | 'designSystem.statusLabels.schema'
+    | 'designSystem.statusLabels.pageWeight'
+    | 'designSystem.statusLabels.jsPayload'
+    | 'designSystem.statusLabels.cssPayload'
+    | 'designSystem.statusLabels.routes';
+}
+
+const ROWS: ReadonlyArray<MetricRow> = [
+  {
+    id: 'status-row-build',
+    statusKey: 'build_sha',
+    labelKey: 'designSystem.statusLabels.build',
+  },
+  {
+    id: 'status-row-deployed',
+    statusKey: 'build_time',
+    labelKey: 'designSystem.statusLabels.deployed',
+  },
+  {
+    id: 'status-row-schema',
+    statusKey: 'schema_version',
+    labelKey: 'designSystem.statusLabels.schema',
+  },
+  {
+    id: 'status-row-page-weight',
+    statusKey: 'page_weight_kb',
+    labelKey: 'designSystem.statusLabels.pageWeight',
+  },
+  {
+    id: 'status-row-js-payload',
+    statusKey: 'js_payload_kb',
+    labelKey: 'designSystem.statusLabels.jsPayload',
+  },
+  {
+    id: 'status-row-css-payload',
+    statusKey: 'css_payload_kb',
+    labelKey: 'designSystem.statusLabels.cssPayload',
+  },
+  {
+    id: 'status-row-routes',
+    statusKey: 'routes_count',
+    labelKey: 'designSystem.statusLabels.routes',
+  },
+];
+
+const loadingEn = enStrings['designSystem.statusLoading'];
+const loadingEs = esStrings['designSystem.statusLoading'];
+---
+
+<div
+  class={styles.region}
+  role="status"
+  aria-live="polite"
+  aria-busy="true"
+  data-component="site-status"
+  data-status-state="loading"
+>
+  <dl class={styles.metrics}>
+    {
+      ROWS.map((row) => (
+        <>
+          <dt class={styles.label} id={row.id}>
+            <span lang="es">{esStrings[row.labelKey]}</span>
+            <span lang="en">{enStrings[row.labelKey]}</span>
+          </dt>
+          <dd class={styles.value} data-status-key={row.statusKey}>
+            <span lang="es">{loadingEs}</span>
+            <span lang="en">{loadingEn}</span>
+          </dd>
+        </>
+      ))
+    }
+  </dl>
+</div>
+
+<script>
+  import '@/scripts/site-status';
+</script>

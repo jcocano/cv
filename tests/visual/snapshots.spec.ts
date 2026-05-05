@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import statusFixture from '../../src/fixtures/status-fixture.json' with { type: 'json' };
+
 type ThemeName = 'dark' | 'light' | 'paper';
 type LangCode = 'es' | 'en';
 
@@ -43,8 +45,37 @@ test.describe('visual baselines (1440×900, full-page)', () => {
         },
         { theme: visualCase.theme, lang: visualCase.lang },
       );
+
+      // The /design-system/ page hosts the SiteStatus client module which
+      // fetches /cv/status.json at runtime. To make the visual snapshot
+      // deterministic we intercept that request and serve the same fixture
+      // used by the unit tests. This way the baseline captures the LOADED
+      // state with stable values, not the SSR skeleton or build-dependent
+      // numbers. See feature #40 (iteration 2) and
+      // docs/learnings_dependencia_circular_site_status.md.
+      if (visualCase.slug === 'design-system') {
+        await page.route('**/cv/status.json', async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify(statusFixture),
+          });
+        });
+      }
+
       await page.goto(visualCase.path, { waitUntil: 'networkidle' });
       await page.evaluate(() => document.fonts.ready);
+
+      // Wait for the SiteStatus block to reach the loaded state on the
+      // design-system page so the snapshot captures painted values, not the
+      // skeleton.
+      if (visualCase.slug === 'design-system') {
+        await page.waitForSelector(
+          'div[data-component="site-status"][aria-busy="false"][data-status-state="loaded"]',
+          { state: 'attached' },
+        );
+      }
+
       const screenshotName = `${visualCase.slug}__${visualCase.theme}__${visualCase.lang}.png`;
       await expect(page).toHaveScreenshot(screenshotName, { fullPage: true });
     });

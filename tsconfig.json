@@ -16,6 +16,8 @@
     "src/**/*",
     "tests/**/*.ts",
     "tooling/**/*.mjs",
+    "scripts/**/*.ts",
+    "scripts/**/*.mjs",
     "playwright.config.ts",
     "vitest.config.ts",
     "astro.config.mjs"

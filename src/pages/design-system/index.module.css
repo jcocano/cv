@@ -39,3 +39,11 @@
   letter-spacing: -0.01em;
   color: var(--fg);
 }
+
+.block-lede {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  color: var(--fg-mute);
+  font-size: 13px;
+  line-height: 1.55;
+}

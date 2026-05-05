@@ -1,0 +1,27 @@
+---
+import type { Principle } from '@/lib/schemas/principles';
+import styles from './PrinciplesList.module.css';
+
+interface Props {
+  principles: Principle[];
+}
+
+const { principles } = Astro.props;
+---
+
+<div class={styles.principlesList}>
+  {
+    principles.map((principle) => (
+      <article class={styles.entry} data-principle-entry={principle.id}>
+        <h3 class={styles.title} id={principle.id}>
+          <span lang="es">{principle.title.es}</span>
+          <span lang="en">{principle.title.en}</span>
+        </h3>
+        <p class={styles.statement}>
+          <span lang="es">{principle.statement.es}</span>
+          <span lang="en">{principle.statement.en}</span>
+        </p>
+      </article>
+    ))
+  }
+</div>

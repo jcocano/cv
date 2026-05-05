@@ -32,6 +32,14 @@
   margin-bottom: 0;
 }
 
+.block-eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  color: var(--fg-mute);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
 .block-heading {
   margin: 0 0 24px;
   font-size: 24px;

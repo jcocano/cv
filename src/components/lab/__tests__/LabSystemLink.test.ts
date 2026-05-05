@@ -9,9 +9,9 @@ async function renderLabSystemLink(): Promise<string> {
 }
 
 describe('LabSystemLink (render-test)', () => {
-  it('renders an anchor pointing to the design-system page using BASE_URL', async () => {
+  it('renders an anchor pointing to the-system page using BASE_URL', async () => {
     const html = await renderLabSystemLink();
-    expect(html).toMatch(/<a[^>]*href="[^"]*design-system\/"/);
+    expect(html).toMatch(/<a[^>]*href="[^"]*the-system\/"/);
   });
 
   it('renders the bilingual copy from i18n keys (lab.systemLink in both languages)', async () => {

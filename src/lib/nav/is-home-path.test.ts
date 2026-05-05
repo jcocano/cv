@@ -11,8 +11,8 @@ describe('isHomePath', () => {
     expect(isHomePath('/cv/index.html', '/cv/')).toBe(true);
   });
 
-  it('returns false for a sibling top-level page ("/cv/design-system/")', () => {
-    expect(isHomePath('/cv/design-system/', '/cv/')).toBe(false);
+  it('returns false for a sibling top-level page ("/cv/the-system/")', () => {
+    expect(isHomePath('/cv/the-system/', '/cv/')).toBe(false);
   });
 
   it('returns false for a project page ("/cv/projects/incommers-nft/")', () => {
@@ -27,8 +27,8 @@ describe('isHomePath', () => {
     expect(isHomePath('/index.html', '/')).toBe(true);
   });
 
-  it('returns false for "/design-system/" when base is "/"', () => {
-    expect(isHomePath('/design-system/', '/')).toBe(false);
+  it('returns false for "/the-system/" when base is "/"', () => {
+    expect(isHomePath('/the-system/', '/')).toBe(false);
   });
 
   it('treats baseUrl missing trailing slash as equivalent ("/cv" + "/cv/")', () => {

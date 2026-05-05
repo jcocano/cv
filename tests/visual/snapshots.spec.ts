@@ -18,7 +18,7 @@ const PAGES: ReadonlyArray<{ path: string; slug: string }> = [
   { path: 'projects/made-by-apes/', slug: 'project-made-by-apes' },
   { path: 'projects/incommers-nft/', slug: 'project-incommers-nft' },
   { path: 'projects/cluster-separation/', slug: 'project-cluster-separation' },
-  { path: 'design-system/', slug: 'design-system' },
+  { path: 'the-system/', slug: 'the-system' },
 ];
 const THEMES: readonly ThemeName[] = ['dark', 'light', 'paper'];
 const LANGS: readonly LangCode[] = ['es', 'en'];
@@ -46,14 +46,14 @@ test.describe('visual baselines (1440×900, full-page)', () => {
         { theme: visualCase.theme, lang: visualCase.lang },
       );
 
-      // The /design-system/ page hosts the SiteStatus client module which
+      // The /the-system/ page hosts the SiteStatus client module which
       // fetches /cv/status.json at runtime. To make the visual snapshot
       // deterministic we intercept that request and serve the same fixture
       // used by the unit tests. This way the baseline captures the LOADED
       // state with stable values, not the SSR skeleton or build-dependent
       // numbers. See feature #40 (iteration 2) and
       // docs/learnings_dependencia_circular_site_status.md.
-      if (visualCase.slug === 'design-system') {
+      if (visualCase.slug === 'the-system') {
         await page.route('**/cv/status.json', async (route) => {
           await route.fulfill({
             status: 200,
@@ -67,9 +67,9 @@ test.describe('visual baselines (1440×900, full-page)', () => {
       await page.evaluate(() => document.fonts.ready);
 
       // Wait for the SiteStatus block to reach the loaded state on the
-      // design-system page so the snapshot captures painted values, not the
+      // the-system page so the snapshot captures painted values, not the
       // skeleton.
-      if (visualCase.slug === 'design-system') {
+      if (visualCase.slug === 'the-system') {
         await page.waitForSelector(
           'div[data-component="site-status"][aria-busy="false"][data-status-state="loaded"]',
           { state: 'attached' },

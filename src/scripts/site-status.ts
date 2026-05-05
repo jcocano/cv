@@ -88,10 +88,10 @@ function paintErrorIntoCell(cell: HTMLElement): void {
   clearChildren(cell);
   const es = document.createElement('span');
   es.setAttribute('lang', 'es');
-  es.textContent = esStrings['designSystem.statusError'];
+  es.textContent = esStrings['theSystem.statusError'];
   const en = document.createElement('span');
   en.setAttribute('lang', 'en');
-  en.textContent = enStrings['designSystem.statusError'];
+  en.textContent = enStrings['theSystem.statusError'];
   cell.appendChild(es);
   cell.appendChild(en);
 }

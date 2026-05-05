@@ -234,7 +234,7 @@ describe('SiteNav (page-aware hrefs)', () => {
   // In the Vitest environment `import.meta.env.BASE_URL` is `/`, so "on home"
   // is `/` and "off home" is any non-root pathname. In production (where
   // baseUrl is `/cv/`), the same logic produces hashes-only on `/cv/` and
-  // `/cv/#xxx` on `/cv/design-system/` etc. — see the standalone tests for
+  // `/cv/#xxx` on `/cv/the-system/` etc. — see the standalone tests for
   // `isHomePath` and `resolveSectionHref` for that coverage.
   it('renders hash-only hrefs when rendered on home (`/`)', async () => {
     const html = await renderSiteNav('/');
@@ -259,8 +259,8 @@ describe('SiteNav (page-aware hrefs)', () => {
     );
   });
 
-  it('renders absolute hrefs (`/#xxx`) when rendered off home (`/design-system/`)', async () => {
-    const html = await renderSiteNav('/design-system/');
+  it('renders absolute hrefs (`/#xxx`) when rendered off home (`/the-system/`)', async () => {
+    const html = await renderSiteNav('/the-system/');
     const navLinkMatches = Array.from(
       html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
     );
@@ -276,7 +276,7 @@ describe('SiteNav (page-aware hrefs)', () => {
   });
 
   it('renders the brand logo with `href="/"` (no hash) when off home', async () => {
-    const html = await renderSiteNav('/design-system/');
+    const html = await renderSiteNav('/the-system/');
     const logoMatch = html.match(
       /<a\b[^>]*href="([^"]+)"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>\s*<span[^>]*>jcocano<\/span>\s*<\/a>/,
     );

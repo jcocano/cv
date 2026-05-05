@@ -84,8 +84,8 @@
         "en": "Discreet link from Lab to the design system"
       },
       "rationale": {
-        "es": "El sistema detrás de las piezas del Lab vive en /design-system/. Un link mono pequeño al final del grid invita a explorar sin gritar; quien busca craft lo encuentra, el resto sigue de largo.",
-        "en": "The system behind the Lab pieces lives at /design-system/. A small mono link at the end of the grid invites exploration without shouting; those looking for craft find it, the rest move on."
+        "es": "El sistema detrás de las piezas del Lab vive en /the-system/. Un link mono pequeño al final del grid invita a explorar sin gritar; quien busca craft lo encuentra, el resto sigue de largo.",
+        "en": "The system behind the Lab pieces lives at /the-system/. A small mono link at the end of the grid invites exploration without shouting; those looking for craft find it, the rest move on."
       }
     }
   ]

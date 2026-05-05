@@ -1,0 +1,59 @@
+{
+  "principles": [
+    {
+      "id": "no-any-as-triage",
+      "title": {
+        "es": "`any` no es dogma, es triaje.",
+        "en": "`any` isn't dogma, it's triage."
+      },
+      "statement": {
+        "es": "TypeScript estricto bloquea en review por una razón concreta: cuando llega un bug, `any` es el primer sitio donde se esconde la causa raíz. Eliminarlo de antemano hace que el debugger devuelva señal en vez de ruido.",
+        "en": "Strict TypeScript blocks review for a concrete reason: when a bug lands, `any` is the first place root cause hides. Banning it up front means the debugger gives signal instead of noise."
+      }
+    },
+    {
+      "id": "css-modules-over-utility-css",
+      "title": {
+        "es": "CSS modules > Tailwind y styled-components.",
+        "en": "CSS modules > Tailwind and styled-components."
+      },
+      "statement": {
+        "es": "Cada componente con estilo lleva su `.module.css` gemelo. El CSS queda acoplado al único componente que lo usa, los nombres camelCase son explícitos y nada se filtra a global. Tailwind es eficiente para prototipos; en proyectos largos es deuda en el HTML.",
+        "en": "Every styled component ships with its twin `.module.css`. Styles stay coupled to the one component that uses them, camelCase names are explicit and nothing leaks to global. Tailwind is efficient for prototypes; on long-running projects it becomes debt in the HTML."
+      }
+    },
+    {
+      "id": "tdd-tests-behavior-not-shape",
+      "title": {
+        "es": "Los tests prueban comportamiento, no la forma del código.",
+        "en": "Tests cover behavior, not code shape."
+      },
+      "statement": {
+        "es": "Lógica testeable se prueba como función pura; render se prueba con `AstroContainer` cuando hay branching real. No se mockea lo que se puede ejecutar de verdad — un mock que pasa con la prod rota es la peor mentira posible.",
+        "en": "Testable logic gets tested as a pure function; render gets tested with `AstroContainer` when real branching is involved. You don't mock what you can actually run — a mock that passes while prod is broken is the worst kind of lie."
+      }
+    },
+    {
+      "id": "handoff-beats-artifact",
+      "title": {
+        "es": "Un buen handoff vale más que el artefacto.",
+        "en": "A good handoff beats the artifact."
+      },
+      "statement": {
+        "es": "Un PR con descripción que explica el porqué y cómo se verificó vale más que mil tests verdes silenciosos. Si la siguiente persona que toca el código no entiende qué intentaba la última, los tests son recordatorios — no documentación.",
+        "en": "A PR whose description explains the why and how it was verified is worth more than a thousand silent green tests. If the next person touching the code can't see what the last one was after, tests are reminders — not documentation."
+      }
+    },
+    {
+      "id": "visual-baselines-in-the-loop",
+      "title": {
+        "es": "Las visual baselines son parte del ciclo, no del QA.",
+        "en": "Visual baselines belong in the loop, not in QA."
+      },
+      "statement": {
+        "es": "Si una feature toca CSS o HTML, regenerar las baselines en Docker (el mismo runtime que CI) es responsabilidad del implementer, no de un job nocturno. Feedback visual rápido durante el ciclo vale más que un mock perfecto al final.",
+        "en": "If a feature touches CSS or HTML, regenerating baselines in Docker (the same runtime CI uses) is the implementer's job, not a nightly check. Fast visual feedback inside the loop beats a perfect mock at the end."
+      }
+    }
+  ]
+}

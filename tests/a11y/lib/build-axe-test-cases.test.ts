@@ -12,12 +12,12 @@ describe('buildAxeTestCases', () => {
     const cases = buildAxeTestCases();
     const pagePaths = Array.from(new Set(cases.map((entry) => entry.pagePath))).sort();
     expect(pagePaths).toEqual([
-      'design-system/index.html',
       'index.html',
       'projects/cluster-separation/index.html',
       'projects/incommers-nft/index.html',
       'projects/index.html',
       'projects/made-by-apes/index.html',
+      'the-system/index.html',
     ]);
   });
 

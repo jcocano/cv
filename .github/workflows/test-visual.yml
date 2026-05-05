@@ -59,6 +59,8 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - name: Build site for preview server
+        env:
+          GENERATE_STATUS_SHA: ${{ github.sha }}
         run: npm run build
       - name: Run visual tests
         run: npm run test:visual

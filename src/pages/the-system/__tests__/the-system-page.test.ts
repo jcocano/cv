@@ -3,7 +3,10 @@ import { describe, expect, it } from 'vitest';
 
 import TheSystemPage from '@/pages/the-system/index.astro';
 import principlesJson from '@/data/principles.json';
+import designSystemDecisionsJson from '@/data/design-system-decisions.json';
+import technicalDecisionsJson from '@/data/technical-decisions.json';
 import { principlesSchema } from '@/lib/schemas/principles';
+import { designSystemDecisionsSchema } from '@/lib/schemas/design-system-decisions';
 
 async function renderTheSystemPage(): Promise<string> {
   const container = await AstroContainer.create();
@@ -30,25 +33,47 @@ describe('pages/the-system/index.astro (render-test)', () => {
   });
 
   it(
-    'renders the seven blocks in order: principles → decisions → tokens → ' +
-      'typography → ui primitives → spacing → status',
+    'renders the five top-level wrappers in order: principles → decisions → ' +
+      'technical-decisions → foundations → status',
     async () => {
       const html = await renderTheSystemPage();
       const principlesIndex = html.indexOf('id="block-principles"');
       const decisionsIndex = html.indexOf('id="block-decisions"');
-      const tokensIndex = html.indexOf('id="block-tokens"');
-      const typeIndex = html.indexOf('id="block-typography"');
-      const uiIndex = html.indexOf('id="block-ui-primitives"');
-      const spacingIndex = html.indexOf('id="block-spacing"');
+      const technicalDecisionsIndex = html.indexOf('id="block-technical-decisions"');
+      const foundationsIndex = html.indexOf('id="block-foundations"');
       const statusIndex = html.indexOf('id="block-status"');
 
       expect(principlesIndex).toBeGreaterThan(-1);
       expect(decisionsIndex).toBeGreaterThan(principlesIndex);
-      expect(tokensIndex).toBeGreaterThan(decisionsIndex);
-      expect(typeIndex).toBeGreaterThan(tokensIndex);
-      expect(uiIndex).toBeGreaterThan(typeIndex);
-      expect(spacingIndex).toBeGreaterThan(uiIndex);
-      expect(statusIndex).toBeGreaterThan(spacingIndex);
+      expect(technicalDecisionsIndex).toBeGreaterThan(decisionsIndex);
+      expect(foundationsIndex).toBeGreaterThan(technicalDecisionsIndex);
+      expect(statusIndex).toBeGreaterThan(foundationsIndex);
+    },
+  );
+
+  it(
+    'renders the four foundations sub-blocks in order: typography → spacing → ' +
+      'ui-primitives → tokens-by-theme (all inside #block-foundations)',
+    async () => {
+      const html = await renderTheSystemPage();
+      const foundationsIndex = html.indexOf('id="block-foundations"');
+      const typographyIndex = html.indexOf('id="sub-typography"');
+      const spacingIndex = html.indexOf('id="sub-spacing"');
+      const uiPrimitivesIndex = html.indexOf('id="sub-ui-primitives"');
+      const tokensIndex = html.indexOf('id="sub-tokens-by-theme"');
+
+      expect(foundationsIndex).toBeGreaterThan(-1);
+      expect(typographyIndex).toBeGreaterThan(foundationsIndex);
+      expect(spacingIndex).toBeGreaterThan(typographyIndex);
+      expect(uiPrimitivesIndex).toBeGreaterThan(spacingIndex);
+      expect(tokensIndex).toBeGreaterThan(uiPrimitivesIndex);
+
+      // The legacy top-level token / spacing / type / ui-primitive ids no
+      // longer exist — they were absorbed into the foundations wrapper.
+      expect(html).not.toMatch(/id="block-tokens"/);
+      expect(html).not.toMatch(/id="block-typography"/);
+      expect(html).not.toMatch(/id="block-spacing"/);
+      expect(html).not.toMatch(/id="block-ui-primitives"/);
     },
   );
 
@@ -72,7 +97,44 @@ describe('pages/the-system/index.astro (render-test)', () => {
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>principles<\/span>/);
   });
 
-  it('mounts the TokenSwatcher inside the tokens block (3 theme-blocks)', async () => {
+  it('renders the bilingual UI/UX decisions eyebrow (ui/ux in both languages)', async () => {
+    const html = await renderTheSystemPage();
+    // The eyebrow lives inside #block-decisions; assert it appears within
+    // that wrapper specifically (and not, for example, only inside
+    // #block-technical-decisions).
+    const decisionsBlockMatch = html.match(
+      /id="block-decisions"[\s\S]*?id="block-technical-decisions"/,
+    );
+    expect(decisionsBlockMatch).not.toBeNull();
+    if (decisionsBlockMatch === null) {
+      throw new Error('expected the decisions block to precede technical-decisions');
+    }
+    const decisionsHtml = decisionsBlockMatch[0];
+    expect(decisionsHtml).toMatch(/<span[^>]*lang="es"[^>]*>ui\/ux<\/span>/);
+    expect(decisionsHtml).toMatch(/<span[^>]*lang="en"[^>]*>ui\/ux<\/span>/);
+  });
+
+  it('renders the bilingual technical decisions eyebrow (técnico / technical)', async () => {
+    const html = await renderTheSystemPage();
+    const technicalBlockMatch = html.match(
+      /id="block-technical-decisions"[\s\S]*?id="block-foundations"/,
+    );
+    expect(technicalBlockMatch).not.toBeNull();
+    if (technicalBlockMatch === null) {
+      throw new Error('expected the technical-decisions block to precede foundations');
+    }
+    const technicalHtml = technicalBlockMatch[0];
+    expect(technicalHtml).toMatch(/<span[^>]*lang="es"[^>]*>técnico<\/span>/);
+    expect(technicalHtml).toMatch(/<span[^>]*lang="en"[^>]*>technical<\/span>/);
+  });
+
+  it('renders the bilingual foundations eyebrow (foundations / bases)', async () => {
+    const html = await renderTheSystemPage();
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>bases<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>foundations<\/span>/);
+  });
+
+  it('mounts the TokenSwatcher inside the tokens-by-theme sub-block (3 theme-blocks)', async () => {
     const html = await renderTheSystemPage();
     expect(html).toMatch(/data-theme-preview="dark"/);
     expect(html).toMatch(/data-theme-preview="light"/);
@@ -101,10 +163,19 @@ describe('pages/the-system/index.astro (render-test)', () => {
     expect(html).toMatch(/id="spacing-container"/);
   });
 
-  it('mounts the DecisionsList (at least one decision-<id> entry)', async () => {
+  it('mounts the DecisionsList twice: UI/UX inside #block-decisions, technical inside #block-technical-decisions', async () => {
     const html = await renderTheSystemPage();
-    expect(html).toMatch(/id="decision-token-set-extended"/);
-    expect(html).toMatch(/id="decision-geist-fontsource"/);
+    const uiDecisions = designSystemDecisionsSchema.parse(designSystemDecisionsJson);
+    const technicalDecisions = designSystemDecisionsSchema.parse(technicalDecisionsJson);
+
+    // UI/UX entries: one h3#decision-<id> per entry in design-system-decisions.json.
+    for (const decision of uiDecisions.decisions) {
+      expect(html).toMatch(new RegExp(`id="decision-${decision.id}"`));
+    }
+    // Technical entries: one h3#decision-<id> per entry in technical-decisions.json.
+    for (const decision of technicalDecisions.decisions) {
+      expect(html).toMatch(new RegExp(`id="decision-${decision.id}"`));
+    }
   });
 
   it('mounts the SiteStatus block with the build-and-runtime heading and skeleton attributes', async () => {

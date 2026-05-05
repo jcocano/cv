@@ -84,10 +84,14 @@ describe('UiGallery (render-test)', () => {
     }
   });
 
-  it('renders an h3 with id="ui-<component>" carrying the component name in mono', async () => {
+  it('renders an h4 with id="ui-<component>" carrying the component name in mono (one level below the ui-primitives h3 sub-block under foundations)', async () => {
     const html = await renderUiGallery();
     for (const id of EXPECTED_IDS) {
-      expect(html).toMatch(new RegExp(`<h3[^>]*id="${id}"`));
+      expect(html).toMatch(new RegExp(`<h4[^>]*id="${id}"`));
+    }
+    // No leftover h3 carrying the same ids — strict hierarchy.
+    for (const id of EXPECTED_IDS) {
+      expect(html).not.toMatch(new RegExp(`<h3[^>]*id="${id}"`));
     }
   });
 

@@ -22,4 +22,13 @@ describe('SpacingScale (render-test)', () => {
     expect(html).toContain('14px');
     expect(html).toContain('1180px');
   });
+
+  it('renders each token name as an h4 (one level below the spacing h3 sub-block under foundations)', async () => {
+    const html = await renderSpacingScale();
+    expect(html).toMatch(/<h4[^>]*id="spacing-radius"/);
+    expect(html).toMatch(/<h4[^>]*id="spacing-radius-lg"/);
+    expect(html).toMatch(/<h4[^>]*id="spacing-container"/);
+    // No leftover h3 with the same ids.
+    expect(html).not.toMatch(/<h3[^>]*id="spacing-(radius|radius-lg|container)"/);
+  });
 });

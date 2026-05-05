@@ -145,4 +145,72 @@ describe('designSystemDecisionsSchema', () => {
     );
     expect(duplicateIssues.length).toBeGreaterThan(0);
   });
+
+  it('parses an entry that includes the optional alternatives_rejected field (positive)', () => {
+    const withAlternatives = {
+      decisions: [
+        {
+          id: 'astro-not-next',
+          title: { es: 'Astro y no Next.js', en: 'Astro instead of Next.js' },
+          rationale: {
+            es: 'Sitio mayoritariamente estático, mejor MPA con islas.',
+            en: 'Mostly static site, MPA with islands is a better fit.',
+          },
+          alternatives_rejected: {
+            es: 'Next.js arrastra runtime React; Remix asume servidor.',
+            en: 'Next.js drags a React runtime; Remix assumes a server.',
+          },
+        },
+      ],
+    };
+    const parsed = designSystemDecisionsSchema.parse(withAlternatives);
+    expect(parsed.decisions).toHaveLength(1);
+    const entry = parsed.decisions[0];
+    if (entry === undefined) {
+      throw new Error('expected one decision');
+    }
+    expect(entry.alternatives_rejected?.es).toBe(
+      'Next.js arrastra runtime React; Remix asume servidor.',
+    );
+    expect(entry.alternatives_rejected?.en).toBe(
+      'Next.js drags a React runtime; Remix assumes a server.',
+    );
+  });
+
+  it('parses an entry without alternatives_rejected (optional, backward compatible)', () => {
+    const withoutAlternatives = {
+      decisions: [validDecisions.decisions[0]],
+    };
+    const parsed = designSystemDecisionsSchema.parse(withoutAlternatives);
+    expect(parsed.decisions).toHaveLength(1);
+    const entry = parsed.decisions[0];
+    if (entry === undefined) {
+      throw new Error('expected one decision');
+    }
+    expect(entry.alternatives_rejected).toBeUndefined();
+  });
+
+  it('fails when alternatives_rejected has only es (parity required for the new field)', () => {
+    const broken = {
+      decisions: [
+        {
+          ...validDecisions.decisions[0],
+          alternatives_rejected: { es: 'Solo español, falta inglés.' },
+        },
+      ],
+    };
+    const result = designSystemDecisionsSchema.safeParse(broken);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const enIssues = result.error.issues.filter(
+      (issue) =>
+        issue.path[0] === 'decisions' &&
+        issue.path[1] === 0 &&
+        issue.path[2] === 'alternatives_rejected' &&
+        issue.path[3] === 'en',
+    );
+    expect(enIssues).toHaveLength(1);
+  });
 });

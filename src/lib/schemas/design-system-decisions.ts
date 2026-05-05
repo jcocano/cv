@@ -7,6 +7,7 @@ export const designSystemDecisionSchema = z
     id: z.string().regex(/^[a-z][a-z0-9-]*$/, 'kebab-case'),
     title: i18nString,
     rationale: i18nString,
+    alternatives_rejected: i18nString.optional(),
   })
   .strict();
 

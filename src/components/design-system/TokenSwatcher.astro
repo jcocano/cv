@@ -31,9 +31,9 @@ const THEMES = ['dark', 'light', 'paper'] as const;
   {
     THEMES.map((theme) => (
       <section class={styles.themeBlock} data-theme-preview={theme}>
-        <h2 class={styles.themeHeading} id={`token-theme-${theme}`}>
+        <h4 class={styles.themeHeading} id={`token-theme-${theme}`}>
           {theme}
-        </h2>
+        </h4>
         <div class={styles.swatches} data-theme={theme}>
           {TOKEN_NAMES.map((token) => (
             <article class={styles.swatch}>

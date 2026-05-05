@@ -25,9 +25,12 @@ const principles = parsed.principles;
       </h1>
       <p class={styles.pageLede}>
         <span lang="es"
-          >Principios, decisiones, tokens, tipografía, primitives de UI y espaciado.</span
+          >Principios, decisiones, decisiones técnicas y bases (tipografía, espaciado, primitives,
+          tokens).</span
         >
-        <span lang="en">Principles, decisions, tokens, typography, UI primitives, and spacing.</span
+        <span lang="en"
+          >Principles, decisions, technical decisions and foundations (typography, spacing,
+          primitives, tokens).</span
         >
       </p>
     </header>
@@ -49,51 +52,88 @@ const principles = parsed.principles;
     </section>
 
     <section id="block-decisions" class={styles.block}>
+      <p class={styles.blockEyebrow}>
+        <span lang="es">{t('theSystem.decisionsEyebrow', 'es')}</span>
+        <span lang="en">{t('theSystem.decisionsEyebrow', 'en')}</span>
+      </p>
       <h2 class={styles.blockHeading}>
-        <span lang="es">Decisiones</span><span lang="en">Decisions</span>
+        <span lang="es">{t('theSystem.decisionsTitle', 'es')}</span>
+        <span lang="en">{t('theSystem.decisionsTitle', 'en')}</span>
       </h2>
-      <DecisionsList />
+      <DecisionsList source="ui" />
     </section>
 
-    <section id="block-tokens" class={styles.block}>
+    <section id="block-technical-decisions" class={styles.block}>
+      <p class={styles.blockEyebrow}>
+        <span lang="es">{t('theSystem.technicalDecisionsEyebrow', 'es')}</span>
+        <span lang="en">{t('theSystem.technicalDecisionsEyebrow', 'en')}</span>
+      </p>
       <h2 class={styles.blockHeading}>
-        <span lang="es">Tokens</span><span lang="en">Tokens</span>
+        <span lang="es">{t('theSystem.technicalDecisionsTitle', 'es')}</span>
+        <span lang="en">{t('theSystem.technicalDecisionsTitle', 'en')}</span>
       </h2>
-      <TokenSwatcher />
+      <p class={styles.blockLede}>
+        <span lang="es">{t('theSystem.technicalDecisionsLede', 'es')}</span>
+        <span lang="en">{t('theSystem.technicalDecisionsLede', 'en')}</span>
+      </p>
+      <DecisionsList source="technical" />
     </section>
 
-    <section id="block-typography" class={styles.block}>
+    <section id="block-foundations" class={styles.block}>
+      <p class={styles.blockEyebrow}>
+        <span lang="es">{t('theSystem.foundationsEyebrow', 'es')}</span>
+        <span lang="en">{t('theSystem.foundationsEyebrow', 'en')}</span>
+      </p>
       <h2 class={styles.blockHeading}>
-        <span lang="es">Tipografía</span><span lang="en">Typography</span>
+        <span lang="es">{t('theSystem.foundationsTitle', 'es')}</span>
+        <span lang="en">{t('theSystem.foundationsTitle', 'en')}</span>
       </h2>
-      <TypeScale />
-    </section>
+      <p class={styles.blockLede}>
+        <span lang="es">{t('theSystem.foundationsLede', 'es')}</span>
+        <span lang="en">{t('theSystem.foundationsLede', 'en')}</span>
+      </p>
 
-    <section id="block-ui-primitives" class={styles.block}>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">UI primitives</span><span lang="en">UI primitives</span>
-      </h2>
-      <UiGallery />
-    </section>
+      <section id="sub-typography" class={styles.subBlock}>
+        <h3 class={styles.subBlockHeading}>
+          <span lang="es">{t('theSystem.typographyTitle', 'es')}</span>
+          <span lang="en">{t('theSystem.typographyTitle', 'en')}</span>
+        </h3>
+        <TypeScale />
+      </section>
 
-    <section id="block-spacing" class={styles.block}>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">Espaciado y radios</span><span lang="en">Spacing & radii</span>
-      </h2>
-      <SpacingScale />
+      <section id="sub-spacing" class={styles.subBlock}>
+        <h3 class={styles.subBlockHeading}>
+          <span lang="es">{t('theSystem.spacingTitle', 'es')}</span>
+          <span lang="en">{t('theSystem.spacingTitle', 'en')}</span>
+        </h3>
+        <SpacingScale />
+      </section>
+
+      <section id="sub-ui-primitives" class={styles.subBlock}>
+        <h3 class={styles.subBlockHeading}>
+          <span lang="es">{t('theSystem.uiPrimitivesTitle', 'es')}</span>
+          <span lang="en">{t('theSystem.uiPrimitivesTitle', 'en')}</span>
+        </h3>
+        <UiGallery />
+      </section>
+
+      <section id="sub-tokens-by-theme" class={styles.subBlock}>
+        <h3 class={styles.subBlockHeading}>
+          <span lang="es">{t('theSystem.tokensByThemeTitle', 'es')}</span>
+          <span lang="en">{t('theSystem.tokensByThemeTitle', 'en')}</span>
+        </h3>
+        <TokenSwatcher />
+      </section>
     </section>
 
     <section id="block-status" class={styles.block}>
       <h2 class={styles.blockHeading}>
-        <span lang="es">Build & runtime</span><span lang="en">Build & runtime</span>
+        <span lang="es">{t('theSystem.statusTitle', 'es')}</span>
+        <span lang="en">{t('theSystem.statusTitle', 'en')}</span>
       </h2>
       <p class={styles.blockLede}>
-        <span lang="es"
-          >Métricas de build y runtime emitidas como endpoint JSON estático en cada build.</span
-        >
-        <span lang="en"
-          >Build and runtime metrics emitted as a static JSON endpoint at every build.</span
-        >
+        <span lang="es">{t('theSystem.statusLede', 'es')}</span>
+        <span lang="en">{t('theSystem.statusLede', 'en')}</span>
       </p>
       <SiteStatus />
     </section>

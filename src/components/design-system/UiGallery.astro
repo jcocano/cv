@@ -50,7 +50,7 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
   <div class={styles.subgroup} data-ui-group="primitives">
     <article class={styles.entry} data-ui-entry="ui-eyebrow">
       <div class={styles.head}>
-        <h3 class={styles.name} id="ui-eyebrow">Eyebrow</h3>
+        <h4 class={styles.name} id="ui-eyebrow">Eyebrow</h4>
       </div>
       <div class={styles.demo}>
         <Eyebrow num="01" labelEs="muestra" labelEn="preview" />
@@ -59,7 +59,7 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
 
     <article class={styles.entry} data-ui-entry="ui-lang">
       <div class={styles.head}>
-        <h3 class={styles.name} id="ui-lang">Lang</h3>
+        <h4 class={styles.name} id="ui-lang">Lang</h4>
       </div>
       <div class={styles.demo}>
         <Lang lang="es">muestra bilingüe</Lang>
@@ -69,7 +69,7 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
 
     <article class={styles.entry} data-ui-entry="ui-tag">
       <div class={styles.head}>
-        <h3 class={styles.name} id="ui-tag">Tag</h3>
+        <h4 class={styles.name} id="ui-tag">Tag</h4>
       </div>
       <div class={styles.demo}>
         <Tag label="Tag preview" />
@@ -78,7 +78,7 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
 
     <article class={styles.entry} data-ui-entry="ui-section-head" data-ui-span="full">
       <div class={styles.head}>
-        <h3 class={styles.name} id="ui-section-head">SectionHead</h3>
+        <h4 class={styles.name} id="ui-section-head">SectionHead</h4>
       </div>
       <div class={styles.demoWide}>
         <SectionHead
@@ -104,9 +104,9 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
       ICON_ENTRIES.map((iconEntry) => (
         <article class={styles.entry} data-ui-entry={iconEntry.id}>
           <div class={styles.head}>
-            <h3 class={styles.name} id={iconEntry.id}>
+            <h4 class={styles.name} id={iconEntry.id}>
               {iconEntry.name}
-            </h3>
+            </h4>
           </div>
           <div class={styles.demoIcon}>
             <span class={styles.iconDemo}>

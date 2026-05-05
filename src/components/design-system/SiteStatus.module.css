@@ -1,0 +1,57 @@
+.region {
+  padding: 24px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+}
+
+.metrics {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  align-items: baseline;
+  column-gap: 16px;
+  row-gap: 0;
+}
+
+.label {
+  margin: 0;
+  padding: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-mute);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.value {
+  margin: 0;
+  padding: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg);
+  word-break: break-all;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* Drop the bottom border on the final row (last <dt> + last <dd>). */
+.label:nth-last-child(2),
+.value:nth-last-child(1) {
+  border-bottom: 0;
+}
+
+/*
+ * Loading and error states are signalled via aria-busy and data-status-state on
+ * the wrapper <div role="status">. The client module flips data-status-state
+ * from "loading" to "loaded" or "error" once the fetch resolves. We dim the
+ * value cells while loading to communicate the in-flight state visually as
+ * well; the error tone uses a slightly muted hue but no red — the failure
+ * mode is "unknown", not "broken".
+ */
+.region[data-status-state='loading'] .value {
+  color: var(--fg-dim);
+}
+
+.region[data-status-state='error'] .value {
+  color: var(--fg-mute);
+  font-style: italic;
+}

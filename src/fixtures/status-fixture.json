@@ -1,0 +1,9 @@
+{
+  "build_sha": "fedcba9876543210fedcba9876543210fedcba98",
+  "build_time": "2026-05-04T17:00:00.000Z",
+  "schema_version": "1.0.0",
+  "page_weight_kb": 421.125,
+  "js_payload_kb": 130.5,
+  "css_payload_kb": 64.25,
+  "routes_count": 7
+}

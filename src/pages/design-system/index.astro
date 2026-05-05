@@ -1,5 +1,6 @@
 ---
 import DecisionsList from '@/components/design-system/DecisionsList.astro';
+import SiteStatus from '@/components/design-system/SiteStatus.astro';
 import SpacingScale from '@/components/design-system/SpacingScale.astro';
 import TokenSwatcher from '@/components/design-system/TokenSwatcher.astro';
 import TypeScale from '@/components/design-system/TypeScale.astro';
@@ -56,6 +57,21 @@ import styles from './index.module.css';
         <span lang="es">Decisiones</span><span lang="en">Decisions</span>
       </h2>
       <DecisionsList />
+    </section>
+
+    <section id="block-status" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Build & runtime</span><span lang="en">Build & runtime</span>
+      </h2>
+      <p class={styles.blockLede}>
+        <span lang="es"
+          >Métricas de build y runtime emitidas como endpoint JSON estático en cada build.</span
+        >
+        <span lang="en"
+          >Build and runtime metrics emitted as a static JSON endpoint at every build.</span
+        >
+      </p>
+      <SiteStatus />
     </section>
   </article>
 </BaseLayout>

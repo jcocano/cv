@@ -1,19 +1,34 @@
 ---
 import designSystemDecisionsJson from '@/data/design-system-decisions.json';
+import technicalDecisionsJson from '@/data/technical-decisions.json';
+import { t } from '@/lib/i18n/t';
 import {
   designSystemDecisionsSchema,
   type DesignSystemDecisions,
 } from '@/lib/schemas/design-system-decisions';
 import styles from './DecisionsList.module.css';
 
-const decisions: DesignSystemDecisions =
-  designSystemDecisionsSchema.parse(designSystemDecisionsJson);
+interface Props {
+  source: 'ui' | 'technical';
+}
+
+const { source } = Astro.props;
+
+const SOURCE_JSON: Record<Props['source'], unknown> = {
+  ui: designSystemDecisionsJson,
+  technical: technicalDecisionsJson,
+};
+
+const decisions: DesignSystemDecisions = designSystemDecisionsSchema.parse(SOURCE_JSON[source]);
+const alternativesLabelEs = t('theSystem.alternativesLabel', 'es');
+const alternativesLabelEn = t('theSystem.alternativesLabel', 'en');
 ---
 
 <div class={styles.decisionsList}>
   {
     decisions.decisions.map((decision) => {
       const anchorId = `decision-${decision.id}`;
+      const alternatives = decision.alternatives_rejected;
       return (
         <article class={styles.entry} data-decision-entry={decision.id}>
           <div class={styles.head}>
@@ -26,6 +41,18 @@ const decisions: DesignSystemDecisions =
             <span lang="es">{decision.rationale.es}</span>
             <span lang="en">{decision.rationale.en}</span>
           </p>
+          {alternatives !== undefined && (
+            <div class={styles.alternatives} data-alternatives-rejected={decision.id}>
+              <p class={styles.alternativesLabel}>
+                <span lang="es">{alternativesLabelEs}</span>
+                <span lang="en">{alternativesLabelEn}</span>
+              </p>
+              <p class={styles.alternativesBody}>
+                <span lang="es">{alternatives.es}</span>
+                <span lang="en">{alternatives.en}</span>
+              </p>
+            </div>
+          )}
         </article>
       );
     })

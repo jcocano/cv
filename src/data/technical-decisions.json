@@ -1,0 +1,120 @@
+{
+  "decisions": [
+    {
+      "id": "static-generation-astro",
+      "title": {
+        "es": "Generación estática con Astro para GitHub Pages",
+        "en": "Static site generation with Astro for GitHub Pages"
+      },
+      "rationale": {
+        "es": "Elimina la necesidad de infraestructura serverless o CDN personalizado. Astro compila el CV a HTML/CSS/JS plano con Content Collections para contenido bilingüe, permitiendo hosting gratuito y sin latencia de servidor.",
+        "en": "Eliminates the need for serverless infrastructure or custom CDN. Astro compiles the CV to plain HTML/CSS/JS with Content Collections for bilingual content, enabling free hosting and zero server latency."
+      },
+      "alternatives_rejected": {
+        "es": "Next.js/Nuxt/SvelteKit SSR hubieran requerido un backend. Hugo/Jekyll son menos flexibles para componentes interactivos. Frameworks MPA como Remix añaden complejidad innecesaria para un sitio personal estático.",
+        "en": "Next.js/Nuxt/SvelteKit SSR would have required a backend. Hugo/Jekyll are less flexible for interactive components. MPA frameworks like Remix add unnecessary complexity for a static personal site."
+      }
+    },
+    {
+      "id": "typescript-strict-no-any",
+      "title": {
+        "es": "TypeScript estricto sin `any` en todo el código",
+        "en": "Strict TypeScript with no `any` throughout the codebase"
+      },
+      "rationale": {
+        "es": "Cierra la puerta a type-unsafety silenciosa y a regresiones tipadas. Obliga a usar `unknown` + narrowing, genéricos y tipos derivados de Zod. Trade-off: más tiempo de escritura inicial, pero mayor confianza en refactors futuros.",
+        "en": "Closes the door to silent type unsafety and typed regressions. Forces the use of `unknown` + narrowing, generics, and Zod-derived types. Trade-off: more upfront writing time, but higher confidence in future refactors."
+      },
+      "alternatives_rejected": {
+        "es": "Permitir `any` aceleraba la escritura pero hacía invisibles los errores de tipo. `@ts-ignore` sin documentación es deuda técnica acumulada. La validación solo en runtime deja de ser verificable en compile time.",
+        "en": "Allowing `any` would speed up writing but hide type errors. Undocumented `@ts-ignore` is accumulated technical debt. Runtime-only validation is no longer verifiable at compile time."
+      }
+    },
+    {
+      "id": "tdd-vitest-option-b",
+      "title": {
+        "es": "TDD obligatorio con Vitest (opción B)",
+        "en": "Mandatory TDD with Vitest (option B)"
+      },
+      "rationale": {
+        "es": "Cubre lógica pura y helpers con tests unitarios; componentes con branching con render-tests vía `experimental_AstroContainer`; templates puros sin test (confianza vía paridad visual). Trade-off: ciclo más lento que TDD completo, pero sin overhead de tests sobre presentación pura.",
+        "en": "Covers pure logic and helpers with unit tests; components with branching via render-tests through `experimental_AstroContainer`; pure templates without tests (confidence via visual parity). Trade-off: slower cycle than full TDD, but no overhead of tests on pure presentation."
+      }
+    },
+    {
+      "id": "three-theme-system-css-variables",
+      "title": {
+        "es": "Sistema de tres temas (dark/light/paper) con CSS variables",
+        "en": "Three-theme system (dark/light/paper) with CSS variables"
+      },
+      "rationale": {
+        "es": "Preserva los tres temas del handoff sin recortes. Las CSS variables permiten cambio en runtime mediante el atributo data-theme aplicado al elemento raíz, sin cargar estilos alternativos. Trade-off: más tokens en el bundle (3× declaración), pero paridad visual completa y reutilización de componentes sin duplicado.",
+        "en": "Preserves all three handoff themes without cuts. CSS variables enable runtime switching via a data-theme attribute on the root element, without loading alternate stylesheets. Trade-off: more tokens in bundle (3× declaration), but full visual parity and component reuse without duplication."
+      },
+      "alternatives_rejected": {
+        "es": "Dos temas (dark/light) simplificaban el sistema pero descartaban paper, que es identidad del handoff. Clases CSS por tema (.dark, .light, .paper) requerían cambios de clase y reload de estilos. CSS-in-JS hubiera acoplado lógica a componentes.",
+        "en": "Two themes (dark/light) would simplify the system but drop paper, which is part of the handoff identity. CSS classes per theme (.dark, .light, .paper) would have required class changes and stylesheet reloads. CSS-in-JS would have coupled logic to components."
+      }
+    },
+    {
+      "id": "bilingual-no-routing-i18n-string",
+      "title": {
+        "es": "Bilingüe sin routing por idioma (`i18nString` + `data-lang`)",
+        "en": "Bilingual without language routing (`i18nString` + `data-lang`)"
+      },
+      "rationale": {
+        "es": "Un único set de URLs sirve ambos idiomas: cada string bilingüe (frontmatter MDX o JSON) guarda `{ es, en }` validado por Zod, y el cambio de idioma muta el atributo data-lang del elemento raíz sin recargar. Trade-off: dos spans con atributo lang en el DOM por cada texto traducible, pero evita árbol de URLs duplicado, sitemap fragmentado y desincronización entre versiones.",
+        "en": "A single URL set serves both languages: every bilingual string (MDX frontmatter or JSON) stores `{ es, en }` validated by Zod, and language toggle mutates the data-lang attribute on the root element without reload. Trade-off: two lang-marked spans per translatable text in the DOM, but avoids duplicated URL trees, fragmented sitemaps, and version drift."
+      },
+      "alternatives_rejected": {
+        "es": "El routing nativo i18n de Astro (`/es/...` + `/en/...`) fragmentaba el sitemap y forzaba mantener dos copias del árbol. Archivos paralelos por idioma (un `.mdx` para ES, otro para EN) duplicaban el frontmatter. Una sola lengua hubiera reducido la audiencia.",
+        "en": "Astro native i18n routing (`/es/...` + `/en/...`) fragmented the sitemap and forced maintaining two URL trees. Parallel files per language (one `.mdx` for ES, another for EN) duplicated frontmatter. A single language would have reduced audience reach."
+      }
+    },
+    {
+      "id": "vanilla-ts-no-ui-framework",
+      "title": {
+        "es": "TypeScript vanilla sin UI framework (Astro + script modules)",
+        "en": "Vanilla TypeScript with no UI framework (Astro + script modules)"
+      },
+      "rationale": {
+        "es": "Cero React/Vue/Svelte. La interactividad (theme toggle, lang toggle, piezas Lab, observers de scroll) vive en bloques de script dentro de archivos `.astro` que importan módulos TS desde `src/lib/`. Trade-off: hay que escribir manipulación DOM a mano, pero el payload JS es mínimo, no hay runtime de framework, y el comportamiento es directo de leer en el bundle.",
+        "en": "Zero React/Vue/Svelte. Interactivity (theme toggle, lang toggle, Lab pieces, scroll observers) lives in script blocks inside `.astro` files that import TS modules from `src/lib/`. Trade-off: hand-rolled DOM manipulation, but JS payload is minimal, no framework runtime, and behavior is directly readable in the bundle."
+      },
+      "alternatives_rejected": {
+        "es": "Las integraciones Astro de React/Vue/Svelte hubieran añadido 30-50 KB de runtime para piezas que apenas mutan estado. Alpine/Stimulus/Web Components habrían introducido un mini-framework adicional para resolver lo que un módulo TS resuelve sin abstracciones.",
+        "en": "Astro React/Vue/Svelte integrations would have added 30-50 KB of runtime for pieces that barely mutate state. Alpine/Stimulus/Web Components would have introduced an additional mini-framework to solve what a plain TS module solves without abstractions."
+      }
+    },
+    {
+      "id": "dual-content-layer",
+      "title": {
+        "es": "Capa de contenido dual: collections MDX para narrativa, JSON+Zod para datos puntuales",
+        "en": "Dual content layer: MDX collections for narrative, JSON+Zod for structured data"
+      },
+      "rationale": {
+        "es": "MDX collections (experiencia, proyectos, OSS, side-projects) cuando el body largo es el valor: `getCollection()` + frontmatter tipado + render del cuerpo. JSON+Zod (hero, principios, decisions, etc.) cuando el shape es plano y se importa síncronamente al SSR. Trade-off: dos patrones que mantener, pero cada uno encaja con la naturaleza del dato — forzar uno solo introduciría fricción.",
+        "en": "MDX collections (experience, projects, OSS, side-projects) when the long body is the value: `getCollection()` + typed frontmatter + body render. JSON+Zod (hero, principles, decisions, etc.) when shape is flat and imports synchronously at SSR. Trade-off: two patterns to maintain, but each fits the shape of its data — forcing one would introduce friction."
+      },
+      "alternatives_rejected": {
+        "es": "Solo collections para todo: `getCollection()` requiere async donde un import síncrono es trivial; un wrapper MDX para entries sin body es ceremonia inútil. Solo JSON: pierde body markdown rico (proyectos largos colapsan en concatenación de strings). La dualidad reconoce que ambos patrones encajan con shapes distintos.",
+        "en": "Collections-only: `getCollection()` requires async where a sync import is trivial; an MDX wrapper for body-less entries is needless ceremony. JSON-only: loses rich markdown bodies (long projects collapse into string concatenation). The duality acknowledges both patterns fit different shapes."
+      }
+    },
+    {
+      "id": "no-css-framework-plain-modules",
+      "title": {
+        "es": "CSS plano con modules colocados (sin Tailwind/SASS/CSS-in-JS)",
+        "en": "Plain CSS with colocated modules (no Tailwind/SASS/CSS-in-JS)"
+      },
+      "rationale": {
+        "es": "Cada componente lleva su `.module.css` adyacente. Los tokens viven solo en `tokens.css`. Trade-off: sin abstracciones de utility (Tailwind), pero el payload CSS es mínimo (~2 KB), cambiar tokens es un one-liner, y la visibilidad del estilo es directa (sin indirección de nombres generados).",
+        "en": "Each component has its adjacent `.module.css`. Tokens live only in `tokens.css`. Trade-off: no utility abstractions (Tailwind), but CSS payload is minimal (~2 KB), changing tokens is a one-liner, and style visibility is direct (no generated-name indirection)."
+      },
+      "alternatives_rejected": {
+        "es": "Tailwind aceleraba el layout pero forzaba `class=` con listas largas y complicaba la customización del tema vía plugins PostCSS. SASS/LESS añaden transpilación. CSS-in-JS (styled-components, emotion) acoplaba estilos a JS y exigía hidratación.",
+        "en": "Tailwind would speed up layout but force long `class=` lists and complicate theme customization via PostCSS plugins. SASS/LESS add transpilation. CSS-in-JS (styled-components, emotion) would couple styles to JS and require hydration."
+      }
+    }
+  ]
+}

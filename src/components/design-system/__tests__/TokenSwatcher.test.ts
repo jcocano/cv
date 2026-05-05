@@ -16,11 +16,13 @@ describe('TokenSwatcher (render-test)', () => {
     expect(html).toMatch(/data-theme-preview="paper"/);
   });
 
-  it('renders an h2 with id token-theme-<theme> for each of the three themes', async () => {
+  it('renders an h4 with id token-theme-<theme> for each of the three themes (theme headings live two levels below the foundations h2 wrapper + the tokens-by-theme h3 sub-block)', async () => {
     const html = await renderTokenSwatcher();
-    expect(html).toMatch(/<h2[^>]*id="token-theme-dark"/);
-    expect(html).toMatch(/<h2[^>]*id="token-theme-light"/);
-    expect(html).toMatch(/<h2[^>]*id="token-theme-paper"/);
+    expect(html).toMatch(/<h4[^>]*id="token-theme-dark"/);
+    expect(html).toMatch(/<h4[^>]*id="token-theme-light"/);
+    expect(html).toMatch(/<h4[^>]*id="token-theme-paper"/);
+    // No leftover h2 with the same ids — strict hierarchy under foundations.
+    expect(html).not.toMatch(/<h2[^>]*id="token-theme-/);
   });
 
   it('renders chips with data-theme attribute on the swatch group for live theme preview', async () => {

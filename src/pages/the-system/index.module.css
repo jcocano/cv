@@ -55,3 +55,19 @@
   font-size: 13px;
   line-height: 1.55;
 }
+
+.sub-block {
+  margin-top: 56px;
+}
+
+.sub-block:first-of-type {
+  margin-top: 32px;
+}
+
+.sub-block-heading {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}

@@ -5,24 +5,55 @@ import SpacingScale from '@/components/design-system/SpacingScale.astro';
 import TokenSwatcher from '@/components/design-system/TokenSwatcher.astro';
 import TypeScale from '@/components/design-system/TypeScale.astro';
 import UiGallery from '@/components/design-system/UiGallery.astro';
+import PrinciplesList from '@/components/principles/PrinciplesList.astro';
+import principlesJson from '@/data/principles.json';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { t } from '@/lib/i18n/t';
+import { principlesSchema } from '@/lib/schemas/principles';
 import styles from './index.module.css';
+
+const parsed = principlesSchema.parse(principlesJson);
+const principles = parsed.principles;
 ---
 
-<BaseLayout title="Design system — Jesús Cocaño">
+<BaseLayout title="The system — Jesús Cocaño">
   <article class={`container ${styles.pageShell}`}>
     <header class={styles.pageHead}>
       <h1 class={styles.pageTitle}>
-        <span lang="es">Design system</span>
-        <span lang="en">Design system</span>
+        <span lang="es">El sistema</span>
+        <span lang="en">The system</span>
       </h1>
       <p class={styles.pageLede}>
         <span lang="es"
-          >Tokens, tipografía, primitives de UI, espaciado y decisiones del sistema.</span
+          >Principios, decisiones, tokens, tipografía, primitives de UI y espaciado.</span
         >
-        <span lang="en">Tokens, typography, UI primitives, spacing, and system decisions.</span>
+        <span lang="en">Principles, decisions, tokens, typography, UI primitives, and spacing.</span
+        >
       </p>
     </header>
+
+    <section id="block-principles" class={styles.block}>
+      <p class={styles.blockEyebrow}>
+        <span lang="es">{t('theSystem.principlesEyebrow', 'es')}</span>
+        <span lang="en">{t('theSystem.principlesEyebrow', 'en')}</span>
+      </p>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">{t('theSystem.principlesTitle', 'es')}</span>
+        <span lang="en">{t('theSystem.principlesTitle', 'en')}</span>
+      </h2>
+      <p class={styles.blockLede}>
+        <span lang="es">{t('theSystem.principlesLede', 'es')}</span>
+        <span lang="en">{t('theSystem.principlesLede', 'en')}</span>
+      </p>
+      <PrinciplesList principles={principles} />
+    </section>
+
+    <section id="block-decisions" class={styles.block}>
+      <h2 class={styles.blockHeading}>
+        <span lang="es">Decisiones</span><span lang="en">Decisions</span>
+      </h2>
+      <DecisionsList />
+    </section>
 
     <section id="block-tokens" class={styles.block}>
       <h2 class={styles.blockHeading}>
@@ -50,13 +81,6 @@ import styles from './index.module.css';
         <span lang="es">Espaciado y radios</span><span lang="en">Spacing & radii</span>
       </h2>
       <SpacingScale />
-    </section>
-
-    <section id="block-decisions" class={styles.block}>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">Decisiones</span><span lang="en">Decisions</span>
-      </h2>
-      <DecisionsList />
     </section>
 
     <section id="block-status" class={styles.block}>

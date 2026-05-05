@@ -42,55 +42,55 @@ interface MetricRow {
     | 'css_payload_kb'
     | 'routes_count';
   readonly labelKey:
-    | 'designSystem.statusLabels.build'
-    | 'designSystem.statusLabels.deployed'
-    | 'designSystem.statusLabels.schema'
-    | 'designSystem.statusLabels.pageWeight'
-    | 'designSystem.statusLabels.jsPayload'
-    | 'designSystem.statusLabels.cssPayload'
-    | 'designSystem.statusLabels.routes';
+    | 'theSystem.statusLabels.build'
+    | 'theSystem.statusLabels.deployed'
+    | 'theSystem.statusLabels.schema'
+    | 'theSystem.statusLabels.pageWeight'
+    | 'theSystem.statusLabels.jsPayload'
+    | 'theSystem.statusLabels.cssPayload'
+    | 'theSystem.statusLabels.routes';
 }
 
 const ROWS: ReadonlyArray<MetricRow> = [
   {
     id: 'status-row-build',
     statusKey: 'build_sha',
-    labelKey: 'designSystem.statusLabels.build',
+    labelKey: 'theSystem.statusLabels.build',
   },
   {
     id: 'status-row-deployed',
     statusKey: 'build_time',
-    labelKey: 'designSystem.statusLabels.deployed',
+    labelKey: 'theSystem.statusLabels.deployed',
   },
   {
     id: 'status-row-schema',
     statusKey: 'schema_version',
-    labelKey: 'designSystem.statusLabels.schema',
+    labelKey: 'theSystem.statusLabels.schema',
   },
   {
     id: 'status-row-page-weight',
     statusKey: 'page_weight_kb',
-    labelKey: 'designSystem.statusLabels.pageWeight',
+    labelKey: 'theSystem.statusLabels.pageWeight',
   },
   {
     id: 'status-row-js-payload',
     statusKey: 'js_payload_kb',
-    labelKey: 'designSystem.statusLabels.jsPayload',
+    labelKey: 'theSystem.statusLabels.jsPayload',
   },
   {
     id: 'status-row-css-payload',
     statusKey: 'css_payload_kb',
-    labelKey: 'designSystem.statusLabels.cssPayload',
+    labelKey: 'theSystem.statusLabels.cssPayload',
   },
   {
     id: 'status-row-routes',
     statusKey: 'routes_count',
-    labelKey: 'designSystem.statusLabels.routes',
+    labelKey: 'theSystem.statusLabels.routes',
   },
 ];
 
-const loadingEn = enStrings['designSystem.statusLoading'];
-const loadingEs = esStrings['designSystem.statusLoading'];
+const loadingEn = enStrings['theSystem.statusLoading'];
+const loadingEs = esStrings['theSystem.statusLoading'];
 ---
 
 <div

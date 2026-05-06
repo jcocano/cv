@@ -19,6 +19,6 @@ export const stackSchema = z
 export type StackCategory = z.infer<typeof stackCategorySchema>;
 export type Stack = z.infer<typeof stackSchema>;
 
-export function getStack(): Stack {
+export function parseStackOrThrow(): Stack {
   return stackSchema.parse(stackJson);
 }

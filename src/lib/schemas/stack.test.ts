@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import stackJson from '@/data/stack.json';
-import { getStack, stackSchema } from '@/lib/schemas/stack';
+import { parseStackOrThrow, stackSchema } from '@/lib/schemas/stack';
 
 const validStack = {
   categories: [
@@ -162,16 +162,16 @@ describe('stackSchema', () => {
   });
 });
 
-describe('getStack', () => {
+describe('parseStackOrThrow', () => {
   it('returns the parsed stack from src/data/stack.json with seven categories', () => {
-    const stack = getStack();
+    const stack = parseStackOrThrow();
     expect(stack.categories).toHaveLength(7);
     expect(stack.categories[0]?.label.en).toBe('Languages');
     expect(stack.categories[6]?.label.en).toBe('Specialization');
   });
 
   it('returns a result whose tags arrays match the handoff exactly (Messaging & Data has 7 tags)', () => {
-    const stack = getStack();
+    const stack = parseStackOrThrow();
     expect(stack.categories[3]?.tags).toHaveLength(7);
     expect(stack.categories[4]?.tags).toEqual([
       'Git',

@@ -2,10 +2,10 @@
 import SectionHead from '@/components/ui/SectionHead.astro';
 import { padNum } from '@/lib/content/pad-num';
 import { t } from '@/lib/i18n/t';
-import { getStack } from '@/lib/schemas/stack';
+import { parseStackOrThrow } from '@/lib/schemas/stack';
 import styles from './StackSection.module.css';
 
-const stack = getStack();
+const stack = parseStackOrThrow();
 ---
 
 <section id="stack">

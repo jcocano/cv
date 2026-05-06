@@ -5,8 +5,8 @@
     "en": "Senior Fullstack & Platform Engineer"
   },
   "pitch": {
-    "es": "Senior Fullstack & Platform Engineer construyendo sistemas distribuidos resilientes, desde arquitecturas early-stage hasta plataformas de alto tráfico en producción.",
-    "en": "Senior Fullstack & Platform Engineer building resilient distributed systems, from early-stage architectures to high-traffic production platforms."
+    "es": "Senior Engineer · Backend, Platform, full-stack cuando se necesita. Construyendo sistemas distribuidos resilientes, de plataformas blockchain a backends AI-native.",
+    "en": "Senior Engineer · Backend, Platform, full-stack when needed. Building resilient distributed systems, from blockchain platforms to AI-native backends."
   },
   "location": {
     "es": "México · Remoto",
@@ -16,7 +16,7 @@
     "es": "Disponible para oportunidades",
     "en": "Available for opportunities"
   },
-  "roleShort": "Fullstack / Platform / SRE",
+  "roleShort": "Backend / Platform / SRE",
   "aiTopics": {
     "es": "LLMs · RAG · Agentes · MCP",
     "en": "LLMs · RAG · Agents · MCP"

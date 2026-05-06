@@ -47,10 +47,6 @@
   color: var(--fg);
 }
 
-.hero-title [lang='en'] {
-  color: var(--fg-mute);
-}
-
 .hero-lede {
   margin: 24px 0 0;
   max-width: 720px;
@@ -124,10 +120,6 @@
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--fg);
-}
-
-.title-accent {
-  color: var(--fg-mute);
 }
 
 .section-desc {

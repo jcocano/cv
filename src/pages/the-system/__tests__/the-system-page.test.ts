@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 
@@ -7,6 +10,9 @@ import designSystemDecisionsJson from '@/data/design-system-decisions.json';
 import technicalDecisionsJson from '@/data/technical-decisions.json';
 import { principlesSchema } from '@/lib/schemas/principles';
 import { designSystemDecisionsSchema } from '@/lib/schemas/design-system-decisions';
+
+const indexModuleCssPath = fileURLToPath(new URL('../index.module.css', import.meta.url));
+const indexModuleCss = readFileSync(indexModuleCssPath, 'utf8');
 
 async function renderTheSystemPage(): Promise<string> {
   const container = await AstroContainer.create();
@@ -189,6 +195,76 @@ describe('pages/the-system/index.astro (render-test)', () => {
     // inline style that overrides display. The global rule in base.css:39-42
     // hides the inactive language; an inline display would defeat it.
     expect(html).not.toMatch(/<span[^>]*lang="(es|en)"[^>]*style="[^"]*display\s*:/);
+  });
+
+  it('hero h1: the EN <span lang="en"> is NOT muted by the CSS module (bilingual color parity)', () => {
+    // Regression guard for feature #47. Before the fix, index.module.css carried
+    //   .hero-title [lang='en'] { color: var(--fg-mute); }
+    // which made `The system.` (h1 EN) look dimmer than `El sistema.` (h1 ES).
+    // The intent of the bilingual refactor (feature #45) was full parity. The
+    // muting rule must NOT exist anywhere in the page CSS module.
+    expect(indexModuleCss).not.toMatch(/\.hero-title\s+\[lang=['"]en['"]\]/);
+    // Stronger guard: the substring `[lang='en']` must not appear in any
+    // selector inside the page CSS module (no per-language muting at all).
+    expect(indexModuleCss).not.toMatch(/\[lang=['"]en['"]\]/);
+  });
+
+  it('section h2 accent: the .title-accent rule does NOT mute the EN span (bilingual color parity)', () => {
+    // Regression guard for feature #47. Before the fix, the page CSS module
+    // declared `.title-accent { color: var(--fg-mute); }` and applied that
+    // class to the EN <span> in #why/#how/#what/#tokens h2 titles (lines 97,
+    // 119, 152, 206 of index.astro). Result: `Principles. / Decisions. /
+    // Foundations. / Tokens.` looked dimmer than the ES titles. The fix
+    // removes both the CSS rule and the `class={styles.titleAccent}` from the
+    // markup, leaving only the `<span lang="en">` distinction.
+    expect(indexModuleCss).not.toMatch(/\.title-accent\s*\{[^}]*color\s*:\s*var\(--fg-mute\)/);
+    // The simplest, most robust form: the rule body for `.title-accent` (if
+    // it exists at all) must NOT mention `--fg-mute`. The implementer's
+    // chosen path (option a) drops the rule entirely AND drops the class
+    // from the four call sites.
+    const titleAccentRule = indexModuleCss.match(/\.title-accent\s*\{[^}]*\}/);
+    if (titleAccentRule !== null) {
+      expect(titleAccentRule[0]).not.toMatch(/--fg-mute/);
+    }
+  });
+
+  it('renders <BackToHomeLink /> at the top of the hero (bilingual return-home link)', async () => {
+    // Acceptance #4 of feature #47. Project pages have a back-to-home link
+    // at the top (ProjectsIndexContent) or bottom (ProjectLayout footer);
+    // the-system did not have one. This guard checks that the page now
+    // renders the bilingual anchor exactly like the other pages do.
+    const html = await renderTheSystemPage();
+    // Bilingual labels match the literals in i18n/{es,en}.json:
+    //   "projects.backToHome": "← Inicio" / "← Home".
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>← Inicio<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>← Home<\/span>/);
+    // The link must use the BASE_URL root (resolves to "/" in the test env,
+    // and to "/cv/" in production via Astro's `base` config). Same href
+    // pattern as the BackToHomeLink unit test (line 15 of its file).
+    expect(html).toMatch(/<a[^>]*href="\/"[^>]*>[\s\S]*?← Inicio[\s\S]*?<\/a>/);
+  });
+
+  it('the BackToHomeLink lives ABOVE the hero eyebrow (top-of-page placement, mirrors ProjectsIndexContent)', async () => {
+    // Acceptance #4 (revised on 2026-05-05 after user feedback): the link must
+    // sit at the very top of the hero, ABOVE the `▲ handbook técnico` eyebrow,
+    // not at the end of the page. Pattern matches ProjectsIndexContent.astro
+    // (line 19-31): `<div class="container"> <BackToHomeLink /> <SectionHead />`.
+    // Here the link is the first child of the hero's inner `<div class="container ...">`,
+    // BEFORE the `<p class={styles.heroEyebrow}>` with the bilingual eyebrow.
+    // The BackToHomeLink renders a <span lang="es">← Inicio</span>; its index
+    // in the HTML must be LESS than the index of the eyebrow text.
+    const html = await renderTheSystemPage();
+    const inicioIndex = html.indexOf('← Inicio');
+    const eyebrowIndex = html.indexOf('handbook técnico');
+    const heroHeaderIndex = html.indexOf('<header');
+    expect(inicioIndex).toBeGreaterThan(-1);
+    expect(eyebrowIndex).toBeGreaterThan(-1);
+    expect(heroHeaderIndex).toBeGreaterThan(-1);
+    // The link is INSIDE the hero <header> (after its opening tag) but BEFORE
+    // the eyebrow `handbook técnico` text. This pins it as the first piece of
+    // hero content, mirroring the projects index page.
+    expect(inicioIndex).toBeGreaterThan(heroHeaderIndex);
+    expect(inicioIndex).toBeLessThan(eyebrowIndex);
   });
 
   it('with data-lang="es" the HTML never carries an EN-only string outside lang="en" wrappers', async () => {

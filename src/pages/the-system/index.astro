@@ -7,6 +7,7 @@ import TokensTable from '@/components/design-system/TokensTable.astro';
 import TypeScale from '@/components/design-system/TypeScale.astro';
 import UiGallery from '@/components/design-system/UiGallery.astro';
 import PrinciplesList from '@/components/principles/PrinciplesList.astro';
+import BackToHomeLink from '@/components/work/BackToHomeLink.astro';
 import principlesJson from '@/data/principles.json';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { t } from '@/lib/i18n/t';
@@ -30,6 +31,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
   <article class={styles.pageShell}>
     <header class={styles.hero}>
       <div class={`container ${styles.heroInner}`}>
+        <BackToHomeLink />
         <p class={styles.heroEyebrow}>
           <span class={styles.heroEyebrowSparkle} aria-hidden="true">▲</span>
           <span lang="es">{t('theSystem.hero.eyebrow', 'es')}</span>
@@ -37,7 +39,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
         </p>
         <h1 class={styles.heroTitle}>
           <span lang="es">{t('theSystem.hero.title', 'es')}</span>
-          <span lang="en" class={styles.titleAccent}>{t('theSystem.hero.titleAccent', 'en')}</span>
+          <span lang="en">{t('theSystem.hero.titleAccent', 'en')}</span>
         </h1>
         <p class={styles.heroLede}>
           <span lang="es">{t('theSystem.hero.lede', 'es')}</span>
@@ -94,9 +96,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
           </p>
           <h2 class={styles.sectionTitle}>
             <span lang="es">{t('theSystem.section.why.title', 'es')}</span>{' '}
-            <span lang="en" class={styles.titleAccent}
-              >{t('theSystem.section.why.titleAccent', 'en')}</span
-            >
+            <span lang="en">{t('theSystem.section.why.titleAccent', 'en')}</span>
           </h2>
           <p class={styles.sectionDesc}>
             <span lang="es">{t('theSystem.section.why.desc', 'es')}</span>
@@ -116,9 +116,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
           </p>
           <h2 class={styles.sectionTitle}>
             <span lang="es">{t('theSystem.section.how.title', 'es')}</span>{' '}
-            <span lang="en" class={styles.titleAccent}
-              >{t('theSystem.section.how.titleAccent', 'en')}</span
-            >
+            <span lang="en">{t('theSystem.section.how.titleAccent', 'en')}</span>
           </h2>
           <p class={styles.sectionDesc}>
             <span lang="es">{t('theSystem.section.how.desc', 'es')}</span>
@@ -149,9 +147,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
           </p>
           <h2 class={styles.sectionTitle}>
             <span lang="es">{t('theSystem.section.what.title', 'es')}</span>{' '}
-            <span lang="en" class={styles.titleAccent}
-              >{t('theSystem.section.what.titleAccent', 'en')}</span
-            >
+            <span lang="en">{t('theSystem.section.what.titleAccent', 'en')}</span>
           </h2>
           <p class={styles.sectionDesc}>
             <span lang="es">{t('theSystem.section.what.desc', 'es')}</span>
@@ -203,9 +199,7 @@ const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCM
           </p>
           <h2 class={styles.sectionTitle}>
             <span lang="es">{t('theSystem.section.tokens.title', 'es')}</span>{' '}
-            <span lang="en" class={styles.titleAccent}
-              >{t('theSystem.section.tokens.titleAccent', 'en')}</span
-            >
+            <span lang="en">{t('theSystem.section.tokens.titleAccent', 'en')}</span>
           </h2>
           <p class={styles.sectionDesc}>
             <span lang="es">{t('theSystem.section.tokens.desc', 'es')}</span>

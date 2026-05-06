@@ -98,6 +98,7 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
 
     <script>
       import { currentYear } from '@/lib/footer-utils/current-year';
+      import { collectScrollspyTargetsFromNavLinks } from '@/lib/motion/collect-scrollspy-targets';
       import { mountReveal } from '@/lib/motion/reveal';
       import { mountScrollspy } from '@/lib/motion/mount-scrollspy';
       import { shouldReduceMotion } from '@/lib/motion/should-reduce-motion';
@@ -203,18 +204,7 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
       }
 
       const scrollspyNavLinks = document.querySelectorAll<HTMLAnchorElement>('nav a.nav-link');
-      const scrollspyTargets: HTMLElement[] = [];
-      scrollspyNavLinks.forEach((link) => {
-        const href = link.getAttribute('href');
-        if (href === null || !href.startsWith('#')) {
-          return;
-        }
-        const id = href.slice(1);
-        const target = document.getElementById(id);
-        if (target !== null) {
-          scrollspyTargets.push(target);
-        }
-      });
+      const scrollspyTargets = collectScrollspyTargetsFromNavLinks(scrollspyNavLinks);
       mountScrollspy(scrollspyNavLinks, scrollspyTargets);
     </script>
   </body>

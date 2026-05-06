@@ -69,10 +69,6 @@ describe('projectSchema', () => {
   });
 
   it('rejects an unknown role field (iter 5: role removed from schema)', () => {
-    // The role field was removed from the schema in iter 5 because the
-    // information lives in the experience section of the index page. The
-    // schema is `.strict()` so a frontmatter that still carries a `role`
-    // key must be rejected with an unrecognized_keys issue listing `role`.
     const withRole: Record<string, unknown> = {
       ...validProject,
       role: { es: 'Senior Backend', en: 'Senior Backend' },
@@ -262,7 +258,6 @@ describe('projectSchema', () => {
     if (result.success) {
       throw new Error('expected parse to fail');
     }
-    // The refine fires even when its `path` resolves to `order`; print issues for diagnosis.
     expect(result.error.issues.length).toBeGreaterThan(0);
     const issuesOnOrder = result.error.issues.filter((issue) => issue.path.includes('order'));
     expect(issuesOnOrder.length).toBeGreaterThan(0);

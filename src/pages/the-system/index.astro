@@ -17,10 +17,6 @@ import styles from './index.module.css';
 const parsed = principlesSchema.parse(principlesJson);
 const principles = parsed.principles;
 
-// Build-time stamp for the hero "last build" cell. Static from the build date
-// so it stays in sync with the deploy without depending on the runtime
-// `/cv/status.json` fetch (the stat already lives in the SiteStatus block).
-// Decision (implementer, 2026-05-05): static is simpler and matches the mock.
 const buildDate = new Date();
 const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCMonth() + 1).padStart(2, '0')}.${String(buildDate.getUTCDate()).padStart(2, '0')}`;
 ---

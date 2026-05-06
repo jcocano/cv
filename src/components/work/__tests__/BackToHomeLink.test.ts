@@ -11,7 +11,6 @@ async function renderLink(): Promise<string> {
 describe('BackToHomeLink (render-test)', () => {
   it('renders an anchor pointing to the home (BASE_URL root)', async () => {
     const html = await renderLink();
-    // BASE_URL in tests is '/' by default; the href should resolve exactly to BASE_URL.
     expect(html).toMatch(/<a[^>]*href="\/"/);
   });
 

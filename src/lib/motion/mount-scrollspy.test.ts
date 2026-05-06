@@ -279,8 +279,6 @@ describe('mountScrollspy', () => {
   it('highlights a nav-link whose href points to a wrapper div (not a <section>) when the wrapper is the most-visible target', () => {
     const aboutLink = createMockNavLink('#about');
     const workLink = createMockNavLink('#work');
-    // The "about" target is a wrapper <div>, not a <section>. Only the id matters
-    // to mountScrollspy — the tag name should be irrelevant.
     const aboutWrapper = createMockSection('about');
     const workSection = createMockSection('work');
 
@@ -394,7 +392,6 @@ describe('mountScrollspy', () => {
     const workSection = createMockSection('work');
 
     const { observers } = installIntersectionObserverMock();
-    // Pass a plain array, cast through unknown to the public Iterable signature.
     const sectionsArray = [aboutSection, workSection] as unknown as readonly HTMLElement[];
     mountScrollspy(asNavLinks([aboutLink, workLink]), sectionsArray);
 

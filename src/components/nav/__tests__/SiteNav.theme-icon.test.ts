@@ -1,24 +1,5 @@
-/**
- * @vitest-environment jsdom
- */
+// @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-
-/**
- * The visibility cycle of the theme-toggle icons is gobierned by 6 CSS rules
- * that hide the 2 non-active icons per theme. The rules live in
- * `src/components/nav/SiteNav.module.css` (lines 96-102) and use `:global(html
- * [data-theme=…])` to bridge the CSS module local `.themeIcon` with the global
- * `<html>` `data-theme` attribute that the runtime cycle (`applyTheme`) sets.
- *
- * Since Vitest does not inject the CSS module into the JSDOM document, this
- * test mirrors the production rule with the literal selector pattern and
- * asserts that `getComputedStyle(...).display` resolves to `none` for the 2
- * non-active icons and `inline-flex` for the active icon, per theme.
- *
- * The CSS rule asserted here MUST stay in lockstep with the rule in
- * `SiteNav.module.css`. If that file's selectors change, this test breaks
- * (a deliberate guardrail).
- */
 
 type ThemeName = 'dark' | 'light' | 'paper';
 

@@ -78,7 +78,6 @@ function createRig(options: RigOptions = {}): Rig {
       },
     };
     observerRig.fire = (): void => {
-      // Only fire if this instance is the latest one (mimic active observer).
       if (instanceIndex === observerRig.observerInstances - 1) {
         cb([] as unknown as MutationRecord[], instance as unknown as MutationObserver);
       }
@@ -276,7 +275,6 @@ describe('createThemeStore — observer dispatch', () => {
     const cb = vi.fn();
     const u1 = rig.store.subscribe(cb);
     rig.store.subscribe(cb);
-    // Initial emission: 2 invocations (one per subscribe).
     expect(cb).toHaveBeenCalledTimes(2);
     cb.mockClear();
     rig.observerRig.fire();

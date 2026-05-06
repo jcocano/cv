@@ -3,11 +3,6 @@ import { describe, expect, it } from 'vitest';
 
 import SiteNav from '@/components/nav/SiteNav.astro';
 
-// In Vitest, `import.meta.env.BASE_URL` resolves to `/` (Astro Container does
-// not apply the project's `base: '/cv/'` from astro.config.mjs). So tests that
-// want to simulate "on home" pass a pathname matching that base (`/`), and
-// tests that want "off home" pass a non-root pathname. The lib functions are
-// independently tested with both `'/cv/'` and `'/'` baseUrl variants.
 async function renderSiteNav(pathname: string = '/'): Promise<string> {
   const container = await AstroContainer.create();
   return container.renderToString(SiteNav, {
@@ -25,7 +20,6 @@ describe('SiteNav (render-test)', () => {
 
   it('renders the brand wrapper as a <div> (not an <a>) containing exactly 2 anchors', async () => {
     const html = await renderSiteNav();
-    // Match the brand wrapper: a <div class="..._navBrand_..."> ... </div>
     const brandMatch = html.match(/<div\s+class="[^"]*_navBrand_[^"]*"[^>]*>([\s\S]*?)<\/div>/);
     expect(brandMatch).not.toBeNull();
     if (brandMatch === null) return;
@@ -43,14 +37,11 @@ describe('SiteNav (render-test)', () => {
 
   it('renders the brand "/" separator span with inline style color: var(--fg-mute) outside any anchor', async () => {
     const html = await renderSiteNav();
-    // Locate the brand wrapper and search the separator within it.
     const brandMatch = html.match(/<div\s+class="[^"]*_navBrand_[^"]*"[^>]*>([\s\S]*?)<\/div>/);
     expect(brandMatch).not.toBeNull();
     if (brandMatch === null) return;
     const inner = brandMatch[1] ?? '';
     expect(inner).toMatch(/<span[^>]*style="[^"]*color:\s*var\(--fg-mute\)[^"]*"[^>]*>\/<\/span>/);
-    // The separator must NOT be wrapped inside an <a>.
-    // Strip everything inside <a>...</a> blocks and assert the separator is still present.
     const innerWithoutAnchors = inner.replace(/<a\b[\s\S]*?<\/a>/g, '');
     expect(innerWithoutAnchors).toMatch(
       /<span[^>]*style="[^"]*color:\s*var\(--fg-mute\)[^"]*"[^>]*>\/<\/span>/,
@@ -59,17 +50,14 @@ describe('SiteNav (render-test)', () => {
 
   it('renders the brand CV sub-link <a> with cv-pdf href, download, target="_blank", rel="noopener", aria-label, title, literal text "cv"', async () => {
     const html = await renderSiteNav();
-    // The CV anchor: text content is the literal `cv`, contains all required attributes.
     const cvAnchorMatch = html.match(/<a\b([^>]*)>cv<\/a>/);
     expect(cvAnchorMatch).not.toBeNull();
     if (cvAnchorMatch === null) return;
     const attrs = cvAnchorMatch[1] ?? '';
-    // href ends with jesus_cocano_cv.pdf
     const hrefMatch = attrs.match(/href="([^"]+)"/);
     expect(hrefMatch).not.toBeNull();
     if (hrefMatch === null) return;
     expect(hrefMatch[1]).toMatch(/jesus_cocano_cv\.pdf$/);
-    // target, rel, download, aria-label, title.
     expect(attrs).toMatch(/\btarget="_blank"/);
     expect(attrs).toMatch(/\brel="noopener"/);
     expect(attrs).toMatch(/\bdownload\b/);
@@ -91,7 +79,6 @@ describe('SiteNav (render-test)', () => {
 
   it('applies the navBrandLogo CSS module class on the brand logo sub-link <a href="#top"> (so the inner anchor is a flex container and the .dot span renders with its 8x8 size)', async () => {
     const html = await renderSiteNav();
-    // Match the brand logo anchor (the one wrapping the .dot + jcocano span).
     const logoAnchorMatch = html.match(
       /<a\b([^>]*)href="#top"[^>]*>\s*<span[^>]*class="dot"[^>]*><\/span>/,
     );
@@ -193,12 +180,10 @@ describe('SiteNav (render-test)', () => {
 
   it('renders the SunIcon (circle + 8 rays) inside the data-theme-icon="dark" wrapper', async () => {
     const html = await renderSiteNav();
-    // Sun: <circle cx="12" cy="12" r="4"/> identifies it uniquely vs moon path / paper rect.
     const sunWrapper = html.match(/<span[^>]*data-theme-icon="dark"[^>]*>[\s\S]*?<\/span>/);
     expect(sunWrapper).not.toBeNull();
     if (sunWrapper === null) return;
     expect(sunWrapper[0]).toMatch(/<circle[^>]*cx="12"[^>]*cy="12"[^>]*r="4"[^>]*\/?>/);
-    // At least one of the 8 ray paths (top: M12 2v2).
     expect(sunWrapper[0]).toMatch(/<path[^>]*d="M12 2v2"[^>]*\/?>/);
   });
 
@@ -231,11 +216,6 @@ describe('SiteNav (render-test)', () => {
 });
 
 describe('SiteNav (page-aware hrefs)', () => {
-  // In the Vitest environment `import.meta.env.BASE_URL` is `/`, so "on home"
-  // is `/` and "off home" is any non-root pathname. In production (where
-  // baseUrl is `/cv/`), the same logic produces hashes-only on `/cv/` and
-  // `/cv/#xxx` on `/cv/the-system/` etc. — see the standalone tests for
-  // `isHomePath` and `resolveSectionHref` for that coverage.
   it('renders hash-only hrefs when rendered on home (`/`)', async () => {
     const html = await renderSiteNav('/');
     const navLinkMatches = Array.from(
@@ -323,13 +303,6 @@ describe('SiteNav (page-aware hrefs)', () => {
 });
 
 describe('SiteNav (CSS module class application)', () => {
-  // Vite emits CSS module locals with shape `_<camelCaseKey>_<hash>` (Vitest mock,
-  // e.g. `_navBrand_82c115`) or `_<camelCaseKey>_<hash>_<index>` (production build,
-  // e.g. `_navBrand_r76ka_16`). With `localsConvention: 'camelCaseOnly'` the
-  // kebab-case keys are dropped, so the CSS module file MUST declare the classes
-  // in camelCase and the component MUST consume them via dot notation; otherwise
-  // the kebab key resolves to `undefined` (build) or to a kebab-cased token
-  // (Vitest mock) and these assertions break.
   const HASHED = (name: string): RegExp => new RegExp(`_${name}_[a-z0-9]+(?:_\\d+)?`);
 
   it('applies the navInner CSS module class on the inner wrapper alongside the literal `container` class', async () => {
@@ -352,7 +325,6 @@ describe('SiteNav (CSS module class application)', () => {
 
   it('applies the navLinks CSS module class on the nav-links wrapper <div>', async () => {
     const html = await renderSiteNav();
-    // nav-links wrapper: the <div> whose first child is the `<a class="nav-link" href="#about">`.
     const linksMatch = html.match(
       /<div\s+class="([^"]+)"[^>]*>\s*<a[^>]*class="nav-link"[^>]*href="#about"/,
     );

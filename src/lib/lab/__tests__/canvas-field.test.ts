@@ -294,7 +294,7 @@ function mount(opts: {
       intersection.factoryCalls += 1;
       const observerInstance: FakeIntersectionObserver = {
         observe: (): void => {
-          // no-op for tests
+          return;
         },
         disconnect: (): void => {
           intersection.observer = null;
@@ -482,7 +482,6 @@ describe('mountField — frame cap to 60fps via delta time', () => {
 
   it('skips the simulation step when delta < FRAME_DURATION_MS but still re-schedules rAF', () => {
     const rig = mount({ prefersReducedMotion: false, initialIsIntersecting: true });
-    // Drain the first frame so lastTickAt is initialized.
     rig.raf.tick(FRAME_DURATION_MS);
     rig.fakeCanvas.drawCalls.length = 0;
     rig.raf.tick(FRAME_DURATION_MS - 1);
@@ -569,9 +568,6 @@ describe('mountField — render: line trails (paridad con handoff)', () => {
   });
 
   it('moveTo uses the previous position (px, py) and lineTo uses the new (x, y)', () => {
-    // With random=0.5 and particleCount=1, particle starts at (300, 140).
-    // After one step, it has been displaced by the noise field; px,py should
-    // be the pre-step position (300, 140) and x,y should differ.
     const rig = mount({
       prefersReducedMotion: false,
       initialIsIntersecting: true,
@@ -589,8 +585,6 @@ describe('mountField — render: line trails (paridad con handoff)', () => {
     }
     expect(moveTo.args[0]).toBeCloseTo(300, 5);
     expect(moveTo.args[1]).toBeCloseTo(140, 5);
-    // After one velocity step the particle has moved (cos/sin of the noise
-    // angle, scaled by 0.9). The movement is non-zero with random=0.5.
     const dx = (lineTo.args[0] ?? 0) - (moveTo.args[0] ?? 0);
     const dy = (lineTo.args[1] ?? 0) - (moveTo.args[1] ?? 0);
     expect(dx * dx + dy * dy).toBeGreaterThan(0);
@@ -599,19 +593,7 @@ describe('mountField — render: line trails (paridad con handoff)', () => {
 
 describe('mountField — random reset on canvas exit (paridad con handoff)', () => {
   it('respawns a particle at a random in-bounds position when it leaves the canvas', () => {
-    // Build a deterministic random sequence: starts particle at the right
-    // edge so the next velocity step pushes it out, then provides a respawn
-    // location near (60, 28).
-    const sequence = [
-      0.999, // x = 0.999 * 600 ≈ 599.4 (close to right edge)
-      0.5, // y = 0.5 * 280 = 140
-      0.1, // first respawn x = 0.1 * 600 = 60
-      0.1, // first respawn y = 0.1 * 280 = 28
-      0.5,
-      0.5,
-      0.5,
-      0.5,
-    ];
+    const sequence = [0.999, 0.5, 0.1, 0.1, 0.5, 0.5, 0.5, 0.5];
     let cursor = 0;
     const rig = mount({
       prefersReducedMotion: false,
@@ -624,7 +606,6 @@ describe('mountField — random reset on canvas exit (paridad con handoff)', () 
       },
     });
     rig.fakeCanvas.drawCalls.length = 0;
-    // Tick enough times to push the right-edge particle out and respawn it.
     for (let i = 0; i < 4; i += 1) {
       rig.raf.tick(FRAME_DURATION_MS);
     }
@@ -678,7 +659,6 @@ describe('mountField — theme reactivity', () => {
       accentColor: '#aaaaaa',
       bgColor: '#000000',
     });
-    // Drain first frame.
     rig.raf.tick(FRAME_DURATION_MS);
     rig.colors.emit({ accent: '#ff00ff', bg: '#000000' });
     rig.fakeCanvas.drawCalls.length = 0;

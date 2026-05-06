@@ -62,8 +62,6 @@ export function createThemeStore(deps: ThemeStoreDeps): ThemeStore {
   }
 
   function notifyAll(): void {
-    // Snapshot the subscriber list so unsubscriptions during dispatch don't
-    // mutate the iteration sequence.
     const snapshot = subscribers.slice();
     for (const entry of snapshot) {
       entry.callback(readState());
@@ -77,9 +75,6 @@ export function createThemeStore(deps: ThemeStoreDeps): ThemeStore {
     observer = deps.createMutationObserver((): void => {
       notifyAll();
     });
-    // The contract of `MutationObserverLike.observe` requires a Node target.
-    // In tests, fakes accept anything; in production, `deps.root` is the
-    // real `document.documentElement`.
     const target = deps.root as unknown as Node;
     observer.observe(target, { attributes: true, attributeFilter: [THEME_ATTR] });
   }

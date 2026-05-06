@@ -54,7 +54,6 @@ describe('Metric (render-test)', () => {
 
   it('preserves special characters in the value (e.g. "<1s", "~95%", "O(log n)")', async () => {
     const html = await renderMetric('<1s', 'latencia', 'latency');
-    // "<" must be HTML-escaped as "&lt;" once Astro renders it.
     expect(html).toContain('&lt;1s');
   });
 });

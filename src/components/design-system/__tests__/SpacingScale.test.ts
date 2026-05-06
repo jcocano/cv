@@ -28,7 +28,6 @@ describe('SpacingScale (render-test)', () => {
     expect(html).toMatch(/<h4[^>]*id="spacing-radius"/);
     expect(html).toMatch(/<h4[^>]*id="spacing-radius-lg"/);
     expect(html).toMatch(/<h4[^>]*id="spacing-container"/);
-    // No leftover h3 with the same ids.
     expect(html).not.toMatch(/<h3[^>]*id="spacing-(radius|radius-lg|container)"/);
   });
 

@@ -19,8 +19,6 @@ export function mountScrollspy(
 ): MountScrollspyHandle {
   const rootMargin = options?.rootMargin ?? DEFAULT_ROOT_MARGIN;
   const ratios = new Map<string, number>();
-  // Materialise once: callers may pass NodeListOf, HTMLElement[] or any Iterable,
-  // and we need to walk both at boot (to seed ratios + observe) and on each tick.
   const navLinksArray: HTMLAnchorElement[] = Array.from(navLinks);
   const sectionsArray: HTMLElement[] = Array.from(sections);
 

@@ -50,18 +50,6 @@ describe('ProjectSection (render-test)', () => {
     expect(labelIdx).toBeLessThan(bodyIdx);
   });
 
-  /**
-   * Iter 5: the `first` prop was removed because the underlying CSS now
-   * uses a uniform `.section { padding: 80px 0 }` rule. The component must
-   * emit a single hashed class on the <section> root — no second class
-   * coming from a `.first` variant.
-   *
-   * The class attribute on the <section> contains the hashed `_section_…`
-   * class plus the literal `reveal` (added by `class:list`). Anything with
-   * `first` in the hashed suffix would be a regression — assert there is
-   * no second hashed class on the <section> root that resembles a
-   * `.section.first` compound output.
-   */
   it('emits exactly one hashed module class on the <section> root (no .first variant, iter 5)', async () => {
     const html = await renderProjectSection('contexto', 'context', '<p>body</p>');
     const sectionMatch = html.match(/<section\s+class="([^"]+)"/);
@@ -77,19 +65,8 @@ describe('ProjectSection (render-test)', () => {
     expect(hashedClasses).toHaveLength(1);
   });
 
-  /**
-   * Iter 5 (reinforcement): even if a caller still passes a `first: true`
-   * prop, the rendered <section> must NOT receive a second hashed class.
-   * The prop was removed from the component's interface and is silently
-   * ignored. This guards against accidental re-introduction of the
-   * `.section.first` variant via prop spreading.
-   */
   it('ignores a legacy `first: true` prop and still emits exactly one hashed class (iter 5)', async () => {
     const container = await AstroContainer.create();
-    // Astro's renderToString accepts unknown props on .props — pass
-    // `first: true` via an `unknown`-typed bag to avoid TS narrowing
-    // complaints on the (now-removed) prop. Cast to the renderer's
-    // expected props bag without using `any` (we use Record<string,unknown>).
     const propsWithLegacy: Record<string, unknown> = {
       labelEs: 'contexto',
       labelEn: 'context',

@@ -150,8 +150,6 @@ describe('DecisionsList — variant: "technical-list" (technical decisions, sour
       throw new Error('expected at least one alternatives sub-block');
     }
     expect(subBlocks).toHaveLength(withAlternatives.length);
-    // The technical-list variant uses a <details> element to collapse alts,
-    // matching the refactor mock semantics.
     expect(html).toMatch(
       /<details[^>]*class="[^"]*alts[^"]*"|<details[^>]*data-alternatives-rejected/,
     );

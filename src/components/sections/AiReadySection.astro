@@ -11,10 +11,6 @@ import type { LangCode } from '@/lib/theme/toggle-lang';
 import styles from './AiReadySection.module.css';
 
 interface Props {
-  /** Accepted for consistency with sibling sections (e.g. SummarySection). The
-   *  AI Ready section is fully bilingual via paired <span lang="…"> blocks; the
-   *  active language is switched at the document level by base.css, so the
-   *  component itself does not branch on this prop. */
   lang?: LangCode;
 }
 

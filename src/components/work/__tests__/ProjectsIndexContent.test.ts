@@ -98,9 +98,7 @@ describe('ProjectsIndexContent (render-test)', () => {
 
   it('does not crash when the projects collection is empty (defensive guard)', async () => {
     const html = await renderContent({ projects: [] });
-    // Empty collection: no project anchors should appear.
     expect(html).not.toMatch(/href="\/cv\/projects\/[^"/]+"/);
-    // SectionHead still renders.
     expect(html).toContain('Todos los proyectos');
   });
 

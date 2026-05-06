@@ -56,9 +56,6 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
           return;
         }
         window.__cv_signature_shown = true;
-        // Feature #43 devtools_console_signature — `console.info` is the
-        // semantically correct method for the developer-facing greeting;
-        // acceptance #1 mandates it.
         // eslint-disable-next-line no-console
         console.info(consoleSignatureFormat, ...consoleSignatureStyles);
       })();
@@ -126,9 +123,8 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
         root.setAttribute('data-theme', theme);
         try {
           localStorage.setItem(THEME_STORAGE_KEY, theme);
-        } catch {
-          // localStorage may be unavailable (private mode); ignore.
-        }
+          // eslint-disable-next-line no-empty
+        } catch {}
       }
 
       function applyLang(lang: LangCode): void {
@@ -136,9 +132,8 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
         root.setAttribute('lang', lang);
         try {
           localStorage.setItem(LANG_STORAGE_KEY, lang);
-        } catch {
-          // localStorage may be unavailable (private mode); ignore.
-        }
+          // eslint-disable-next-line no-empty
+        } catch {}
         const langOptions = document.querySelectorAll<HTMLElement>('#lang-toggle .opt');
         applyLangActive(langOptions, lang);
       }
@@ -208,9 +203,6 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
       }
 
       const scrollspyNavLinks = document.querySelectorAll<HTMLAnchorElement>('nav a.nav-link');
-      // Build the observed targets from the nav-link hrefs themselves so wrapper
-      // <div id="about"> is included alongside <section id="work"> / <section id="contact">.
-      // A plain array satisfies mountScrollspy's Iterable<HTMLElement> signature.
       const scrollspyTargets: HTMLElement[] = [];
       scrollspyNavLinks.forEach((link) => {
         const href = link.getAttribute('href');

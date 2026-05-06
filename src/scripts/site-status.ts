@@ -1,18 +1,3 @@
-// Client module — paints the SiteStatus skeleton with values from the
-// `/cv/status.json` sidecar. See docs/learnings_dependencia_circular_site_status.md
-// for the producer-vs-pipeline architecture this module implements.
-//
-// The component renders a bilingual skeleton at SSR time. This script:
-//   1. Locates the skeleton (default: the <dl data-component="site-status">).
-//   2. Resolves the endpoint URL respecting Astro's BASE_URL (so /cv/ deploys
-//      keep working without hardcoding the prefix).
-//   3. Fetches and validates the payload with `siteStatusSchema`.
-//   4. Replaces every <dd data-status-key> with the formatted value or, on
-//      failure, with a bilingual "Status unavailable" / "Estado no disponible"
-//      message.
-//   5. Updates `aria-busy` and `data-status-state` so screen readers and CSS
-//      can react to the loaded/error state.
-
 import enStrings from '@/i18n/en.json';
 import esStrings from '@/i18n/es.json';
 import { siteStatusSchema, type SiteStatus } from '@/lib/schemas/site-status';
@@ -34,8 +19,6 @@ type StatusKey = (typeof STATUS_KEYS)[number];
 const SHA_TRUNCATE_LENGTH = 7;
 
 function resolveEndpointUrl(): string {
-  // Astro's BASE_URL is `/cv/` in production and `/` during dev/tests. We
-  // append `status.json` so the deployed endpoint resolves to `/cv/status.json`.
   const baseUrl = import.meta.env.BASE_URL;
   return `${baseUrl}status.json`;
 }
@@ -111,8 +94,6 @@ function formatValueForKey(key: StatusKey, payload: SiteStatus): string {
     case 'build_sha':
       return payload.build_sha.slice(0, SHA_TRUNCATE_LENGTH);
     case 'build_time':
-      // Painted via <time>, this branch is unused by paintLoadedState — kept
-      // for completeness so the function totals every key.
       return payload.build_time;
     case 'schema_version':
       return payload.schema_version;
@@ -167,10 +148,6 @@ export async function mountSiteStatus(root?: HTMLElement): Promise<void> {
   }
 }
 
-// Self-bootstrap when the module is imported by the component's <script>.
-// In test environments (jsdom + vitest) the importer must call mountSiteStatus
-// explicitly with the test-managed skeleton, so we only auto-mount when a
-// skeleton already exists in the document at import time.
 if (typeof document !== 'undefined') {
   const existing = document.querySelector<HTMLElement>(ROOT_SELECTOR);
   if (existing !== null) {

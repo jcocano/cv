@@ -1,13 +1,3 @@
-/**
- * Declarative source-of-truth-mirror for the 11 canonical color tokens used
- * by `/the-system/`'s tokens table. The actual source of truth is
- * `src/styles/tokens.css`; this module restates the values in TS so the
- * tokens table can render them inline without parsing CSS at build time. A
- * companion parity test (`token-values.test.ts`) reads `tokens.css` with a
- * regex and asserts that every value here matches the CSS one-to-one. That
- * test is BLOCKING for review: the slightest drift between this module and
- * `tokens.css` fails the build.
- */
 export const CANONICAL_TOKEN_NAMES = [
   'bg',
   'bg-elev',
@@ -32,10 +22,6 @@ export type TokenValuesByTheme = Readonly<
   Record<ThemeName, Readonly<Record<ColorTokenName, string>>>
 >;
 
-/**
- * Values mirror `src/styles/tokens.css`. Update both files together; the
- * parity test (`token-values.test.ts`) keeps them honest.
- */
 export const TOKEN_VALUES_BY_THEME: TokenValuesByTheme = {
   dark: {
     bg: '#0a0a0b',

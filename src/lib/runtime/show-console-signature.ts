@@ -12,8 +12,6 @@ export function showConsoleSignature(
     return;
   }
   targetWindow.__cv_signature_shown = true;
-  // Feature #43 devtools_console_signature — `console.info` is the semantically
-  // correct method for the developer-facing greeting; acceptance #1 mandates it.
   // eslint-disable-next-line no-console
   console.info(payload.format, ...payload.styles);
 }

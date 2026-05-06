@@ -45,7 +45,6 @@ describe('StackSection (render-test)', () => {
   it('renders exactly seven .stack-cat blocks (one per category from the handoff)', async () => {
     const html = await renderStackSection();
     const matches = html.match(/<div[^>]*class="[^"]*stackCat|<div[^>]*class="[^"]*stack-cat/g);
-    // CSS modules hashes the class but keeps the camelCase root in the name. Match either source.
     const camelMatches = html.match(/class="[^"]*stackCat/g);
     expect(camelMatches).not.toBeNull();
     if (camelMatches === null) {
@@ -59,8 +58,6 @@ describe('StackSection (render-test)', () => {
     const html = await renderStackSection();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Lenguajes<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Languages<\/span>/);
-    // The first category block should expose num=06 (6 tags). Locate the first
-    // .stackCat and assert it contains num=06 before the next .stackCat starts.
     const firstCatStart = html.search(/class="[^"]*stackCat/);
     expect(firstCatStart).toBeGreaterThan(-1);
     const afterFirst = html.slice(firstCatStart);
@@ -72,12 +69,8 @@ describe('StackSection (render-test)', () => {
 
   it('renders the Messaging & Data category with num="07" and seven chips', async () => {
     const html = await renderStackSection();
-    // Astro escapes the literal "&" as the HTML entity "&amp;" in the
-    // serialised output, which is the correct behaviour for valid HTML.
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Mensajería &amp; Datos<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Messaging &amp; Data<\/span>/);
-    // Locate the Messaging & Data block by its English label and check that the
-    // following chunk (until the next stackCat) has num=07 and 7 chips.
     const labelIdx = html.indexOf('Messaging &amp; Data');
     expect(labelIdx).toBeGreaterThan(-1);
     const afterLabel = html.slice(labelIdx);
@@ -99,7 +92,6 @@ describe('StackSection (render-test)', () => {
     const html = await renderStackSection();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Frameworks<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Frameworks<\/span>/);
-    // Astro escapes "&" as "&amp;" in the serialised HTML.
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Cloud &amp; DevOps<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Cloud &amp; DevOps<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>AI \/ LLMs<\/span>/);
@@ -108,7 +100,6 @@ describe('StackSection (render-test)', () => {
 
   it('renders every chip with the chip class (CSS module camelCase)', async () => {
     const html = await renderStackSection();
-    // Total chips across the seven categories from the handoff: 6 + 6 + 6 + 7 + 5 + 6 + 6 = 42
     const chipMatches = html.match(/class="[^"]*chip/g);
     expect(chipMatches).not.toBeNull();
     if (chipMatches === null) {

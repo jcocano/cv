@@ -4,11 +4,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import statusFixture from '@/fixtures/status-fixture.json';
 import type { SiteStatus } from '@/lib/schemas/site-status';
 
-// The client module exports a single function `mountSiteStatus(root?)`. The
-// `root` parameter is the HTMLElement that holds the skeleton (the <dl>); when
-// omitted the module looks it up via `document.querySelector` so the importer
-// can `await import('@/scripts/site-status')` and let it self-bootstrap. Tests
-// always pass an explicit root for hermeticity.
 import { mountSiteStatus } from '@/scripts/site-status';
 
 const STATUS_KEYS = [
@@ -23,9 +18,6 @@ const STATUS_KEYS = [
 
 function makeSkeleton(): HTMLDivElement {
   document.body.innerHTML = '';
-  // Wrapper <div> hosts the live region (role/status/busy/live) and the
-  // data-component hook the client module looks up. The inner <dl> keeps the
-  // dlitem semantics intact.
   const region = document.createElement('div');
   region.setAttribute('role', 'status');
   region.setAttribute('aria-live', 'polite');
@@ -71,8 +63,6 @@ interface FetchMock {
 function installFetchMock(impl: typeof fetch): FetchMock {
   const fn = vi.fn(impl);
   const previous = globalThis.fetch;
-  // We must replace globalThis.fetch because the module under test calls it
-  // through the global binding. typeof fetch covers DOM Fetch API.
   globalThis.fetch = fn as unknown as typeof fetch;
   return {
     fn,
@@ -101,7 +91,6 @@ describe('mountSiteStatus — success path', () => {
 
     await mountSiteStatus(root);
 
-    // build_sha truncated to 7 characters
     const fixture: SiteStatus = statusFixture;
     expect(getCellText(root, 'build_sha')).toContain(fixture.build_sha.slice(0, 7));
     expect(getCellText(root, 'build_time')).toContain(fixture.build_time);
@@ -181,8 +170,6 @@ describe('mountSiteStatus — success path', () => {
     if (typeof callArg !== 'string') {
       throw new Error('expected fetch to be called with a string URL');
     }
-    // In Vitest, BASE_URL defaults to '/'. The endpoint must end in `status.json`
-    // and start with the base path (whatever it is in the runtime).
     expect(callArg).toMatch(/status\.json$/);
   });
 });
@@ -310,7 +297,6 @@ describe('mountSiteStatus — defensive guards', () => {
       });
     }) as unknown as typeof fetch;
     try {
-      // Default lookup picks up the <dl data-component="site-status"> in the body.
       await mountSiteStatus();
       expect(root.getAttribute('aria-busy')).toBe('false');
     } finally {

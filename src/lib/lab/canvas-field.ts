@@ -162,7 +162,7 @@ function paintParticleStrokes(
   }
 }
 
-function drawSnapshot(
+function drawReducedMotionStillFrame(
   context: CanvasFieldRenderingContext,
   particles: ReadonlyArray<Particle>,
   width: number,
@@ -199,7 +199,14 @@ export function mountField(deps: CanvasFieldDeps): CanvasFieldHandle {
 
   if (deps.prefersReducedMotion) {
     const snapshotColors = deps.getColors();
-    drawSnapshot(context, particles, width, height, snapshotColors.accent, snapshotColors.bg);
+    drawReducedMotionStillFrame(
+      context,
+      particles,
+      width,
+      height,
+      snapshotColors.accent,
+      snapshotColors.bg,
+    );
     return { unmount: (): void => undefined };
   }
 

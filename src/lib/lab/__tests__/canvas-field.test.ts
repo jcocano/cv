@@ -329,6 +329,17 @@ function mount(opts: {
   return { deps, handle, raf, setNow, pointerListeners, intersection, fakeCanvas, colors };
 }
 
+function advanceFrames(rig: MountedRig, frames: number): void {
+  for (let i = 0; i < frames; i += 1) {
+    rig.raf.tick(FRAME_DURATION_MS);
+  }
+}
+
+function drainFirstFrame(rig: MountedRig): void {
+  rig.raf.tick(FRAME_DURATION_MS);
+  rig.fakeCanvas.drawCalls.length = 0;
+}
+
 describe('mountField — animated mode (prefers-reduced-motion: no-preference)', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -482,8 +493,7 @@ describe('mountField — frame cap to 60fps via delta time', () => {
 
   it('skips the simulation step when delta < FRAME_DURATION_MS but still re-schedules rAF', () => {
     const rig = mount({ prefersReducedMotion: false, initialIsIntersecting: true });
-    rig.raf.tick(FRAME_DURATION_MS);
-    rig.fakeCanvas.drawCalls.length = 0;
+    drainFirstFrame(rig);
     rig.raf.tick(FRAME_DURATION_MS - 1);
     expect(rig.raf.pendingHandles()).toHaveLength(1);
     expect(rig.fakeCanvas.drawCalls).toHaveLength(0);
@@ -491,8 +501,7 @@ describe('mountField — frame cap to 60fps via delta time', () => {
 
   it('runs the simulation step when delta >= FRAME_DURATION_MS', () => {
     const rig = mount({ prefersReducedMotion: false, initialIsIntersecting: true });
-    rig.raf.tick(FRAME_DURATION_MS);
-    rig.fakeCanvas.drawCalls.length = 0;
+    drainFirstFrame(rig);
     rig.raf.tick(FRAME_DURATION_MS);
     expect(rig.fakeCanvas.drawCalls.length).toBeGreaterThan(0);
   });
@@ -593,7 +602,21 @@ describe('mountField — render: line trails (paridad con handoff)', () => {
 
 describe('mountField — random reset on canvas exit (paridad con handoff)', () => {
   it('respawns a particle at a random in-bounds position when it leaves the canvas', () => {
-    const sequence = [0.999, 0.5, 0.1, 0.1, 0.5, 0.5, 0.5, 0.5];
+    const INITIAL_SPAWN_X_FRACTION = 0.999;
+    const INITIAL_SPAWN_Y_FRACTION = 0.5;
+    const RESPAWN_X_FRACTION = 0.1;
+    const RESPAWN_Y_FRACTION = 0.1;
+    const NEUTRAL_FRACTION = 0.5;
+    const sequence = [
+      INITIAL_SPAWN_X_FRACTION,
+      INITIAL_SPAWN_Y_FRACTION,
+      RESPAWN_X_FRACTION,
+      RESPAWN_Y_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+    ];
     let cursor = 0;
     const rig = mount({
       prefersReducedMotion: false,
@@ -602,13 +625,11 @@ describe('mountField — random reset on canvas exit (paridad con handoff)', () 
       random: (): number => {
         const value = sequence[cursor % sequence.length];
         cursor += 1;
-        return value ?? 0.5;
+        return value ?? NEUTRAL_FRACTION;
       },
     });
     rig.fakeCanvas.drawCalls.length = 0;
-    for (let i = 0; i < 4; i += 1) {
-      rig.raf.tick(FRAME_DURATION_MS);
-    }
+    advanceFrames(rig, 4);
     const lineTos = rig.fakeCanvas.drawCalls.filter((c) => c.op === 'lineTo');
     expect(lineTos.length).toBeGreaterThan(0);
     for (const call of lineTos) {

@@ -30,9 +30,9 @@
 // updates.
 //
 // Why a skeleton (not server-rendered values):
-//   - One-pass build (`astro build && build:status`) — no chicken-and-egg.
-//   - Producer/consumer separation — HTML is stable, payload travels sidecar.
-//   - Graceful degradation — clients without JS still see the bilingual
+//   - One-pass build (`astro build && build:status`): no chicken-and-egg.
+//   - Producer/consumer separation: HTML is stable, payload travels sidecar.
+//   - Graceful degradation: clients without JS still see the bilingual
 //     "Loading status…" copy, screen readers announce role="status" updates,
 //     and the layout footprint is preserved (no CLS).
 import enStrings from '@/i18n/en.json';

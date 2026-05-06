@@ -3,10 +3,22 @@
   flex-direction: column;
 }
 
-/* ---------- HERO ---------- */
+/* ---------- HERO ----------
+ * Feature #46: the <header> is FULL-BLEED (no global `.container` on the
+ * <header> itself), mirroring the <section> > <div class="container ..."> shape
+ * used by Why / How / What / Tokens / Build below. The `.heroInner` <div>
+ * carries the global `.container` class so its left edge aligns with each
+ * `.section-inner` (same max-width + same horizontal padding from `.container`).
+ * Vertical padding lives on `.hero` so the border-bottom spans the viewport.
+ */
 .hero {
-  padding: 80px 32px 64px;
+  padding: 80px 0 64px;
   border-bottom: 1px solid var(--line-soft);
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-eyebrow {
@@ -176,7 +188,7 @@
 
 @media (max-width: 860px) {
   .hero {
-    padding: 56px 32px 40px;
+    padding: 56px 0 40px;
   }
   .section {
     padding: 64px 0;

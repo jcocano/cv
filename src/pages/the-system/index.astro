@@ -24,61 +24,63 @@ const buildDate = new Date();
 const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCMonth() + 1).padStart(2, '0')}.${String(buildDate.getUTCDate()).padStart(2, '0')}`;
 ---
 
-<BaseLayout title="The system — Jesús Cocaño">
+<BaseLayout title="The system: Jesús Cocaño">
   <SubNav />
 
   <article class={styles.pageShell}>
-    <header class={`container ${styles.hero}`}>
-      <p class={styles.heroEyebrow}>
-        <span class={styles.heroEyebrowSparkle} aria-hidden="true">▲</span>
-        <span lang="es">{t('theSystem.hero.eyebrow', 'es')}</span>
-        <span lang="en">{t('theSystem.hero.eyebrow', 'en')}</span>
-      </p>
-      <h1 class={styles.heroTitle}>
-        <span lang="es">{t('theSystem.hero.title', 'es')}</span>
-        <span lang="en" class={styles.titleAccent}>{t('theSystem.hero.titleAccent', 'en')}</span>
-      </h1>
-      <p class={styles.heroLede}>
-        <span lang="es">{t('theSystem.hero.lede', 'es')}</span>
-        <span lang="en">{t('theSystem.hero.lede', 'en')}</span>
-      </p>
-      <div class={styles.metaRow}>
-        <div class={styles.metaCell} data-meta-cell="layer-1">
-          <span class={styles.metaLabel}>
-            <span lang="es">{t('theSystem.hero.metaLayerLabel1', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayerLabel1', 'en')}</span>
-          </span>
-          <span class={styles.metaValue}>
-            <span lang="es">{t('theSystem.hero.metaLayer1', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayer1', 'en')}</span>
-          </span>
-        </div>
-        <div class={styles.metaCell} data-meta-cell="layer-2">
-          <span class={styles.metaLabel}>
-            <span lang="es">{t('theSystem.hero.metaLayerLabel2', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayerLabel2', 'en')}</span>
-          </span>
-          <span class={styles.metaValue}>
-            <span lang="es">{t('theSystem.hero.metaLayer2', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayer2', 'en')}</span>
-          </span>
-        </div>
-        <div class={styles.metaCell} data-meta-cell="layer-3">
-          <span class={styles.metaLabel}>
-            <span lang="es">{t('theSystem.hero.metaLayerLabel3', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayerLabel3', 'en')}</span>
-          </span>
-          <span class={styles.metaValue}>
-            <span lang="es">{t('theSystem.hero.metaLayer3', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLayer3', 'en')}</span>
-          </span>
-        </div>
-        <div class={styles.metaCell} data-meta-cell="last-build">
-          <span class={styles.metaLabel}>
-            <span lang="es">{t('theSystem.hero.metaLastBuildLabel', 'es')}</span>
-            <span lang="en">{t('theSystem.hero.metaLastBuildLabel', 'en')}</span>
-          </span>
-          <span class={styles.metaValue}>{lastBuildLabel}</span>
+    <header class={styles.hero}>
+      <div class={`container ${styles.heroInner}`}>
+        <p class={styles.heroEyebrow}>
+          <span class={styles.heroEyebrowSparkle} aria-hidden="true">▲</span>
+          <span lang="es">{t('theSystem.hero.eyebrow', 'es')}</span>
+          <span lang="en">{t('theSystem.hero.eyebrow', 'en')}</span>
+        </p>
+        <h1 class={styles.heroTitle}>
+          <span lang="es">{t('theSystem.hero.title', 'es')}</span>
+          <span lang="en" class={styles.titleAccent}>{t('theSystem.hero.titleAccent', 'en')}</span>
+        </h1>
+        <p class={styles.heroLede}>
+          <span lang="es">{t('theSystem.hero.lede', 'es')}</span>
+          <span lang="en">{t('theSystem.hero.lede', 'en')}</span>
+        </p>
+        <div class={styles.metaRow}>
+          <div class={styles.metaCell} data-meta-cell="layer-1">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel1', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel1', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer1', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer1', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="layer-2">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel2', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel2', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer2', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer2', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="layer-3">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel3', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel3', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer3', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer3', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="last-build">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLastBuildLabel', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLastBuildLabel', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>{lastBuildLabel}</span>
+          </div>
         </div>
       </div>
     </header>

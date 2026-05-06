@@ -5,7 +5,7 @@
  * tokens table can render them inline without parsing CSS at build time. A
  * companion parity test (`token-values.test.ts`) reads `tokens.css` with a
  * regex and asserts that every value here matches the CSS one-to-one. That
- * test is BLOCKING for review: any drift between this module and
+ * test is BLOCKING for review: the slightest drift between this module and
  * `tokens.css` fails the build.
  */
 export const CANONICAL_TOKEN_NAMES = [

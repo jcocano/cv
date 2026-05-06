@@ -30,9 +30,9 @@ describe('pages/the-system/index.astro (render-test)', () => {
     expect(html).toMatch(/<h1[^>]*>[\s\S]*?<span[^>]*lang="en"[^>]*>The system\.<\/span>/);
   });
 
-  it('sets the document <title> to "The system — Jesús Cocaño"', async () => {
+  it('sets the document <title> to "The system: Jesús Cocaño"', async () => {
     const html = await renderTheSystemPage();
-    expect(html).toMatch(/<title>The system — Jesús Cocaño<\/title>/);
+    expect(html).toMatch(/<title>The system: Jesús Cocaño<\/title>/);
   });
 
   it('renders the five top-level sections in order: #why → #how → #what → #tokens → #build', async () => {
@@ -62,6 +62,30 @@ describe('pages/the-system/index.astro (render-test)', () => {
     const html = await renderTheSystemPage();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>handbook técnico<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>technical handbook<\/span>/);
+  });
+
+  it('hero <header> shares the section-inner left axis: full-bleed wrapper + container child', async () => {
+    // Regression guard for feature #46. The hero must NOT carry the global
+    // `class="container"` itself (that centers the wrapper via max-width +
+    // margin: 0 auto, shortens its border-bottom and drifts the eyebrow/h1
+    // off the section-inner left axis). Instead the hero is a full-bleed
+    // <header> with an inner <div class="container ..."> wrapper, mirroring
+    // the <section> > <div class="container section-inner"> pattern below.
+    const html = await renderTheSystemPage();
+    const headerOpen = html.match(/<header\b[^>]*>/);
+    expect(headerOpen).not.toBeNull();
+    if (headerOpen === null) {
+      throw new Error('expected a <header> tag in the hero');
+    }
+    // The <header> tag itself MUST NOT include the global `container` class.
+    expect(headerOpen[0]).not.toMatch(/\bclass="[^"]*\bcontainer\b[^"]*"/);
+    // And the <header> MUST contain a child wrapper that DOES carry `container`
+    // (the inner column that aligns with .section-inner below).
+    const headerEndIndex = html.indexOf('</header>');
+    expect(headerEndIndex).toBeGreaterThan(-1);
+    const headerOpenIndex = html.indexOf(headerOpen[0]);
+    const headerInner = html.slice(headerOpenIndex + headerOpen[0].length, headerEndIndex);
+    expect(headerInner).toMatch(/<div\b[^>]*class="[^"]*\bcontainer\b[^"]*"/);
   });
 
   it('renders the hero meta-row with three layer cells + a last-build cell', async () => {

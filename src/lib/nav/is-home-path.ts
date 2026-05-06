@@ -1,14 +1,14 @@
 export function isHomePath(pathname: string, baseUrl: string): boolean {
   const baseNoSlash = stripTrailingSlash(baseUrl);
   const pathNoSlash = stripTrailingSlash(pathname);
-  if (pathNoSlash === baseNoSlash) {
-    return true;
+  return pathNoSlash === baseNoSlash || pathNoSlash === appendIndexHtml(baseNoSlash);
+}
+
+export function appendIndexHtml(baseNoSlash: string): string {
+  if (baseNoSlash === '') {
+    return '/index.html';
   }
-  const indexHtml = baseNoSlash === '' ? '/index.html' : `${baseNoSlash}/index.html`;
-  if (pathNoSlash === indexHtml) {
-    return true;
-  }
-  return false;
+  return `${baseNoSlash}/index.html`;
 }
 
 function stripTrailingSlash(value: string): string {

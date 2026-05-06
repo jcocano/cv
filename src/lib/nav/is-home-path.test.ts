@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isHomePath } from './is-home-path';
+import { appendIndexHtml, isHomePath } from './is-home-path';
 
 describe('isHomePath', () => {
   it('returns true when pathname equals baseUrl exactly (production "/cv/")', () => {
@@ -41,5 +41,19 @@ describe('isHomePath', () => {
 
   it('returns false for an empty pathname when base is "/cv/"', () => {
     expect(isHomePath('', '/cv/')).toBe(false);
+  });
+});
+
+describe('appendIndexHtml', () => {
+  it('appends "/index.html" to a non-empty base without trailing slash', () => {
+    expect(appendIndexHtml('/cv')).toBe('/cv/index.html');
+  });
+
+  it('returns "/index.html" when base is the empty string (root preview without prefix)', () => {
+    expect(appendIndexHtml('')).toBe('/index.html');
+  });
+
+  it('appends "/index.html" to a deeper base', () => {
+    expect(appendIndexHtml('/site/cv')).toBe('/site/cv/index.html');
   });
 });

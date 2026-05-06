@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  compareByDateEndDesc,
   compareByOrderAsc,
   compareCurrentRolesFirst,
+  compareFinishedByDateEndDesc,
 } from '@/lib/content/experience-comparators';
 import type { SortableExperience } from '@/lib/content/sort-by-date-desc';
 
@@ -44,32 +44,32 @@ describe('compareCurrentRolesFirst', () => {
   });
 });
 
-describe('compareByDateEndDesc', () => {
+describe('compareFinishedByDateEndDesc', () => {
   it('returns a negative number when a.dateEnd is later than b.dateEnd', () => {
     const a = makeItem({ company: 'a', dateEnd: '2024-12' });
     const b = makeItem({ company: 'b', dateEnd: '2020-01' });
-    expect(compareByDateEndDesc(a, b)).toBeLessThan(0);
+    expect(compareFinishedByDateEndDesc(a, b)).toBeLessThan(0);
   });
 
   it('returns a positive number when a.dateEnd is earlier than b.dateEnd', () => {
     const a = makeItem({ company: 'a', dateEnd: '2020-01' });
     const b = makeItem({ company: 'b', dateEnd: '2024-12' });
-    expect(compareByDateEndDesc(a, b)).toBeGreaterThan(0);
+    expect(compareFinishedByDateEndDesc(a, b)).toBeGreaterThan(0);
   });
 
   it('returns 0 when both have the same dateEnd', () => {
     const a = makeItem({ company: 'a', dateEnd: '2022-06' });
     const b = makeItem({ company: 'b', dateEnd: '2022-06' });
-    expect(compareByDateEndDesc(a, b)).toBe(0);
+    expect(compareFinishedByDateEndDesc(a, b)).toBe(0);
   });
 
-  it('returns 0 when either side is null (the rule does not apply, defer to next comparator)', () => {
+  it('returns 0 when either dateEnd is null (callers must filter current roles first via compareCurrentRolesFirst)', () => {
     const aNull = makeItem({ company: 'a', dateEnd: null });
     const bFinished = makeItem({ company: 'b', dateEnd: '2024-01' });
-    expect(compareByDateEndDesc(aNull, bFinished)).toBe(0);
-    expect(compareByDateEndDesc(bFinished, aNull)).toBe(0);
+    expect(compareFinishedByDateEndDesc(aNull, bFinished)).toBe(0);
+    expect(compareFinishedByDateEndDesc(bFinished, aNull)).toBe(0);
     const bothNull = makeItem({ company: 'c', dateEnd: null });
-    expect(compareByDateEndDesc(aNull, bothNull)).toBe(0);
+    expect(compareFinishedByDateEndDesc(aNull, bothNull)).toBe(0);
   });
 });
 

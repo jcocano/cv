@@ -14,7 +14,7 @@ export function compareCurrentRolesFirst(a: SortableExperience, b: SortableExper
   return aIsCurrent ? -1 : 1;
 }
 
-export function compareByDateEndDesc(a: SortableExperience, b: SortableExperience): number {
+export function compareFinishedByDateEndDesc(a: SortableExperience, b: SortableExperience): number {
   if (a.dateEnd === null || b.dateEnd === null) {
     return 0;
   }

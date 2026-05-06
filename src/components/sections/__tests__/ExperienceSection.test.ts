@@ -60,8 +60,6 @@ describe('ExperienceSection (render-test)', () => {
     const tokenproofIndex = html.indexOf('tokenproof');
     const metaoneIndex = html.indexOf('METAONE');
     const savareIndex = html.indexOf('Savare Medika');
-    // The "early career" row uses bilingual <span lang="…">Varios/Various</span>
-    // for the company; locate it by its unique displayDate "2006 → 2013".
     const earlyIndex = html.indexOf('2006 → 2013');
     expect(yugaIndex).toBeGreaterThan(-1);
     expect(tokenproofIndex).toBeGreaterThan(-1);
@@ -123,32 +121,27 @@ describe('ExperienceSection (render-test)', () => {
 
   it('renders the tags as <span> pills containing every tag declared in frontmatter', async () => {
     const html = await renderExperience('es');
-    // Yuga Labs
     expect(html).toMatch(/<span[^>]*>TypeScript<\/span>/);
     expect(html).toMatch(/<span[^>]*>NestJS<\/span>/);
     expect(html).toMatch(/<span[^>]*>Kubernetes<\/span>/);
     expect(html).toMatch(/<span[^>]*>AWS<\/span>/);
     expect(html).toMatch(/<span[^>]*>GCP<\/span>/);
     expect(html).toMatch(/<span[^>]*>Web3<\/span>/);
-    // tokenproof
     expect(html).toMatch(/<span[^>]*>Pulsar<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pub\/Sub<\/span>/);
     expect(html).toMatch(/<span[^>]*>Terraform<\/span>/);
     expect(html).toMatch(/<span[^>]*>EKS<\/span>/);
     expect(html).toMatch(/<span[^>]*>CI\/CD<\/span>/);
-    // METAONE
     expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
     expect(html).toMatch(/<span[^>]*>Ethers\.js<\/span>/);
     expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
     expect(html).toMatch(/<span[^>]*>DeFi<\/span>/);
     expect(html).toMatch(/<span[^>]*>NFT<\/span>/);
-    // Savare Medika
     expect(html).toMatch(/<span[^>]*>Java<\/span>/);
     expect(html).toMatch(/<span[^>]*>C#<\/span>/);
     expect(html).toMatch(/<span[^>]*>\.NET Core<\/span>/);
     expect(html).toMatch(/<span[^>]*>Kafka<\/span>/);
     expect(html).toMatch(/<span[^>]*>Salesforce<\/span>/);
-    // Early career
     expect(html).toMatch(/<span[^>]*>Linux<\/span>/);
     expect(html).toMatch(/<span[^>]*>Networking<\/span>/);
     expect(html).toMatch(/<span[^>]*>Firewalls<\/span>/);

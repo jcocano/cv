@@ -7,10 +7,6 @@ import type { LangCode } from '@/lib/theme/toggle-lang';
 import styles from './SummarySection.module.css';
 
 interface Props {
-  /** Accepted for consistency with sibling sections (e.g. HeroSection). The summary
-   *  is fully bilingual via paired <span lang="…"> blocks; the active language is
-   *  switched at the document level by base.css, so the component itself does not
-   *  branch on this prop. */
   lang?: LangCode;
 }
 

@@ -19,12 +19,6 @@ export const stackSchema = z
 export type StackCategory = z.infer<typeof stackCategorySchema>;
 export type Stack = z.infer<typeof stackSchema>;
 
-/**
- * Parses the canonical `src/data/stack.json` singleton with `stackSchema` and
- * returns the validated `Stack`. Throws (via `parse`) when the JSON does not
- * match the schema — keeps the failure mode loud so a malformed source file
- * surfaces at build time rather than silently rendering garbage.
- */
 export function getStack(): Stack {
   return stackSchema.parse(stackJson);
 }

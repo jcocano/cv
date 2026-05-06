@@ -56,8 +56,6 @@ describe('UiGallery (render-test)', () => {
   });
 
   it('keeps SectionHead inside the primitives sub-group as a normal cell (no data-ui-span="full" in the refactored layout)', async () => {
-    // The refactored .spec-grid (auto-fill minmax 180px) sizes each primitive
-    // cell uniformly, so SectionHead does not need a full-width override.
     const html = await renderUiGallery();
     expect(html).toMatch(/data-ui-entry="ui-section-head"/);
     expect(html).not.toMatch(/data-ui-span="full"/);
@@ -90,7 +88,6 @@ describe('UiGallery (render-test)', () => {
     for (const id of EXPECTED_IDS) {
       expect(html).toMatch(new RegExp(`<h4[^>]*id="${id}"`));
     }
-    // No leftover h3 carrying the same ids — strict hierarchy.
     for (const id of EXPECTED_IDS) {
       expect(html).not.toMatch(new RegExp(`<h3[^>]*id="${id}"`));
     }

@@ -56,8 +56,6 @@ describe('SubNav (render-test)', () => {
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>What<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Tokens<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Tokens<\/span>/);
-    // & is encoded as &amp; in attribute-free text, but the renderer keeps
-    // it as `&` here; either form is acceptable so we use a permissive regex.
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Build (&|&amp;) runtime<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Build (&|&amp;) runtime<\/span>/);
   });
@@ -80,10 +78,6 @@ describe('SubNav (render-test)', () => {
   });
 
   it('inlines a script that imports the active-section helper (thin DOM wrapper)', async () => {
-    // The Astro page-level `<script>` block is hoisted out of the render
-    // string in container mode, so we cannot assert on its source text here.
-    // Instead, we assert that the SSR markup leaves the structural
-    // anchors/data-attributes intact for the client-side wiring to attach to.
     const html = await renderSubNav();
     expect(html).toMatch(/data-component="the-system-subnav"/);
     expect(html).toMatch(/data-subnav-section/);

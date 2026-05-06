@@ -49,14 +49,12 @@ describe('TokensTable (render-test)', () => {
 
   it('renders one swatch + hex value per theme cell using inline background style', async () => {
     const html = await renderTokensTable();
-    // Spot-check one token across the three themes.
     const darkBg = TOKEN_VALUES_BY_THEME.dark.bg;
     const lightBg = TOKEN_VALUES_BY_THEME.light.bg;
     const paperBg = TOKEN_VALUES_BY_THEME.paper.bg;
     expect(html).toContain(`background:${darkBg}`);
     expect(html).toContain(`background:${lightBg}`);
     expect(html).toContain(`background:${paperBg}`);
-    // The textual hex value also appears in the cell, in mono.
     expect(html).toContain(darkBg);
     expect(html).toContain(lightBg);
     expect(html).toContain(paperBg);

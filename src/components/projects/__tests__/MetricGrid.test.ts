@@ -25,8 +25,6 @@ describe('MetricGrid (render-test)', () => {
 
   it('applies a class on the root that resolves from the CSS module (not the literal "metric-grid")', async () => {
     const html = await renderMetricGrid('<span>m</span>');
-    // The class attribute must exist on the root <div>, but the value must NOT be the
-    // literal "metric-grid" — CSS modules hash the local name.
     const rootMatch = html.match(/^\s*<div[^>]*class="([^"]+)"/);
     expect(rootMatch).not.toBeNull();
     const classValue = rootMatch?.[1] ?? '';
@@ -34,16 +32,6 @@ describe('MetricGrid (render-test)', () => {
     expect(classValue).not.toBe('metric-grid');
   });
 
-  /**
-   * Regression for feature #17 iter 4 (cleanup estructural):
-   *
-   * The previous implementation kept a hard-coded `margin: 32px 0` on the
-   * grid (mirroring the design handoff). The user explicitly requested
-   * removing those margins so spacing between body children is governed by
-   * the parent `.body { gap: 28px }`, not by per-component arithmetic.
-   * Re-introducing a vertical margin would re-create the alignment bug
-   * fixed in iter 3 (label rail vs first body row).
-   */
   it('does not declare a margin on the .grid rule (cleanup iter 4)', () => {
     const css = readFileSync(resolve(__dirname, '../MetricGrid.module.css'), 'utf8');
     const match = css.match(/\.grid\s*\{([^}]*)\}/);

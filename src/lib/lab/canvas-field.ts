@@ -170,8 +170,6 @@ function drawSnapshot(
   accentColor: string,
   bgColor: string,
 ): void {
-  // Paint a solid background and a single short stroke per particle that
-  // points along the noise field at t=0 — a representative still frame.
   context.globalAlpha = 1;
   context.fillStyle = bgColor;
   context.fillRect(0, 0, width, height);

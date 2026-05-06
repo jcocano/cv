@@ -185,7 +185,6 @@ describe('PrinciplesList (render-test)', () => {
     expect(principle.eyebrow).toBeUndefined();
     const html = await renderPrinciplesList([principle]);
     expect(html).toMatch(/data-principle-entry="tests-document-intent"/);
-    // The card-eyebrow num is still present (computed from index, never empty).
     expect(html).toContain('P.01');
   });
 
@@ -195,7 +194,6 @@ describe('PrinciplesList (render-test)', () => {
     expect(html).toMatch(
       /data-principle-entry="principle-fixture-5"[^>]*data-card-span="2"|data-card-span="2"[^>]*data-principle-entry="principle-fixture-5"/,
     );
-    // No earlier entry carries the span flag.
     expect(html).not.toMatch(
       /data-principle-entry="principle-fixture-1"[^>]*data-card-span="2"|data-card-span="2"[^>]*data-principle-entry="principle-fixture-1"/,
     );

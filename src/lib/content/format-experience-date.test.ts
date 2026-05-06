@@ -49,8 +49,6 @@ describe('formatExperienceDate', () => {
       displayDate: undefined,
     });
     const formatted = formatExperienceDate(item, 'es');
-    // Intl may emit a trailing dot in some node versions; tolerate both
-    // variants but require the capitalised form that matches the design.
     expect(formatted).toMatch(/^Dic\.? 2024 → Feb\.? 2026$/);
   });
 

@@ -73,15 +73,12 @@ describe('ProjectLayout (render-test)', () => {
 
   it('emits the bilingual home labels visible (no `hidden` attribute) and the projects labels hidden by default', async () => {
     const html = await renderProjectLayout(made, cluster, incommers);
-    // Home variant — visible by default. We pin lang + text and require the
-    // span NOT to carry the `hidden` attribute.
     expect(html).toMatch(
       /<span[^>]*data-back-variant="home"[^>]*lang="es"(?:(?!hidden)[^>])*>Inicio<\/span>/,
     );
     expect(html).toMatch(
       /<span[^>]*data-back-variant="home"[^>]*lang="en"(?:(?!hidden)[^>])*>Home<\/span>/,
     );
-    // Projects variant — hidden by default.
     expect(html).toMatch(
       /<span[^>]*data-back-variant="projects"[^>]*lang="es"[^>]*hidden[^>]*>Todos los proyectos<\/span>/,
     );
@@ -256,7 +253,6 @@ describe('ProjectLayout (render-test)', () => {
   it('does NOT render the bottom nav when both prev and next are null (N <= 1, no peers to rotate to)', async () => {
     const html = await renderProjectLayout(made, null, null);
     expect(html).not.toMatch(/<nav[^>]*aria-label="Project navigation"/);
-    // Defensive: the inner nav-link class should not appear either.
     expect(html).not.toMatch(/_nextProj_/);
   });
 

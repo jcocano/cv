@@ -29,9 +29,6 @@ function ledeClassName(): string {
 
 function findLedeParagraph(html: string): string | null {
   const className = ledeClassName();
-  // Build a regex that matches <p ... class="... <ledeClass> ..." ...>...</p>.
-  // The className is hashed (e.g. "_lede_abc123") and may appear alongside other
-  // tokens in the class attribute. Escape it for safe regex use.
   const escaped = className.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const re = new RegExp(`<p\\b[^>]*class="[^"]*\\b${escaped}\\b[^"]*"[^>]*>([\\s\\S]*?)<\\/p>`);
   const match = html.match(re);
@@ -119,7 +116,6 @@ describe('SectionHead (render-test)', () => {
 
   it('does NOT pass reveal={true} to the inner Eyebrow (the outer wrapper already carries reveal)', async () => {
     const html = await renderSectionHead(sampleProps);
-    // The first <span> in the rendered html is the Eyebrow root span.
     const eyebrowSpanMatch = html.match(/<span\b[^>]*>/);
     expect(eyebrowSpanMatch).not.toBeNull();
     if (eyebrowSpanMatch === null) {

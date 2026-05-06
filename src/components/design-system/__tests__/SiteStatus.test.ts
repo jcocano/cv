@@ -8,18 +8,8 @@ async function renderSiteStatus(): Promise<string> {
   return container.renderToString(SiteStatus);
 }
 
-// Iteration-2 architecture (see docs/learnings_dependencia_circular_site_status.md):
-// the component renders a SEMANTIC SKELETON in SSR. It does NOT read the
-// filesystem and does NOT receive data via props at SSR time. The values are
-// painted at runtime by the client module `src/scripts/site-status.ts` after
-// fetching `/cv/status.json`. These tests therefore assert structure +
-// accessibility hooks only — never SSR-rendered values.
 describe('SiteStatus (render-test) — bilingual SSR skeleton', () => {
   it('renders a wrapper with role="status", aria-busy="true" and aria-live="polite"', async () => {
-    // The <dl> itself does NOT take role="status" because that overrides its
-    // implicit list role and trips axe-core's "dlitem" rule. Instead a wrapper
-    // <div role="status"> hosts the live region while the inner <dl> stays
-    // purely semantic.
     const html = await renderSiteStatus();
     expect(html).toMatch(/<div[^>]*role="status"/);
     expect(html).toMatch(/<div[^>]*aria-busy="true"/);
@@ -91,7 +81,6 @@ describe('SiteStatus (render-test) — bilingual SSR skeleton', () => {
 
   it('renders bilingual loading copy inside each <dd> so the component degrades gracefully without JS', async () => {
     const html = await renderSiteStatus();
-    // The English loading label appears at least seven times — once per <dd>.
     const enLoadingMatches = html.match(/<span[^>]*lang="en"[^>]*>Loading status…<\/span>/g);
     expect(enLoadingMatches).not.toBeNull();
     if (enLoadingMatches === null) {
@@ -108,9 +97,6 @@ describe('SiteStatus (render-test) — bilingual SSR skeleton', () => {
   });
 
   it('does NOT read the filesystem in SSR (no fs imports leak into the rendered HTML)', async () => {
-    // Defensive: the SSR output must not embed paths or stack traces from a
-    // filesystem read attempt. Iteration-1 inlined `fs.readFileSync` in the
-    // frontmatter; iteration-2 forbids that entirely.
     const html = await renderSiteStatus();
     expect(html).not.toMatch(/fs\.readFileSync/);
     expect(html).not.toMatch(/site-status\.json/);
@@ -118,10 +104,6 @@ describe('SiteStatus (render-test) — bilingual SSR skeleton', () => {
   });
 
   it('marks the wrapper with data-layout="stats" so the css module applies the stats-grid layout', async () => {
-    // Feature #45 refactor: the layout switches from a dense table-like list
-    // to a stats grid (label / val / sub stack per cell). The semantic
-    // <dl>/<dt>/<dd> is preserved (axe-core dlitem rule); only the layout
-    // hook changes.
     const html = await renderSiteStatus();
     expect(html).toMatch(/<div[^>]*data-layout="stats"/);
   });

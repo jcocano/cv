@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveBrandHref, resolveSectionHref } from './resolve-nav-href';
+import { resolveBrandHref, resolveHomeSectionHref } from './resolve-nav-href';
 
-describe('resolveSectionHref', () => {
+describe('resolveHomeSectionHref', () => {
   it('returns the hash unchanged when on home (production base)', () => {
-    expect(resolveSectionHref('#about', true, '/cv/')).toBe('#about');
-    expect(resolveSectionHref('#contact', true, '/cv/')).toBe('#contact');
+    expect(resolveHomeSectionHref('#about', true, '/cv/')).toBe('#about');
+    expect(resolveHomeSectionHref('#contact', true, '/cv/')).toBe('#contact');
   });
 
   it('returns the baseUrl + hash when off home (production base)', () => {
-    expect(resolveSectionHref('#about', false, '/cv/')).toBe('/cv/#about');
-    expect(resolveSectionHref('#experience', false, '/cv/')).toBe('/cv/#experience');
+    expect(resolveHomeSectionHref('#about', false, '/cv/')).toBe('/cv/#about');
+    expect(resolveHomeSectionHref('#experience', false, '/cv/')).toBe('/cv/#experience');
   });
 
   it('returns the hash unchanged when on home with root base ("/")', () => {
-    expect(resolveSectionHref('#about', true, '/')).toBe('#about');
+    expect(resolveHomeSectionHref('#about', true, '/')).toBe('#about');
   });
 
   it('returns "/" + hash when off home with root base ("/")', () => {
-    expect(resolveSectionHref('#about', false, '/')).toBe('/#about');
+    expect(resolveHomeSectionHref('#about', false, '/')).toBe('/#about');
   });
 
   it('joins cleanly when baseUrl lacks trailing slash (off home)', () => {
-    expect(resolveSectionHref('#about', false, '/cv')).toBe('/cv/#about');
+    expect(resolveHomeSectionHref('#about', false, '/cv')).toBe('/cv/#about');
   });
 });
 

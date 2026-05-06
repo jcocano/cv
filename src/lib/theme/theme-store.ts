@@ -62,8 +62,8 @@ export function createThemeStore(deps: ThemeStoreDeps): ThemeStore {
   }
 
   function notifyAll(): void {
-    const snapshot = subscribers.slice();
-    for (const entry of snapshot) {
+    const subscribersAtDispatchStart = subscribers.slice();
+    for (const entry of subscribersAtDispatchStart) {
       entry.callback(readState());
     }
   }

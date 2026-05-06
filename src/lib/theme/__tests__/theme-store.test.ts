@@ -78,7 +78,8 @@ function createRig(options: RigOptions = {}): Rig {
       },
     };
     observerRig.fire = (): void => {
-      if (instanceIndex === observerRig.observerInstances - 1) {
+      const isLatestObserverInstance = instanceIndex === observerRig.observerInstances - 1;
+      if (isLatestObserverInstance) {
         cb([] as unknown as MutationRecord[], instance as unknown as MutationObserver);
       }
     };

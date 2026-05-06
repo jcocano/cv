@@ -19,10 +19,10 @@ export function mountScrollspy(
 ): MountScrollspyHandle {
   const rootMargin = options?.rootMargin ?? DEFAULT_ROOT_MARGIN;
   const ratios = new Map<string, number>();
-  const navLinksArray: HTMLAnchorElement[] = Array.from(navLinks);
-  const sectionsArray: HTMLElement[] = Array.from(sections);
+  const materialisedNavLinks: HTMLAnchorElement[] = Array.from(navLinks);
+  const materialisedSections: HTMLElement[] = Array.from(sections);
 
-  for (const section of sectionsArray) {
+  for (const section of materialisedSections) {
     if (section.id !== '') {
       ratios.set(section.id, 0);
     }
@@ -45,7 +45,7 @@ export function mountScrollspy(
         return;
       }
       const targetHash = `#${visibleId}`;
-      for (const link of navLinksArray) {
+      for (const link of materialisedNavLinks) {
         if (link.getAttribute('href') === targetHash) {
           link.classList.add(ACTIVE_CLASS);
         } else {
@@ -56,7 +56,7 @@ export function mountScrollspy(
     { rootMargin, threshold: DEFAULT_THRESHOLDS },
   );
 
-  for (const section of sectionsArray) {
+  for (const section of materialisedSections) {
     observer.observe(section);
   }
 

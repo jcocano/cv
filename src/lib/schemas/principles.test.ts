@@ -201,4 +201,55 @@ describe('principlesSchema', () => {
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(ids.length);
   });
+
+  it('parses an entry that includes the optional eyebrow field (positive)', () => {
+    const withEyebrow = {
+      principles: [
+        {
+          ...validPrinciples.principles[0],
+          eyebrow: { es: 'tipos', en: 'types' },
+        },
+      ],
+    };
+    const parsed = principlesSchema.parse(withEyebrow);
+    const entry = parsed.principles[0];
+    if (entry === undefined) {
+      throw new Error('expected one principle');
+    }
+    expect(entry.eyebrow?.es).toBe('tipos');
+    expect(entry.eyebrow?.en).toBe('types');
+  });
+
+  it('parses an entry without eyebrow (optional, backward compatible)', () => {
+    const parsed = principlesSchema.parse(validPrinciples);
+    const entry = parsed.principles[0];
+    if (entry === undefined) {
+      throw new Error('expected one principle');
+    }
+    expect(entry.eyebrow).toBeUndefined();
+  });
+
+  it('fails when eyebrow has only es (parity required when present)', () => {
+    const broken = {
+      principles: [
+        {
+          ...validPrinciples.principles[0],
+          eyebrow: { es: 'solo es' },
+        },
+      ],
+    };
+    const result = principlesSchema.safeParse(broken);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const enIssues = result.error.issues.filter(
+      (issue) =>
+        issue.path[0] === 'principles' &&
+        issue.path[1] === 0 &&
+        issue.path[2] === 'eyebrow' &&
+        issue.path[3] === 'en',
+    );
+    expect(enIssues).toHaveLength(1);
+  });
 });

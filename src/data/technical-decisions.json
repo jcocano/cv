@@ -13,6 +13,10 @@
       "alternatives_rejected": {
         "es": "Next.js/Nuxt/SvelteKit SSR hubieran requerido un backend. Hugo/Jekyll son menos flexibles para componentes interactivos. Frameworks MPA como Remix añaden complejidad innecesaria para un sitio personal estático.",
         "en": "Next.js/Nuxt/SvelteKit SSR would have required a backend. Hugo/Jekyll are less flexible for interactive components. MPA frameworks like Remix add unnecessary complexity for a static personal site."
+      },
+      "eyebrow": {
+        "es": "build · hosting",
+        "en": "build · hosting"
       }
     },
     {
@@ -28,6 +32,10 @@
       "alternatives_rejected": {
         "es": "Permitir `any` aceleraba la escritura pero hacía invisibles los errores de tipo. `@ts-ignore` sin documentación es deuda técnica acumulada. La validación solo en runtime deja de ser verificable en compile time.",
         "en": "Allowing `any` would speed up writing but hide type errors. Undocumented `@ts-ignore` is accumulated technical debt. Runtime-only validation is no longer verifiable at compile time."
+      },
+      "eyebrow": {
+        "es": "types",
+        "en": "types"
       }
     },
     {
@@ -39,6 +47,10 @@
       "rationale": {
         "es": "Cubre lógica pura y helpers con tests unitarios; componentes con branching con render-tests vía `experimental_AstroContainer`; templates puros sin test (confianza vía paridad visual). Trade-off: ciclo más lento que TDD completo, pero sin overhead de tests sobre presentación pura.",
         "en": "Covers pure logic and helpers with unit tests; components with branching via render-tests through `experimental_AstroContainer`; pure templates without tests (confidence via visual parity). Trade-off: slower cycle than full TDD, but no overhead of tests on pure presentation."
+      },
+      "eyebrow": {
+        "es": "testing",
+        "en": "testing"
       }
     },
     {
@@ -54,6 +66,10 @@
       "alternatives_rejected": {
         "es": "Dos temas (dark/light) simplificaban el sistema pero descartaban paper, que es identidad del handoff. Clases CSS por tema (.dark, .light, .paper) requerían cambios de clase y reload de estilos. CSS-in-JS hubiera acoplado lógica a componentes.",
         "en": "Two themes (dark/light) would simplify the system but drop paper, which is part of the handoff identity. CSS classes per theme (.dark, .light, .paper) would have required class changes and stylesheet reloads. CSS-in-JS would have coupled logic to components."
+      },
+      "eyebrow": {
+        "es": "theming",
+        "en": "theming"
       }
     },
     {
@@ -69,6 +85,10 @@
       "alternatives_rejected": {
         "es": "El routing nativo i18n de Astro (`/es/...` + `/en/...`) fragmentaba el sitemap y forzaba mantener dos copias del árbol. Archivos paralelos por idioma (un `.mdx` para ES, otro para EN) duplicaban el frontmatter. Una sola lengua hubiera reducido la audiencia.",
         "en": "Astro native i18n routing (`/es/...` + `/en/...`) fragmented the sitemap and forced maintaining two URL trees. Parallel files per language (one `.mdx` for ES, another for EN) duplicated frontmatter. A single language would have reduced audience reach."
+      },
+      "eyebrow": {
+        "es": "i18n",
+        "en": "i18n"
       }
     },
     {
@@ -84,6 +104,10 @@
       "alternatives_rejected": {
         "es": "Las integraciones Astro de React/Vue/Svelte hubieran añadido 30-50 KB de runtime para piezas que apenas mutan estado. Alpine/Stimulus/Web Components habrían introducido un mini-framework adicional para resolver lo que un módulo TS resuelve sin abstracciones.",
         "en": "Astro React/Vue/Svelte integrations would have added 30-50 KB of runtime for pieces that barely mutate state. Alpine/Stimulus/Web Components would have introduced an additional mini-framework to solve what a plain TS module solves without abstractions."
+      },
+      "eyebrow": {
+        "es": "frameworks",
+        "en": "frameworks"
       }
     },
     {
@@ -93,12 +117,16 @@
         "en": "Dual content layer: MDX collections for narrative, JSON+Zod for structured data"
       },
       "rationale": {
-        "es": "MDX collections (experiencia, proyectos, OSS, side-projects) cuando el body largo es el valor: `getCollection()` + frontmatter tipado + render del cuerpo. JSON+Zod (hero, principios, decisions, etc.) cuando el shape es plano y se importa síncronamente al SSR. Trade-off: dos patrones que mantener, pero cada uno encaja con la naturaleza del dato — forzar uno solo introduciría fricción.",
-        "en": "MDX collections (experience, projects, OSS, side-projects) when the long body is the value: `getCollection()` + typed frontmatter + body render. JSON+Zod (hero, principles, decisions, etc.) when shape is flat and imports synchronously at SSR. Trade-off: two patterns to maintain, but each fits the shape of its data — forcing one would introduce friction."
+        "es": "MDX collections (experiencia, proyectos, OSS, side-projects) cuando el body largo es el valor: `getCollection()` + frontmatter tipado + render del cuerpo. JSON+Zod (hero, principios, decisions, etc.) cuando el shape es plano y se importa síncronamente al SSR. Trade-off: dos patrones que mantener, pero cada uno encaja con la naturaleza del dato: forzar uno solo introduciría fricción.",
+        "en": "MDX collections (experience, projects, OSS, side-projects) when the long body is the value: `getCollection()` + typed frontmatter + body render. JSON+Zod (hero, principles, decisions, etc.) when shape is flat and imports synchronously at SSR. Trade-off: two patterns to maintain, but each fits the shape of its data: forcing one would introduce friction."
       },
       "alternatives_rejected": {
         "es": "Solo collections para todo: `getCollection()` requiere async donde un import síncrono es trivial; un wrapper MDX para entries sin body es ceremonia inútil. Solo JSON: pierde body markdown rico (proyectos largos colapsan en concatenación de strings). La dualidad reconoce que ambos patrones encajan con shapes distintos.",
         "en": "Collections-only: `getCollection()` requires async where a sync import is trivial; an MDX wrapper for body-less entries is needless ceremony. JSON-only: loses rich markdown bodies (long projects collapse into string concatenation). The duality acknowledges both patterns fit different shapes."
+      },
+      "eyebrow": {
+        "es": "content",
+        "en": "content"
       }
     },
     {
@@ -114,6 +142,10 @@
       "alternatives_rejected": {
         "es": "Tailwind aceleraba el layout pero forzaba `class=` con listas largas y complicaba la customización del tema vía plugins PostCSS. SASS/LESS añaden transpilación. CSS-in-JS (styled-components, emotion) acoplaba estilos a JS y exigía hidratación.",
         "en": "Tailwind would speed up layout but force long `class=` lists and complicate theme customization via PostCSS plugins. SASS/LESS add transpilation. CSS-in-JS (styled-components, emotion) would couple styles to JS and require hydration."
+      },
+      "eyebrow": {
+        "es": "css",
+        "en": "css"
       }
     }
   ]

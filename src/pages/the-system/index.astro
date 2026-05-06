@@ -2,10 +2,12 @@
 import DecisionsList from '@/components/design-system/DecisionsList.astro';
 import SiteStatus from '@/components/design-system/SiteStatus.astro';
 import SpacingScale from '@/components/design-system/SpacingScale.astro';
-import TokenSwatcher from '@/components/design-system/TokenSwatcher.astro';
+import SubNav from '@/components/design-system/SubNav.astro';
+import TokensTable from '@/components/design-system/TokensTable.astro';
 import TypeScale from '@/components/design-system/TypeScale.astro';
 import UiGallery from '@/components/design-system/UiGallery.astro';
 import PrinciplesList from '@/components/principles/PrinciplesList.astro';
+import BackToHomeLink from '@/components/work/BackToHomeLink.astro';
 import principlesJson from '@/data/principles.json';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { t } from '@/lib/i18n/t';
@@ -14,128 +16,218 @@ import styles from './index.module.css';
 
 const parsed = principlesSchema.parse(principlesJson);
 const principles = parsed.principles;
+
+// Build-time stamp for the hero "last build" cell. Static from the build date
+// so it stays in sync with the deploy without depending on the runtime
+// `/cv/status.json` fetch (the stat already lives in the SiteStatus block).
+// Decision (implementer, 2026-05-05): static is simpler and matches the mock.
+const buildDate = new Date();
+const lastBuildLabel = `${buildDate.getUTCFullYear()}.${String(buildDate.getUTCMonth() + 1).padStart(2, '0')}.${String(buildDate.getUTCDate()).padStart(2, '0')}`;
 ---
 
-<BaseLayout title="The system — Jesús Cocaño">
-  <article class={`container ${styles.pageShell}`}>
-    <header class={styles.pageHead}>
-      <h1 class={styles.pageTitle}>
-        <span lang="es">El sistema</span>
-        <span lang="en">The system</span>
-      </h1>
-      <p class={styles.pageLede}>
-        <span lang="es"
-          >Principios, decisiones, decisiones técnicas y bases (tipografía, espaciado, primitives,
-          tokens).</span
-        >
-        <span lang="en"
-          >Principles, decisions, technical decisions and foundations (typography, spacing,
-          primitives, tokens).</span
-        >
-      </p>
+<BaseLayout title="The system: Jesús Cocaño">
+  <SubNav />
+
+  <article class={styles.pageShell}>
+    <header class={styles.hero}>
+      <div class={`container ${styles.heroInner}`}>
+        <BackToHomeLink />
+        <p class={styles.heroEyebrow}>
+          <span class={styles.heroEyebrowSparkle} aria-hidden="true">▲</span>
+          <span lang="es">{t('theSystem.hero.eyebrow', 'es')}</span>
+          <span lang="en">{t('theSystem.hero.eyebrow', 'en')}</span>
+        </p>
+        <h1 class={styles.heroTitle}>
+          <span lang="es">{t('theSystem.hero.title', 'es')}</span>
+          <span lang="en">{t('theSystem.hero.titleAccent', 'en')}</span>
+        </h1>
+        <p class={styles.heroLede}>
+          <span lang="es">{t('theSystem.hero.lede', 'es')}</span>
+          <span lang="en">{t('theSystem.hero.lede', 'en')}</span>
+        </p>
+        <div class={styles.metaRow}>
+          <div class={styles.metaCell} data-meta-cell="layer-1">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel1', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel1', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer1', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer1', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="layer-2">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel2', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel2', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer2', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer2', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="layer-3">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLayerLabel3', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayerLabel3', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>
+              <span lang="es">{t('theSystem.hero.metaLayer3', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLayer3', 'en')}</span>
+            </span>
+          </div>
+          <div class={styles.metaCell} data-meta-cell="last-build">
+            <span class={styles.metaLabel}>
+              <span lang="es">{t('theSystem.hero.metaLastBuildLabel', 'es')}</span>
+              <span lang="en">{t('theSystem.hero.metaLastBuildLabel', 'en')}</span>
+            </span>
+            <span class={styles.metaValue}>{lastBuildLabel}</span>
+          </div>
+        </div>
+      </div>
     </header>
 
-    <section id="block-principles" class={styles.block}>
-      <p class={styles.blockEyebrow}>
-        <span lang="es">{t('theSystem.principlesEyebrow', 'es')}</span>
-        <span lang="en">{t('theSystem.principlesEyebrow', 'en')}</span>
-      </p>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">{t('theSystem.principlesTitle', 'es')}</span>
-        <span lang="en">{t('theSystem.principlesTitle', 'en')}</span>
-      </h2>
-      <p class={styles.blockLede}>
-        <span lang="es">{t('theSystem.principlesLede', 'es')}</span>
-        <span lang="en">{t('theSystem.principlesLede', 'en')}</span>
-      </p>
-      <PrinciplesList principles={principles} />
+    <section id="why" class={styles.section}>
+      <div class={`container ${styles.sectionInner}`}>
+        <div class={styles.sectionHead}>
+          <p class={styles.pillarTag} data-pillar-tag="why">
+            <span lang="es">{t('theSystem.pillar.why', 'es')}</span>
+            <span lang="en">{t('theSystem.pillar.why', 'en')}</span>
+          </p>
+          <h2 class={styles.sectionTitle}>
+            <span lang="es">{t('theSystem.section.why.title', 'es')}</span>{' '}
+            <span lang="en">{t('theSystem.section.why.titleAccent', 'en')}</span>
+          </h2>
+          <p class={styles.sectionDesc}>
+            <span lang="es">{t('theSystem.section.why.desc', 'es')}</span>
+            <span lang="en">{t('theSystem.section.why.desc', 'en')}</span>
+          </p>
+        </div>
+        <PrinciplesList principles={principles} />
+      </div>
     </section>
 
-    <section id="block-decisions" class={styles.block}>
-      <p class={styles.blockEyebrow}>
-        <span lang="es">{t('theSystem.decisionsEyebrow', 'es')}</span>
-        <span lang="en">{t('theSystem.decisionsEyebrow', 'en')}</span>
-      </p>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">{t('theSystem.decisionsTitle', 'es')}</span>
-        <span lang="en">{t('theSystem.decisionsTitle', 'en')}</span>
-      </h2>
-      <DecisionsList source="ui" />
+    <section id="how" class={styles.section}>
+      <div class={`container ${styles.sectionInner}`}>
+        <div class={styles.sectionHead}>
+          <p class={styles.pillarTag} data-pillar-tag="how">
+            <span lang="es">{t('theSystem.pillar.how', 'es')}</span>
+            <span lang="en">{t('theSystem.pillar.how', 'en')}</span>
+          </p>
+          <h2 class={styles.sectionTitle}>
+            <span lang="es">{t('theSystem.section.how.title', 'es')}</span>{' '}
+            <span lang="en">{t('theSystem.section.how.titleAccent', 'en')}</span>
+          </h2>
+          <p class={styles.sectionDesc}>
+            <span lang="es">{t('theSystem.section.how.desc', 'es')}</span>
+            <span lang="en">{t('theSystem.section.how.desc', 'en')}</span>
+          </p>
+        </div>
+
+        <div class={styles.subHead}>
+          <span lang="es">{t('theSystem.decisions.uxSubhead', 'es')}</span>
+          <span lang="en">{t('theSystem.decisions.uxSubhead', 'en')}</span>
+        </div>
+        <DecisionsList source="ui" variant="ux-grid" />
+
+        <div class={`${styles.subHead} ${styles.subHeadSecondary}`}>
+          <span lang="es">{t('theSystem.decisions.technicalSubhead', 'es')}</span>
+          <span lang="en">{t('theSystem.decisions.technicalSubhead', 'en')}</span>
+        </div>
+        <DecisionsList source="technical" variant="technical-list" />
+      </div>
     </section>
 
-    <section id="block-technical-decisions" class={styles.block}>
-      <p class={styles.blockEyebrow}>
-        <span lang="es">{t('theSystem.technicalDecisionsEyebrow', 'es')}</span>
-        <span lang="en">{t('theSystem.technicalDecisionsEyebrow', 'en')}</span>
-      </p>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">{t('theSystem.technicalDecisionsTitle', 'es')}</span>
-        <span lang="en">{t('theSystem.technicalDecisionsTitle', 'en')}</span>
-      </h2>
-      <p class={styles.blockLede}>
-        <span lang="es">{t('theSystem.technicalDecisionsLede', 'es')}</span>
-        <span lang="en">{t('theSystem.technicalDecisionsLede', 'en')}</span>
-      </p>
-      <DecisionsList source="technical" />
+    <section id="what" class={styles.section}>
+      <div class={`container ${styles.sectionInner}`}>
+        <div class={styles.sectionHead}>
+          <p class={styles.pillarTag} data-pillar-tag="what">
+            <span lang="es">{t('theSystem.pillar.what', 'es')}</span>
+            <span lang="en">{t('theSystem.pillar.what', 'en')}</span>
+          </p>
+          <h2 class={styles.sectionTitle}>
+            <span lang="es">{t('theSystem.section.what.title', 'es')}</span>{' '}
+            <span lang="en">{t('theSystem.section.what.titleAccent', 'en')}</span>
+          </h2>
+          <p class={styles.sectionDesc}>
+            <span lang="es">{t('theSystem.section.what.desc', 'es')}</span>
+            <span lang="en">{t('theSystem.section.what.desc', 'en')}</span>
+          </p>
+        </div>
+
+        <div class={styles.subSection} data-sub-section="typography">
+          <div class={styles.subSectionHead}>
+            <span class={styles.subSectionNum}>03.1</span>
+            <h3 class={styles.subSectionTitle}>
+              <span lang="es">{t('theSystem.subsection.typography.title', 'es')}</span>
+              <span lang="en">{t('theSystem.subsection.typography.title', 'en')}</span>
+            </h3>
+          </div>
+          <TypeScale />
+        </div>
+
+        <div class={styles.subSection} data-sub-section="spacing">
+          <div class={styles.subSectionHead}>
+            <span class={styles.subSectionNum}>03.2</span>
+            <h3 class={styles.subSectionTitle}>
+              <span lang="es">{t('theSystem.subsection.spacing.title', 'es')}</span>
+              <span lang="en">{t('theSystem.subsection.spacing.title', 'en')}</span>
+            </h3>
+          </div>
+          <SpacingScale />
+        </div>
+
+        <div class={styles.subSection} data-sub-section="ui-primitives">
+          <div class={styles.subSectionHead}>
+            <span class={styles.subSectionNum}>03.3</span>
+            <h3 class={styles.subSectionTitle}>
+              <span lang="es">{t('theSystem.subsection.uiPrimitives.title', 'es')}</span>
+              <span lang="en">{t('theSystem.subsection.uiPrimitives.title', 'en')}</span>
+            </h3>
+          </div>
+          <UiGallery />
+        </div>
+      </div>
     </section>
 
-    <section id="block-foundations" class={styles.block}>
-      <p class={styles.blockEyebrow}>
-        <span lang="es">{t('theSystem.foundationsEyebrow', 'es')}</span>
-        <span lang="en">{t('theSystem.foundationsEyebrow', 'en')}</span>
-      </p>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">{t('theSystem.foundationsTitle', 'es')}</span>
-        <span lang="en">{t('theSystem.foundationsTitle', 'en')}</span>
-      </h2>
-      <p class={styles.blockLede}>
-        <span lang="es">{t('theSystem.foundationsLede', 'es')}</span>
-        <span lang="en">{t('theSystem.foundationsLede', 'en')}</span>
-      </p>
-
-      <section id="sub-typography" class={styles.subBlock}>
-        <h3 class={styles.subBlockHeading}>
-          <span lang="es">{t('theSystem.typographyTitle', 'es')}</span>
-          <span lang="en">{t('theSystem.typographyTitle', 'en')}</span>
-        </h3>
-        <TypeScale />
-      </section>
-
-      <section id="sub-spacing" class={styles.subBlock}>
-        <h3 class={styles.subBlockHeading}>
-          <span lang="es">{t('theSystem.spacingTitle', 'es')}</span>
-          <span lang="en">{t('theSystem.spacingTitle', 'en')}</span>
-        </h3>
-        <SpacingScale />
-      </section>
-
-      <section id="sub-ui-primitives" class={styles.subBlock}>
-        <h3 class={styles.subBlockHeading}>
-          <span lang="es">{t('theSystem.uiPrimitivesTitle', 'es')}</span>
-          <span lang="en">{t('theSystem.uiPrimitivesTitle', 'en')}</span>
-        </h3>
-        <UiGallery />
-      </section>
-
-      <section id="sub-tokens-by-theme" class={styles.subBlock}>
-        <h3 class={styles.subBlockHeading}>
-          <span lang="es">{t('theSystem.tokensByThemeTitle', 'es')}</span>
-          <span lang="en">{t('theSystem.tokensByThemeTitle', 'en')}</span>
-        </h3>
-        <TokenSwatcher />
-      </section>
+    <section id="tokens" class={styles.section}>
+      <div class={`container ${styles.sectionInner}`}>
+        <div class={styles.sectionHead}>
+          <p class={styles.pillarTag} data-pillar-tag="tokens">
+            <span lang="es">{t('theSystem.pillar.tokens', 'es')}</span>
+            <span lang="en">{t('theSystem.pillar.tokens', 'en')}</span>
+          </p>
+          <h2 class={styles.sectionTitle}>
+            <span lang="es">{t('theSystem.section.tokens.title', 'es')}</span>{' '}
+            <span lang="en">{t('theSystem.section.tokens.titleAccent', 'en')}</span>
+          </h2>
+          <p class={styles.sectionDesc}>
+            <span lang="es">{t('theSystem.section.tokens.desc', 'es')}</span>
+            <span lang="en">{t('theSystem.section.tokens.desc', 'en')}</span>
+          </p>
+        </div>
+        <TokensTable />
+      </div>
     </section>
 
-    <section id="block-status" class={styles.block}>
-      <h2 class={styles.blockHeading}>
-        <span lang="es">{t('theSystem.statusTitle', 'es')}</span>
-        <span lang="en">{t('theSystem.statusTitle', 'en')}</span>
-      </h2>
-      <p class={styles.blockLede}>
-        <span lang="es">{t('theSystem.statusLede', 'es')}</span>
-        <span lang="en">{t('theSystem.statusLede', 'en')}</span>
-      </p>
-      <SiteStatus />
+    <section id="build" class={`${styles.section} ${styles.sectionLast}`}>
+      <div class={`container ${styles.sectionInner}`}>
+        <div class={styles.sectionHead}>
+          <p class={styles.pillarTag} data-pillar-tag="build">
+            <span lang="es">{t('theSystem.pillar.buildRuntime', 'es')}</span>
+            <span lang="en">{t('theSystem.pillar.buildRuntime', 'en')}</span>
+          </p>
+          <h2 class={styles.sectionTitle}>
+            <span lang="es">{t('theSystem.section.buildRuntime.title', 'es')}</span>
+            <span lang="en">{t('theSystem.section.buildRuntime.title', 'en')}</span>
+          </h2>
+          <p class={styles.sectionDesc}>
+            <span lang="es">{t('theSystem.section.buildRuntime.desc', 'es')}</span>
+            <span lang="en">{t('theSystem.section.buildRuntime.desc', 'en')}</span>
+          </p>
+        </div>
+        <SiteStatus />
+      </div>
     </section>
   </article>
 </BaseLayout>

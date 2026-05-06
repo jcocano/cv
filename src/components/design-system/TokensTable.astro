@@ -1,0 +1,50 @@
+---
+import {
+  CANONICAL_TOKEN_NAMES,
+  THEME_NAMES,
+  TOKEN_VALUES_BY_THEME,
+} from '@/lib/theme/token-values';
+import styles from './TokensTable.module.css';
+---
+
+<div class={styles.tokensTable}>
+  <p class={styles.activeLine}>
+    <span class={styles.activeLabel}>
+      Active theme: <span data-toggle-theme-label>dark</span>
+    </span>
+    <span class={styles.activeNote}>
+      Cycle the theme with the button in the nav or by pressing <kbd>T</kbd>.
+    </span>
+  </p>
+
+  <table class={styles.table} data-component="tokens-table">
+    <thead>
+      <tr>
+        <th>Token</th>
+        {THEME_NAMES.map((theme) => <th>{theme}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        CANONICAL_TOKEN_NAMES.map((token) => (
+          <tr>
+            <td class={styles.tokenName} data-token-name={token}>
+              --{token}
+            </td>
+            {THEME_NAMES.map((theme) => {
+              const value = TOKEN_VALUES_BY_THEME[theme][token];
+              return (
+                <td>
+                  <div class={styles.swatchCell} data-token-swatch={`${theme}-${token}`}>
+                    <span class={styles.swatch} style={`background:${value}`} aria-hidden="true" />
+                    <span class={styles.swatchVal}>{value}</span>
+                  </div>
+                </td>
+              );
+            })}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

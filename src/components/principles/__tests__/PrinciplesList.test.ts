@@ -148,4 +148,62 @@ describe('PrinciplesList (render-test)', () => {
       expect(current).toBeGreaterThan(previous);
     }
   });
+
+  it('renders a card-eyebrow with computed P.NN for every entry (one-based, two-digit padded)', async () => {
+    const principles = buildPrinciples(11);
+    const html = await renderPrinciplesList(principles);
+    const expectedNums = [
+      'P.01',
+      'P.02',
+      'P.03',
+      'P.04',
+      'P.05',
+      'P.06',
+      'P.07',
+      'P.08',
+      'P.09',
+      'P.10',
+      'P.11',
+    ];
+    for (const num of expectedNums) {
+      expect(html).toContain(num);
+    }
+  });
+
+  it('renders the bilingual eyebrow text from JSON in <span lang> when provided', async () => {
+    const principle: Principle = {
+      ...buildOnePrinciple(),
+      eyebrow: { es: 'tipos', en: 'types' },
+    };
+    const html = await renderPrinciplesList([principle]);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>tipos<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>types<\/span>/);
+  });
+
+  it('still renders the entry when eyebrow is absent (optional, no overflow)', async () => {
+    const principle = buildOnePrinciple();
+    expect(principle.eyebrow).toBeUndefined();
+    const html = await renderPrinciplesList([principle]);
+    expect(html).toMatch(/data-principle-entry="tests-document-intent"/);
+    // The card-eyebrow num is still present (computed from index, never empty).
+    expect(html).toContain('P.01');
+  });
+
+  it('marks the last card with data-card-span="2" when the count is odd (5 → P.05 spans 2 cols)', async () => {
+    const principles = buildPrinciples(5);
+    const html = await renderPrinciplesList(principles);
+    expect(html).toMatch(
+      /data-principle-entry="principle-fixture-5"[^>]*data-card-span="2"|data-card-span="2"[^>]*data-principle-entry="principle-fixture-5"/,
+    );
+    // No earlier entry carries the span flag.
+    expect(html).not.toMatch(
+      /data-principle-entry="principle-fixture-1"[^>]*data-card-span="2"|data-card-span="2"[^>]*data-principle-entry="principle-fixture-1"/,
+    );
+  });
+
+  it('does NOT mark any card with data-card-span="2" when the count is even (4 → balanced grid)', async () => {
+    const principles = buildPrinciples(4);
+    const html = await renderPrinciplesList(principles);
+    expect(html).not.toMatch(/data-card-span="2"/);
+  });
 });

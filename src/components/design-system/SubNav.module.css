@@ -1,0 +1,67 @@
+.subnav {
+  position: sticky;
+  top: 56px;
+  z-index: 40;
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.inner {
+  display: flex;
+  gap: 4px;
+  height: 48px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.inner::-webkit-scrollbar {
+  display: none;
+}
+
+.link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-mute);
+  padding: 8px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  transition:
+    color 0.2s,
+    background 0.2s;
+  text-decoration: none;
+}
+
+.num {
+  /*
+   * Inactive nums use --fg-mute (not --accent with low opacity) to satisfy
+   * WCAG AA color-contrast on the paper theme (--accent at low opacity over
+   * the paper bg drops below 4.5:1; --fg-mute is a tuned mute that meets
+   * contrast in all three themes).
+   */
+  color: var(--fg-mute);
+}
+
+.link:hover {
+  color: var(--fg);
+  background: var(--bg-elev);
+}
+
+.link[data-subnav-active] {
+  color: var(--fg);
+  background: var(--bg-elev);
+}
+
+.link[data-subnav-active] .num {
+  color: var(--accent);
+}
+
+@media (max-width: 860px) {
+  .inner {
+    height: 44px;
+  }
+}

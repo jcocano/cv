@@ -6,52 +6,74 @@ import {
   designSystemDecisionsSchema,
   type DesignSystemDecisions,
 } from '@/lib/schemas/design-system-decisions';
+import { computeCardEyebrow } from '@/lib/the-system/card-eyebrow';
 import styles from './DecisionsList.module.css';
 
 interface Props {
   source: 'ui' | 'technical';
+  variant: 'ux-grid' | 'technical-list';
 }
 
-const { source } = Astro.props;
+const { source, variant } = Astro.props;
 
 const SOURCE_JSON: Record<Props['source'], unknown> = {
   ui: designSystemDecisionsJson,
   technical: technicalDecisionsJson,
 };
 
+const PREFIX_BY_SOURCE: Record<Props['source'], string> = {
+  ui: 'D',
+  technical: 'T',
+};
+
 const decisions: DesignSystemDecisions = designSystemDecisionsSchema.parse(SOURCE_JSON[source]);
+const prefix = PREFIX_BY_SOURCE[source];
 const alternativesLabelEs = t('theSystem.alternativesLabel', 'es');
 const alternativesLabelEn = t('theSystem.alternativesLabel', 'en');
+
+const wrapperClass =
+  variant === 'ux-grid'
+    ? `${styles.list} ${styles.uxGrid}`
+    : `${styles.list} ${styles.technicalList}`;
 ---
 
-<div class={styles.decisionsList}>
+<div class={wrapperClass} data-variant={variant}>
   {
-    decisions.decisions.map((decision) => {
+    decisions.decisions.map((decision, index) => {
       const anchorId = `decision-${decision.id}`;
       const alternatives = decision.alternatives_rejected;
+      const eyebrow = decision.eyebrow;
+      const orderedNumber = computeCardEyebrow(prefix, index);
       return (
-        <article class={styles.entry} data-decision-entry={decision.id}>
-          <div class={styles.head}>
-            <h3 class={styles.title} id={anchorId}>
-              <span lang="es">{decision.title.es}</span>
-              <span lang="en">{decision.title.en}</span>
-            </h3>
+        <article class={styles.card} data-decision-entry={decision.id}>
+          <div class={styles.cardEyebrow}>
+            <span class={styles.cardEyebrowNum}>{orderedNumber}</span>
+            {eyebrow !== undefined && (
+              <>
+                <span lang="es">{eyebrow.es}</span>
+                <span lang="en">{eyebrow.en}</span>
+              </>
+            )}
           </div>
-          <p class={styles.rationale}>
+          <h3 class={styles.cardTitle} id={anchorId}>
+            <span lang="es">{decision.title.es}</span>
+            <span lang="en">{decision.title.en}</span>
+          </h3>
+          <p class={styles.cardBody}>
             <span lang="es">{decision.rationale.es}</span>
             <span lang="en">{decision.rationale.en}</span>
           </p>
-          {alternatives !== undefined && (
-            <div class={styles.alternatives} data-alternatives-rejected={decision.id}>
-              <p class={styles.alternativesLabel}>
+          {variant === 'technical-list' && alternatives !== undefined && (
+            <details class={`${styles.alts} alts`} data-alternatives-rejected={decision.id}>
+              <summary class={styles.altsSummary}>
                 <span lang="es">{alternativesLabelEs}</span>
                 <span lang="en">{alternativesLabelEn}</span>
-              </p>
-              <p class={styles.alternativesBody}>
+              </summary>
+              <p class={styles.altsBody}>
                 <span lang="es">{alternatives.es}</span>
                 <span lang="en">{alternatives.en}</span>
               </p>
-            </div>
+            </details>
           )}
         </article>
       );

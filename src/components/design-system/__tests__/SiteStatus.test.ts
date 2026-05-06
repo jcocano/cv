@@ -116,4 +116,13 @@ describe('SiteStatus (render-test) — bilingual SSR skeleton', () => {
     expect(html).not.toMatch(/site-status\.json/);
     expect(html).not.toMatch(/data-site-status="(ready|missing)"/);
   });
+
+  it('marks the wrapper with data-layout="stats" so the css module applies the stats-grid layout', async () => {
+    // Feature #45 refactor: the layout switches from a dense table-like list
+    // to a stats grid (label / val / sub stack per cell). The semantic
+    // <dl>/<dt>/<dd> is preserved (axe-core dlitem rule); only the layout
+    // hook changes.
+    const html = await renderSiteStatus();
+    expect(html).toMatch(/<div[^>]*data-layout="stats"/);
+  });
 });

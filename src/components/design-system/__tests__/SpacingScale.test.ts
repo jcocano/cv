@@ -31,4 +31,24 @@ describe('SpacingScale (render-test)', () => {
     // No leftover h3 with the same ids.
     expect(html).not.toMatch(/<h3[^>]*id="spacing-(radius|radius-lg|container)"/);
   });
+
+  it('marks each cell with data-spec-cell so the css module can apply the .spec-grid layout', async () => {
+    const html = await renderSpacingScale();
+    const cells = html.match(/data-spec-cell="/g);
+    expect(cells).not.toBeNull();
+    if (cells === null) {
+      throw new Error('expected at least one data-spec-cell');
+    }
+    expect(cells).toHaveLength(3);
+  });
+
+  it('renders the three cells in fixed order: --radius, --radius-lg, --container', async () => {
+    const html = await renderSpacingScale();
+    const radiusIndex = html.indexOf('id="spacing-radius"');
+    const radiusLgIndex = html.indexOf('id="spacing-radius-lg"');
+    const containerIndex = html.indexOf('id="spacing-container"');
+    expect(radiusIndex).toBeGreaterThan(-1);
+    expect(radiusLgIndex).toBeGreaterThan(radiusIndex);
+    expect(containerIndex).toBeGreaterThan(radiusLgIndex);
+  });
 });

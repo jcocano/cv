@@ -1,73 +1,188 @@
 .page-shell {
-  padding-top: 64px;
-  padding-bottom: 96px;
-}
-
-.page-head {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 56px;
 }
 
-.page-title {
+/* ---------- HERO ----------
+ * Feature #46: the <header> is FULL-BLEED (no global `.container` on the
+ * <header> itself), mirroring the <section> > <div class="container ..."> shape
+ * used by Why / How / What / Tokens / Build below. The `.heroInner` <div>
+ * carries the global `.container` class so its left edge aligns with each
+ * `.section-inner` (same max-width + same horizontal padding from `.container`).
+ * Vertical padding lives on `.hero` so the border-bottom spans the viewport.
+ */
+.hero {
+  padding: 80px 0 64px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-eyebrow {
   margin: 0;
-  font-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+
+.hero-eyebrow-sparkle {
+  color: var(--accent);
+}
+
+.hero-title {
+  margin: 18px 0 0;
+  max-width: 860px;
+  font-size: clamp(40px, 5vw, 56px);
   font-weight: 700;
-  line-height: 1.1;
-}
-
-.page-lede {
-  margin: 0;
-  font-family: var(--font-mono);
-  color: var(--fg-mute);
-  font-size: 13px;
-}
-
-.block {
-  margin-bottom: 80px;
-}
-
-.block:last-child {
-  margin-bottom: 0;
-}
-
-.block-eyebrow {
-  margin: 0 0 8px;
-  font-family: var(--font-mono);
-  color: var(--fg-mute);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-}
-
-.block-heading {
-  margin: 0 0 24px;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
   color: var(--fg);
 }
 
-.block-lede {
-  margin: 0 0 16px;
-  font-family: var(--font-mono);
-  color: var(--fg-mute);
-  font-size: 13px;
+.hero-lede {
+  margin: 24px 0 0;
+  max-width: 720px;
+  font-size: 18px;
+  color: var(--fg-dim);
   line-height: 1.55;
 }
 
-.sub-block {
-  margin-top: 56px;
+.meta-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  flex-wrap: wrap;
 }
 
-.sub-block:first-of-type {
-  margin-top: 32px;
+.meta-cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
-.sub-block-heading {
-  margin: 0 0 20px;
-  font-size: 18px;
+.meta-label {
+  color: var(--fg-dim);
+}
+
+.meta-value {
+  color: var(--fg-mute);
+}
+
+/* ---------- SECTION ---------- */
+.section {
+  padding: 96px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.section-last {
+  border-bottom: none;
+}
+
+.section-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 56px;
+  max-width: 760px;
+}
+
+.pillar-tag {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-title {
+  margin: 0;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.section-desc {
+  margin: 0;
+  color: var(--fg-dim);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* ---------- SUB-HEAD (decisions UX vs technical) ---------- */
+.sub-head {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.04em;
+  margin: 0 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sub-head-secondary {
+  margin-top: 64px;
+}
+
+/* ---------- SUB-SECTION (foundations 03.1 / 03.2 / 03.3) ---------- */
+.sub-section {
+  padding: 64px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.sub-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.sub-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sub-section-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.sub-section-title {
+  margin: 0;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.005em;
   color: var(--fg);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    padding: 56px 0 40px;
+  }
+  .section {
+    padding: 64px 0;
+  }
 }

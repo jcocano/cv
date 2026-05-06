@@ -7,6 +7,7 @@ export const principleSchema = z
     id: z.string().regex(/^[a-z][a-z0-9-]*$/, 'kebab-case'),
     title: i18nString,
     statement: i18nString,
+    eyebrow: i18nString.optional(),
   })
   .strict();
 

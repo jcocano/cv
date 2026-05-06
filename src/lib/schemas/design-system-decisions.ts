@@ -8,6 +8,7 @@ export const designSystemDecisionSchema = z
     title: i18nString,
     rationale: i18nString,
     alternatives_rejected: i18nString.optional(),
+    eyebrow: i18nString.optional(),
   })
   .strict();
 

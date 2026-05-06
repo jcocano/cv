@@ -1,54 +1,113 @@
-.decisions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.list {
+  display: grid;
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
 }
 
-.entry {
-  padding: 24px;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-lg);
+.ux-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.technical-list {
+  grid-template-columns: 1fr;
+}
+
+.card {
+  background: var(--bg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 0.25s;
+}
+
+.technical-list .card {
+  padding: 36px;
+}
+
+.card:hover {
   background: var(--bg-elev);
 }
 
-.head {
+.card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
   display: flex;
-  align-items: baseline;
-  gap: 6px;
-  margin-bottom: 12px;
+  align-items: center;
+  gap: 10px;
 }
 
-.title {
+.card-eyebrow-num {
+  color: var(--accent);
+}
+
+.card-title {
   margin: 0;
   font-size: 20px;
+  line-height: 1.3;
   font-weight: 600;
-  line-height: 1.25;
   color: var(--fg);
 }
 
-.rationale {
+.card-body {
   margin: 0;
   color: var(--fg-dim);
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.6;
 }
 
-.alternatives {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line-soft);
+.alts {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
 }
 
-.alternatives-label {
-  margin: 0 0 6px;
+.alts-summary {
+  cursor: pointer;
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--fg-mute);
-  text-transform: lowercase;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.alternatives-body {
-  margin: 0;
-  color: var(--fg-dim);
-  line-height: 1.55;
+.alts-summary::-webkit-details-marker {
+  display: none;
+}
+
+.alts-summary::before {
+  content: '+';
+  color: var(--accent);
+  font-size: 14px;
+  width: 14px;
+  display: inline-block;
+}
+
+.alts[open] .alts-summary::before {
+  content: '−';
+}
+
+.alts-summary:hover {
+  color: var(--fg);
+}
+
+.alts-body {
+  margin: 14px 0 0;
+  color: var(--fg-mute);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 860px) {
+  .ux-grid {
+    grid-template-columns: 1fr;
+  }
 }

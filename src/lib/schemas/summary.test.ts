@@ -9,32 +9,32 @@ const validSummary = {
     en: 'Deep backend,\ndeeper infrastructure.',
   },
   lede: {
-    es: '7+ años en sistemas distribuidos · 12+ años en infraestructura y operaciones.',
-    en: '7+ years in distributed systems · 12+ years in infrastructure & ops.',
+    es: '8 años de ingeniería de backend sobre 12 años trabajando con sistemas.',
+    en: '8 years of backend engineering on top of 12 years working with systems.',
   },
   stats: [
     {
-      value: '7',
+      value: '8',
       accent: '+',
       label: {
-        es: 'años en sistemas distribuidos',
-        en: 'years in distributed systems',
+        es: 'años en backend distribuido',
+        en: 'years in distributed backend',
       },
     },
     {
       value: '12',
       accent: '+',
       label: {
-        es: 'años en infra & ops',
-        en: 'years in infra & ops',
+        es: 'años de base en sysadmin & redes',
+        en: 'years of sysadmin & networking foundation',
       },
     },
     {
       value: '∞',
       accent: null,
       label: {
-        es: 'eventos procesados (Kafka · Pulsar)',
-        en: 'events shipped (Kafka · Pulsar)',
+        es: 'stacks de mensajería en producción',
+        en: 'messaging stacks in production',
       },
     },
   ],
@@ -53,10 +53,10 @@ describe('summarySchema', () => {
     const parsed = summarySchema.parse(validSummary);
     expect(parsed.title.es.startsWith('Backend profundo')).toBe(true);
     expect(parsed.title.en.startsWith('Deep backend')).toBe(true);
-    expect(parsed.lede.es.startsWith('7+ años')).toBe(true);
-    expect(parsed.lede.en.startsWith('7+ years')).toBe(true);
+    expect(parsed.lede.es.startsWith('8 años')).toBe(true);
+    expect(parsed.lede.en.startsWith('8 years')).toBe(true);
     expect(parsed.stats).toHaveLength(3);
-    expect(parsed.stats[0]?.value).toBe('7');
+    expect(parsed.stats[0]?.value).toBe('8');
     expect(parsed.stats[0]?.accent).toBe('+');
     expect(parsed.stats[2]?.value).toBe('∞');
     expect(parsed.stats[2]?.accent).toBeNull();

@@ -18,7 +18,7 @@ type StatusKey = (typeof STATUS_KEYS)[number];
 
 const SHA_TRUNCATE_LENGTH = 7;
 
-function resolveEndpointUrl(): string {
+function appendStatusJsonToBaseUrl(): string {
   const baseUrl = import.meta.env.BASE_URL;
   return `${baseUrl}status.json`;
 }
@@ -89,12 +89,12 @@ function paintErrorState(root: HTMLElement): void {
   setStateError(root);
 }
 
-function formatValueForKey(key: StatusKey, payload: SiteStatus): string {
+type TextStatusKey = Exclude<StatusKey, 'build_time'>;
+
+function formatValueForKey(key: TextStatusKey, payload: SiteStatus): string {
   switch (key) {
     case 'build_sha':
       return payload.build_sha.slice(0, SHA_TRUNCATE_LENGTH);
-    case 'build_time':
-      return payload.build_time;
     case 'schema_version':
       return payload.schema_version;
     case 'page_weight_kb':
@@ -141,16 +141,22 @@ export async function mountSiteStatus(root?: HTMLElement): Promise<void> {
     return;
   }
   try {
-    const payload = await fetchAndValidate(resolveEndpointUrl());
+    const payload = await fetchAndValidate(appendStatusJsonToBaseUrl());
     paintLoadedState(target, payload);
   } catch {
     paintErrorState(target);
   }
 }
 
-if (typeof document !== 'undefined') {
-  const existing = document.querySelector<HTMLElement>(ROOT_SELECTOR);
-  if (existing !== null) {
-    void mountSiteStatus(existing);
+function selfBootstrapIfSkeletonExists(): void {
+  if (typeof document === 'undefined') {
+    return;
   }
+  const existing = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+  if (existing === null) {
+    return;
+  }
+  void mountSiteStatus(existing);
 }
+
+selfBootstrapIfSkeletonExists();

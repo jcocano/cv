@@ -124,9 +124,8 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
         root.setAttribute('data-theme', theme);
         try {
           localStorage.setItem(THEME_STORAGE_KEY, theme);
-        } catch {
-          /* localStorage may be unavailable (private mode); ignore. */
-        }
+          // eslint-disable-next-line no-empty
+        } catch {}
       }
 
       function applyLang(lang: LangCode): void {
@@ -134,9 +133,8 @@ const windowEnvsPayload = WINDOW_ENVS_PAYLOAD;
         root.setAttribute('lang', lang);
         try {
           localStorage.setItem(LANG_STORAGE_KEY, lang);
-        } catch {
-          /* localStorage may be unavailable (private mode); ignore. */
-        }
+          // eslint-disable-next-line no-empty
+        } catch {}
         const langOptions = document.querySelectorAll<HTMLElement>('#lang-toggle .opt');
         applyLangActive(langOptions, lang);
       }

@@ -3,15 +3,7 @@ import SectionHead from '@/components/ui/SectionHead.astro';
 import summaryJson from '@/data/summary.json';
 import { t } from '@/lib/i18n/t';
 import { summarySchema, type Summary } from '@/lib/schemas/summary';
-import type { LangCode } from '@/lib/theme/toggle-lang';
 import styles from './SummarySection.module.css';
-
-interface Props {
-  lang?: LangCode;
-}
-
-const { lang: _lang } = Astro.props;
-void _lang;
 
 const summary: Summary = summarySchema.parse(summaryJson);
 ---

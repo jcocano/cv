@@ -5,37 +5,37 @@ import SummarySection from '@/components/sections/SummarySection.astro';
 import summaryStyles from '@/components/sections/SummarySection.module.css';
 import summaryJson from '@/data/summary.json';
 
-async function renderSummary(lang: 'es' | 'en'): Promise<string> {
+async function renderSummary(): Promise<string> {
   const container = await AstroContainer.create();
-  return container.renderToString(SummarySection, { props: { lang } });
+  return container.renderToString(SummarySection);
 }
 
 describe('SummarySection (render-test)', () => {
   it('renders the section root as <section id="summary">', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/<section[^>]*id="summary"/);
   });
 
   it('wraps the inner content with a .container div', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/<section[^>]*id="summary"[^>]*>\s*<div[^>]*class="[^"]*container[^"]*"/);
   });
 
   it('renders the SectionHead with the summary eyebrow num "01" and bilingual labels', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/<span[^>]*>01<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>resumen<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>summary<\/span>/);
   });
 
   it('renders the bilingual h2 title from summary.json', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/<h2[^>]*>[\s\S]*Backend profundo[\s\S]*<\/h2>/);
     expect(html).toMatch(/<h2[^>]*>[\s\S]*Deep backend[\s\S]*<\/h2>/);
   });
 
   it('renders the bilingual lede paragraph from summary.json', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toContain(
       '7+ años en sistemas distribuidos · 12+ años en infraestructura y operaciones.',
     );
@@ -45,7 +45,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('renders all four stats with their value, accent and bilingual labels', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/>\s*7\s*<span[^>]*>\+<\/span>/);
     expect(html).toMatch(/>\s*12\s*<span[^>]*>\+<\/span>/);
     expect(html).toMatch(/>\s*2\s*<span[^>]*>×<\/span>/);
@@ -68,7 +68,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('does not render an accent <span> inside the infinity stat (accent: null)', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const infinityNumMatch = html.match(/<span[^>]*>\s*∞\s*<\/span>/);
     expect(infinityNumMatch).not.toBeNull();
     const allAccents = html.match(/<span[^>]*>[+×]<\/span>/g) ?? [];
@@ -76,7 +76,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('renders a paragraph for each summary body block with its lang attribute', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const esBody = summaryJson.paragraphs.es[0];
     const enBody = summaryJson.paragraphs.en[0];
     if (esBody === undefined || enBody === undefined) {
@@ -87,7 +87,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('renders the expertise list with one <li> per item containing both languages', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const ulMatch = html.match(/<ul[^>]*>([\s\S]*?)<\/ul>/);
     expect(ulMatch).not.toBeNull();
     if (ulMatch === null) {
@@ -114,19 +114,13 @@ describe('SummarySection (render-test)', () => {
     );
   });
 
-  it('renders identical HTML regardless of the lang prop (content is fully bilingual)', async () => {
-    const htmlEs = await renderSummary('es');
-    const htmlEn = await renderSummary('en');
-    expect(htmlEs).toBe(htmlEn);
-  });
-
   it('adds the global "reveal" class on the SectionHead wrapper (handoff L109)', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     expect(html).toMatch(/<div\b[^>]*class="[^"]*\breveal\b[^"]*"[^>]*>\s*<span/);
   });
 
   it('adds the global "reveal" class on the .stats container (handoff L123)', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const statsClassName = summaryStyles.stats;
     if (statsClassName === undefined) {
       throw new Error('summaryStyles.stats must be defined');
@@ -139,7 +133,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('adds the global "reveal" class on each summary-body paragraph (handoff L130/L133)', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const summaryBodyClassName = summaryStyles.summaryBody;
     if (summaryBodyClassName === undefined) {
       throw new Error('summaryStyles.summaryBody must be defined');
@@ -152,7 +146,7 @@ describe('SummarySection (render-test)', () => {
   });
 
   it('adds the global "reveal" class on the .bullets <ul> (handoff L137)', async () => {
-    const html = await renderSummary('es');
+    const html = await renderSummary();
     const bulletsClassName = summaryStyles.bullets;
     if (bulletsClassName === undefined) {
       throw new Error('summaryStyles.bullets must be defined');

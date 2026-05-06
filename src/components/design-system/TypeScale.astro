@@ -9,99 +9,152 @@ interface SpecimenSpec {
   readonly text: string;
   readonly fontSize: string;
   readonly fontWeight: string;
+  readonly fontFamily: string;
+  readonly extraMeta?: string;
 }
 
-const LABEL_CLASS_BY_TAG: Record<SpecimenTag, string | undefined> = {
-  h1: styles.labelH1,
-  h2: styles.labelH2,
-  h3: styles.labelH3,
-  h4: styles.labelH4,
-  h5: styles.labelH5,
-  h6: styles.labelH6,
-  p: styles.labelBody,
-  code: styles.labelMono,
+const SPECIMEN_CLASS_BY_TAG: Record<SpecimenTag, string | undefined> = {
+  h1: styles.specimenH1,
+  h2: styles.specimenH2,
+  h3: styles.specimenH3,
+  h4: styles.specimenH4,
+  h5: styles.specimenH5,
+  h6: styles.specimenH6,
+  p: styles.specimenBody,
+  code: styles.specimenCode,
 };
 
 const SPECIMENS: ReadonlyArray<SpecimenSpec> = [
-  { id: 'type-h1', tag: 'h1', text: 'Heading 1', fontSize: '56px', fontWeight: '700' },
-  { id: 'type-h2', tag: 'h2', text: 'Heading 2', fontSize: '40px', fontWeight: '700' },
-  { id: 'type-h3', tag: 'h3', text: 'Heading 3', fontSize: '28px', fontWeight: '600' },
-  { id: 'type-h4', tag: 'h4', text: 'Heading 4', fontSize: '22px', fontWeight: '600' },
-  { id: 'type-h5', tag: 'h5', text: 'Heading 5', fontSize: '18px', fontWeight: '600' },
-  { id: 'type-h6', tag: 'h6', text: 'Heading 6', fontSize: '14px', fontWeight: '600' },
+  {
+    id: 'type-h1',
+    tag: 'h1',
+    text: 'Heading 1',
+    fontSize: '56px',
+    fontWeight: '700',
+    fontFamily: 'Geist',
+    extraMeta: '-0.02em',
+  },
+  {
+    id: 'type-h2',
+    tag: 'h2',
+    text: 'Heading 2',
+    fontSize: '40px',
+    fontWeight: '700',
+    fontFamily: 'Geist',
+    extraMeta: '-0.018em',
+  },
+  {
+    id: 'type-h3',
+    tag: 'h3',
+    text: 'Heading 3',
+    fontSize: '28px',
+    fontWeight: '600',
+    fontFamily: 'Geist',
+  },
+  {
+    id: 'type-h4',
+    tag: 'h4',
+    text: 'Heading 4',
+    fontSize: '22px',
+    fontWeight: '600',
+    fontFamily: 'Geist',
+  },
+  {
+    id: 'type-h5',
+    tag: 'h5',
+    text: 'Heading 5',
+    fontSize: '18px',
+    fontWeight: '600',
+    fontFamily: 'Geist',
+  },
+  {
+    id: 'type-h6',
+    tag: 'h6',
+    text: 'Heading 6',
+    fontSize: '14px',
+    fontWeight: '600',
+    fontFamily: 'Geist',
+  },
   {
     id: 'type-body',
     tag: 'p',
-    text: 'Body paragraph — Geist Sans con ss01 + cv11. The quick brown fox jumps over the lazy dog.',
+    text: 'Body paragraph. Geist Sans con ss01 + cv11. The quick brown fox jumps over the lazy dog.',
     fontSize: '16px',
     fontWeight: '400',
+    fontFamily: 'Geist',
+    extraMeta: 'ss01 + cv11',
   },
   {
     id: 'type-mono',
     tag: 'code',
-    text: 'const tokens = ["bg", "fg", "accent"]; // JetBrains Mono Variable',
+    text: 'const tokens = ["bg", "fg", "accent"];',
     fontSize: '13px',
     fontWeight: '400',
+    fontFamily: 'JetBrains Mono Variable',
   },
 ];
 
-function labelClassList(tag: SpecimenTag): readonly (string | undefined)[] {
-  return [styles.label, LABEL_CLASS_BY_TAG[tag]];
+function specimenClass(tag: SpecimenTag): readonly (string | undefined)[] {
+  return [styles.specimen, SPECIMEN_CLASS_BY_TAG[tag]];
 }
 ---
 
 <div class={styles.typeScale}>
   {
     SPECIMENS.map((specimen) => (
-      <div class={styles.specimen}>
+      <div class={styles.row} data-type-spec={specimen.id}>
         <div class={styles.specimenContent}>
           {specimen.tag === 'h1' && (
-            <h1 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h1 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h1>
           )}
           {specimen.tag === 'h2' && (
-            <h2 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h2 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h2>
           )}
           {specimen.tag === 'h3' && (
-            <h3 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h3 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h3>
           )}
           {specimen.tag === 'h4' && (
-            <h4 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h4 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h4>
           )}
           {specimen.tag === 'h5' && (
-            <h5 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h5 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h5>
           )}
           {specimen.tag === 'h6' && (
-            <h6 class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <h6 class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </h6>
           )}
           {specimen.tag === 'p' && (
-            <p class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <p class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </p>
           )}
           {specimen.tag === 'code' && (
-            <code class:list={labelClassList(specimen.tag)} id={specimen.id}>
+            <code class:list={specimenClass(specimen.tag)} id={specimen.id}>
               {specimen.text}
             </code>
           )}
         </div>
-        <dl class={styles.meta} data-type-meta={specimen.id}>
-          <dt>font-size</dt>
-          <dd>{specimen.fontSize}</dd>
-          <dt>font-weight</dt>
-          <dd>{specimen.fontWeight}</dd>
-        </dl>
+        <div class={styles.meta} data-type-meta={specimen.id}>
+          <span class={styles.metaSize}>
+            <span data-meta-key="font-size">{specimen.fontSize}</span> · weight{' '}
+            <span data-meta-key="font-weight">{specimen.fontWeight}</span>
+          </span>
+          <span class={styles.metaFamily}>
+            {specimen.fontFamily}
+            {specimen.extraMeta !== undefined ? ` · ${specimen.extraMeta}` : ''}
+          </span>
+        </div>
       </div>
     ))
   }

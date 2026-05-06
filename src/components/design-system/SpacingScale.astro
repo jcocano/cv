@@ -10,12 +10,6 @@ interface SpacingEntry {
   readonly previewKey: SpacingPreviewKey;
 }
 
-const PREVIEW_CLASS_BY_KEY: Record<SpacingPreviewKey, string | undefined> = {
-  radius: styles.previewRadius,
-  'radius-lg': styles.previewRadiusLg,
-  container: styles.previewContainer,
-};
-
 const ENTRIES: ReadonlyArray<SpacingEntry> = [
   { id: 'spacing-radius', token: '--radius', value: '8px', previewKey: 'radius' },
   { id: 'spacing-radius-lg', token: '--radius-lg', value: '14px', previewKey: 'radius-lg' },
@@ -23,20 +17,24 @@ const ENTRIES: ReadonlyArray<SpacingEntry> = [
 ];
 ---
 
-<div class={styles.spacingScale}>
+<div class={styles.specGrid}>
   {
     ENTRIES.map((entry) => (
-      <article class={styles.entry} data-spacing-entry={entry.id}>
-        <div>
-          <div class={styles.head}>
-            <h4 class={styles.tokenName} id={entry.id}>
-              {entry.token}
-            </h4>
-          </div>
-          <p class={styles.value}>{entry.value}</p>
+      <article class={styles.cell} data-spec-cell={entry.id}>
+        <div class={styles.label}>
+          <h4 class={styles.tokenName} id={entry.id}>
+            {entry.token}
+          </h4>
+          <span class={styles.value}>{entry.value}</span>
         </div>
-        <div class={styles.preview}>
-          <div class={PREVIEW_CLASS_BY_KEY[entry.previewKey]} aria-hidden="true" />
+        <div class={styles.stage}>
+          {entry.previewKey === 'radius' && (
+            <div class={`${styles.radiusDemo} ${styles.radiusDemoSm}`} aria-hidden="true" />
+          )}
+          {entry.previewKey === 'radius-lg' && (
+            <div class={`${styles.radiusDemo} ${styles.radiusDemoLg}`} aria-hidden="true" />
+          )}
+          {entry.previewKey === 'container' && <div class={styles.containerDemo}>1180</div>}
         </div>
       </article>
     ))

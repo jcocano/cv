@@ -1,5 +1,6 @@
 ---
 import type { Principle } from '@/lib/schemas/principles';
+import { computeCardEyebrow } from '@/lib/the-system/card-eyebrow';
 import styles from './PrinciplesList.module.css';
 
 interface Props {
@@ -7,21 +8,42 @@ interface Props {
 }
 
 const { principles } = Astro.props;
+const lastIndex = principles.length - 1;
+const lastShouldSpanTwo = principles.length % 2 === 1;
 ---
 
 <div class={styles.principlesList}>
   {
-    principles.map((principle) => (
-      <article class={styles.entry} data-principle-entry={principle.id}>
-        <h3 class={styles.title} id={principle.id}>
-          <span lang="es">{principle.title.es}</span>
-          <span lang="en">{principle.title.en}</span>
-        </h3>
-        <p class={styles.statement}>
-          <span lang="es">{principle.statement.es}</span>
-          <span lang="en">{principle.statement.en}</span>
-        </p>
-      </article>
-    ))
+    principles.map((principle, index) => {
+      const eyebrowNum = computeCardEyebrow('P', index);
+      const eyebrow = principle.eyebrow;
+      const isLast = index === lastIndex;
+      const cardSpanAttr = isLast && lastShouldSpanTwo ? '2' : undefined;
+      return (
+        <article
+          class={styles.card}
+          data-principle-entry={principle.id}
+          {...(cardSpanAttr !== undefined ? { 'data-card-span': cardSpanAttr } : {})}
+        >
+          <div class={styles.cardEyebrow}>
+            <span class={styles.cardEyebrowNum}>{eyebrowNum}</span>
+            {eyebrow !== undefined && (
+              <>
+                <span lang="es">{eyebrow.es}</span>
+                <span lang="en">{eyebrow.en}</span>
+              </>
+            )}
+          </div>
+          <h3 class={styles.title} id={principle.id}>
+            <span lang="es">{principle.title.es}</span>
+            <span lang="en">{principle.title.en}</span>
+          </h3>
+          <p class={styles.statement}>
+            <span lang="es">{principle.statement.es}</span>
+            <span lang="en">{principle.statement.en}</span>
+          </p>
+        </article>
+      );
+    })
   }
 </div>

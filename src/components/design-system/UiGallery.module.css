@@ -4,103 +4,158 @@
   gap: 24px;
 }
 
-/*
- * Sub-group 1 — direct primitives (Eyebrow, Lang, SectionHead, Tag).
- * Auto-fit grid for the 3 inline primitives; the SectionHead entry opts
- * into `data-ui-span="full"` to take the full row of the grid (it is a
- * display-size component and looks broken when squeezed in a cell).
- */
-.subgroup {
+.spec-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  grid-auto-rows: min-content;
-  align-items: start;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
 }
 
-.subgroup > [data-ui-span='full'] {
-  grid-column: 1 / -1;
-}
-
-/*
- * Sub-group 2 — icons. A denser grid of compact, uniform cells so all 12
- * icons share the same visual rhythm and the row never inherits the
- * height of a tall sibling.
- */
-.subgroup-icons {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  grid-auto-rows: min-content;
-  align-items: start;
-  gap: 12px;
-}
-
-.entry {
+.spec-cell {
+  background: var(--bg);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius);
-  background: var(--bg-elev);
+  gap: 16px;
+  min-height: 160px;
 }
 
-.head {
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.06em;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.stage {
+  flex: 1;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-mute);
+}
+
+.stage-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.lang-demo-es {
+  color: var(--fg);
+}
+
+.lang-demo-en {
+  color: var(--fg-mute);
+  font-size: 13px;
+}
+
+.prim-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
-.name {
+.prim-eyebrow-num {
+  color: var(--accent);
+}
+
+.prim-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--fg-dim);
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  background: var(--bg-elev);
 }
 
-.demo {
+.prim-section-head {
+  border: 1px solid var(--line-soft);
+  padding: 16px;
+  background: var(--bg);
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   gap: 8px;
-  flex-wrap: wrap;
-  padding: 16px;
-  border: 1px dashed var(--line-soft);
-  border-radius: var(--radius);
-  background: var(--bg);
-  color: var(--fg-dim);
-  min-height: 64px;
 }
 
-.demo-wide {
-  padding: 16px;
-  border: 1px dashed var(--line-soft);
-  border-radius: var(--radius);
-  background: var(--bg);
-  color: var(--fg-dim);
+.prim-section-head-ey {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  gap: 6px;
 }
 
-.demo-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  border: 1px dashed var(--line-soft);
-  border-radius: var(--radius);
-  background: var(--bg);
-  color: var(--fg-dim);
-  min-height: 56px;
+.prim-section-head-ey-num {
+  color: var(--accent);
 }
 
-.icon-demo {
-  width: 28px;
-  height: 28px;
+.prim-section-head-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--fg);
 }
 
-.icon-demo svg {
-  width: 100%;
-  height: 100%;
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.icon-cell {
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-svg {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-dim);
+}
+
+.icon-svg :global(svg) {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-mute);
+  font-weight: 500;
+  letter-spacing: 0.04em;
 }

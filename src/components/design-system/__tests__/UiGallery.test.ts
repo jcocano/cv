@@ -55,11 +55,12 @@ describe('UiGallery (render-test)', () => {
     expect(primitivesHtml).toMatch(/data-ui-entry="ui-tag"/);
   });
 
-  it('places the SectionHead entry as a full-width row in the primitives sub-group (data-ui-span="full")', async () => {
+  it('keeps SectionHead inside the primitives sub-group as a normal cell (no data-ui-span="full" in the refactored layout)', async () => {
+    // The refactored .spec-grid (auto-fill minmax 180px) sizes each primitive
+    // cell uniformly, so SectionHead does not need a full-width override.
     const html = await renderUiGallery();
-    expect(html).toMatch(
-      /data-ui-entry="ui-section-head"[^>]*data-ui-span="full"|data-ui-span="full"[^>]*data-ui-entry="ui-section-head"/,
-    );
+    expect(html).toMatch(/data-ui-entry="ui-section-head"/);
+    expect(html).not.toMatch(/data-ui-span="full"/);
   });
 
   it('places all 12 icon entries inside data-ui-group="icons"', async () => {
@@ -100,11 +101,11 @@ describe('UiGallery (render-test)', () => {
     expect(html).toMatch(/data-ui-entry="ui-tag"[\s\S]*Tag preview/);
   });
 
-  it('renders the SectionHead demo with a bilingual h2 (Sample title / Título de muestra)', async () => {
+  it('renders a SectionHead-style demo with a bilingual heading (Sample title / Título de muestra)', async () => {
     const html = await renderUiGallery();
     expect(html).toMatch(/data-ui-entry="ui-section-head"/);
-    expect(html).toMatch(/<h2[\s\S]*Título de muestra/);
-    expect(html).toMatch(/<h2[\s\S]*Sample title/);
+    expect(html).toMatch(/Título de muestra/);
+    expect(html).toMatch(/Sample title/);
   });
 
   it('renders an Eyebrow demo with bilingual labels', async () => {
@@ -122,5 +123,15 @@ describe('UiGallery (render-test)', () => {
       throw new Error('expected svgs to render');
     }
     expect(svgMatches.length).toBeGreaterThanOrEqual(12);
+  });
+
+  it('marks the primitives sub-group with data-grid-shape="spec" and the icons sub-group with data-grid-shape="icons"', async () => {
+    const html = await renderUiGallery();
+    expect(html).toMatch(
+      /data-ui-group="primitives"[^>]*data-grid-shape="spec"|data-grid-shape="spec"[^>]*data-ui-group="primitives"/,
+    );
+    expect(html).toMatch(
+      /data-ui-group="icons"[^>]*data-grid-shape="icons"|data-grid-shape="icons"[^>]*data-ui-group="icons"/,
+    );
   });
 });

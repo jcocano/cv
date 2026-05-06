@@ -1,0 +1,105 @@
+.tokens-table {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.active-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--fg-mute);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.active-label {
+  color: var(--fg-dim);
+}
+
+.active-note {
+  color: var(--fg-mute);
+}
+
+.active-note kbd {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  color: var(--fg-dim);
+}
+
+.table {
+  width: 100%;
+  border: 1px solid var(--line-soft);
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.table th:last-child,
+.table td:last-child {
+  border-right: none;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table thead th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  background: var(--bg-elev);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.token-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg);
+  width: 140px;
+}
+
+.swatch-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.swatch-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+}
+
+@media (max-width: 860px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+}

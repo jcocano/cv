@@ -11,10 +11,6 @@ import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
 import RepoIcon from '@/components/ui/icons/RepoIcon.astro';
 import SparkleIcon from '@/components/ui/icons/SparkleIcon.astro';
 import SunIcon from '@/components/ui/icons/SunIcon.astro';
-import Eyebrow from '@/components/ui/Eyebrow.astro';
-import Lang from '@/components/ui/Lang.astro';
-import SectionHead from '@/components/ui/SectionHead.astro';
-import Tag from '@/components/ui/Tag.astro';
 import styles from './UiGallery.module.css';
 
 interface IconEntry {
@@ -39,91 +35,80 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
 ---
 
 <div class={styles.gallery}>
-  {
-    /*
-    Sub-group 1: direct primitives (Eyebrow, Lang, SectionHead, Tag).
-    SectionHead is display-size and would stretch every cell, so it is
-    promoted to a full-width row via `data-ui-span="full"`. The other
-    three primitives sit in a regular auto-fit row above it.
-  */
-  }
-  <div class={styles.subgroup} data-ui-group="primitives">
-    <article class={styles.entry} data-ui-entry="ui-eyebrow">
-      <div class={styles.head}>
+  <div class={styles.specGrid} data-ui-group="primitives" data-grid-shape="spec">
+    <article class={styles.specCell} data-ui-entry="ui-eyebrow">
+      <div class={styles.label}>
         <h4 class={styles.name} id="ui-eyebrow">Eyebrow</h4>
       </div>
-      <div class={styles.demo}>
-        <Eyebrow num="01" labelEs="muestra" labelEn="preview" />
+      <div class={styles.stage}>
+        <span class={styles.primEyebrow}>
+          <span class={styles.primEyebrowNum}>01</span>
+          <span lang="es">muestra</span>
+          <span lang="en">preview</span>
+        </span>
       </div>
     </article>
 
-    <article class={styles.entry} data-ui-entry="ui-lang">
-      <div class={styles.head}>
+    <article class={styles.specCell} data-ui-entry="ui-lang">
+      <div class={styles.label}>
         <h4 class={styles.name} id="ui-lang">Lang</h4>
       </div>
-      <div class={styles.demo}>
-        <Lang lang="es">muestra bilingüe</Lang>
-        <Lang lang="en">bilingual preview</Lang>
+      <div class={styles.stageColumn}>
+        <span lang="es" class={styles.langDemoEs}>muestra bilingüe</span>
+        <span lang="en" class={styles.langDemoEn}>bilingual preview</span>
       </div>
     </article>
 
-    <article class={styles.entry} data-ui-entry="ui-tag">
-      <div class={styles.head}>
+    <article class={styles.specCell} data-ui-entry="ui-tag">
+      <div class={styles.label}>
         <h4 class={styles.name} id="ui-tag">Tag</h4>
       </div>
-      <div class={styles.demo}>
-        <Tag label="Tag preview" />
+      <div class={styles.stage}>
+        <span class={styles.primTag}>Tag preview</span>
       </div>
     </article>
 
-    <article class={styles.entry} data-ui-entry="ui-section-head" data-ui-span="full">
-      <div class={styles.head}>
+    <article class={styles.specCell} data-ui-entry="ui-section-head">
+      <div class={styles.label}>
         <h4 class={styles.name} id="ui-section-head">SectionHead</h4>
       </div>
-      <div class={styles.demoWide}>
-        <SectionHead
-          num="01"
-          labelEs="muestra"
-          labelEn="preview"
-          titleEs="Título de muestra"
-          titleEn="Sample title"
-        />
+      <div class={styles.stage}>
+        <div class={styles.primSectionHead}>
+          <div class={styles.primSectionHeadEy}>
+            <span class={styles.primSectionHeadEyNum}>01</span>
+            <span lang="es">muestra</span>
+            <span lang="en">preview</span>
+          </div>
+          <div class={styles.primSectionHeadTitle}>
+            <span lang="es">Título de muestra</span>
+            <span lang="en">Sample title</span>
+          </div>
+        </div>
       </div>
     </article>
   </div>
 
-  {
-    /*
-    Sub-group 2: icons. A dense grid of compact, uniform cells so the 12
-    icons stay on the same visual rhythm without inheriting the height of
-    SectionHead.
-  */
-  }
-  <div class={styles.subgroupIcons} data-ui-group="icons">
+  <div class={styles.iconsGrid} data-ui-group="icons" data-grid-shape="icons">
     {
       ICON_ENTRIES.map((iconEntry) => (
-        <article class={styles.entry} data-ui-entry={iconEntry.id}>
-          <div class={styles.head}>
-            <h4 class={styles.name} id={iconEntry.id}>
-              {iconEntry.name}
-            </h4>
+        <article class={styles.iconCell} data-ui-entry={iconEntry.id}>
+          <div class={styles.iconSvg}>
+            {iconEntry.id === 'ui-agents-mcp-icon' && <AgentsMcpIcon />}
+            {iconEntry.id === 'ui-assisted-dev-icon' && <AssistedDevIcon />}
+            {iconEntry.id === 'ui-document-icon' && <DocumentIcon />}
+            {iconEntry.id === 'ui-email-icon' && <EmailIcon />}
+            {iconEntry.id === 'ui-github-icon' && <GithubIcon />}
+            {iconEntry.id === 'ui-linkedin-icon' && <LinkedinIcon />}
+            {iconEntry.id === 'ui-llm-backends-icon' && <LlmBackendsIcon />}
+            {iconEntry.id === 'ui-moon-icon' && <MoonIcon />}
+            {iconEntry.id === 'ui-paper-icon' && <PaperIcon />}
+            {iconEntry.id === 'ui-repo-icon' && <RepoIcon />}
+            {iconEntry.id === 'ui-sparkle-icon' && <SparkleIcon />}
+            {iconEntry.id === 'ui-sun-icon' && <SunIcon />}
           </div>
-          <div class={styles.demoIcon}>
-            <span class={styles.iconDemo}>
-              {iconEntry.id === 'ui-agents-mcp-icon' && <AgentsMcpIcon />}
-              {iconEntry.id === 'ui-assisted-dev-icon' && <AssistedDevIcon />}
-              {iconEntry.id === 'ui-document-icon' && <DocumentIcon />}
-              {iconEntry.id === 'ui-email-icon' && <EmailIcon />}
-              {iconEntry.id === 'ui-github-icon' && <GithubIcon />}
-              {iconEntry.id === 'ui-linkedin-icon' && <LinkedinIcon />}
-              {iconEntry.id === 'ui-llm-backends-icon' && <LlmBackendsIcon />}
-              {iconEntry.id === 'ui-moon-icon' && <MoonIcon />}
-              {iconEntry.id === 'ui-paper-icon' && <PaperIcon />}
-              {iconEntry.id === 'ui-repo-icon' && <RepoIcon />}
-              {iconEntry.id === 'ui-sparkle-icon' && <SparkleIcon />}
-              {iconEntry.id === 'ui-sun-icon' && <SunIcon />}
-            </span>
-          </div>
+          <h4 class={styles.iconName} id={iconEntry.id}>
+            {iconEntry.name}
+          </h4>
         </article>
       ))
     }

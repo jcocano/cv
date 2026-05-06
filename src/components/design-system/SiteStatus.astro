@@ -6,13 +6,21 @@
 // after fetching `/cv/status.json`.
 //
 // DOM shape:
-//   <div role="status" aria-live="polite" aria-busy="true" data-component="site-status" data-status-state="loading">
+//   <div role="status" aria-live="polite" aria-busy="true"
+//        data-component="site-status" data-status-state="loading"
+//        data-layout="stats">                ← stats grid layout marker
 //     <dl>                                  ← native dlitem semantics preserved
 //       <dt id="status-row-…">…</dt>        ← direct child of <dl>
 //       <dd data-status-key="…">…</dd>      ← direct child of <dl>
 //       …
 //     </dl>
 //   </div>
+//
+// Layout (feature #45 refactor): the .module.css applies a stats grid
+// (auto-fit minmax 180px) to the <dl>, treating each dt+dd pair as a
+// stat-card visually. The semantics stay intact: it is still a definition
+// list, axe-core "dlitem" still passes, and screen readers still announce
+// label/value pairs.
 //
 // Why a wrapper <div> for the live region instead of role="status" on the
 // <dl> itself: axe-core's "dlitem" rule treats a <dl> with an overridden
@@ -100,6 +108,7 @@ const loadingEs = esStrings['theSystem.statusLoading'];
   aria-busy="true"
   data-component="site-status"
   data-status-state="loading"
+  data-layout="stats"
 >
   <dl class={styles.metrics}>
     {

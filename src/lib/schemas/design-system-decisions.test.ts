@@ -213,4 +213,55 @@ describe('designSystemDecisionsSchema', () => {
     );
     expect(enIssues).toHaveLength(1);
   });
+
+  it('parses an entry that includes the optional eyebrow field (positive)', () => {
+    const withEyebrow = {
+      decisions: [
+        {
+          ...validDecisions.decisions[0],
+          eyebrow: { es: 'tokens', en: 'tokens' },
+        },
+      ],
+    };
+    const parsed = designSystemDecisionsSchema.parse(withEyebrow);
+    const entry = parsed.decisions[0];
+    if (entry === undefined) {
+      throw new Error('expected one decision');
+    }
+    expect(entry.eyebrow?.es).toBe('tokens');
+    expect(entry.eyebrow?.en).toBe('tokens');
+  });
+
+  it('parses an entry without eyebrow (optional, backward compatible)', () => {
+    const parsed = designSystemDecisionsSchema.parse(validDecisions);
+    const entry = parsed.decisions[0];
+    if (entry === undefined) {
+      throw new Error('expected one decision');
+    }
+    expect(entry.eyebrow).toBeUndefined();
+  });
+
+  it('fails when eyebrow has only en (parity required when present)', () => {
+    const broken = {
+      decisions: [
+        {
+          ...validDecisions.decisions[0],
+          eyebrow: { en: 'only english' },
+        },
+      ],
+    };
+    const result = designSystemDecisionsSchema.safeParse(broken);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const esIssues = result.error.issues.filter(
+      (issue) =>
+        issue.path[0] === 'decisions' &&
+        issue.path[1] === 0 &&
+        issue.path[2] === 'eyebrow' &&
+        issue.path[3] === 'es',
+    );
+    expect(esIssues).toHaveLength(1);
+  });
 });

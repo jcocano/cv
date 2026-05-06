@@ -89,12 +89,12 @@ function paintErrorState(root: HTMLElement): void {
   setStateError(root);
 }
 
-function formatValueForKey(key: StatusKey, payload: SiteStatus): string {
+type TextStatusKey = Exclude<StatusKey, 'build_time'>;
+
+function formatValueForKey(key: TextStatusKey, payload: SiteStatus): string {
   switch (key) {
     case 'build_sha':
       return payload.build_sha.slice(0, SHA_TRUNCATE_LENGTH);
-    case 'build_time':
-      return payload.build_time;
     case 'schema_version':
       return payload.schema_version;
     case 'page_weight_kb':

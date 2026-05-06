@@ -18,7 +18,7 @@ type StatusKey = (typeof STATUS_KEYS)[number];
 
 const SHA_TRUNCATE_LENGTH = 7;
 
-function resolveEndpointUrl(): string {
+function appendStatusJsonToBaseUrl(): string {
   const baseUrl = import.meta.env.BASE_URL;
   return `${baseUrl}status.json`;
 }
@@ -141,7 +141,7 @@ export async function mountSiteStatus(root?: HTMLElement): Promise<void> {
     return;
   }
   try {
-    const payload = await fetchAndValidate(resolveEndpointUrl());
+    const payload = await fetchAndValidate(appendStatusJsonToBaseUrl());
     paintLoadedState(target, payload);
   } catch {
     paintErrorState(target);

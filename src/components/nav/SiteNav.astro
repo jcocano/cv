@@ -3,18 +3,18 @@ import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
 import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
 import SunIcon from '@/components/ui/icons/SunIcon.astro';
 import { isHomePath } from '@/lib/nav/is-home-path';
-import { resolveBrandHref, resolveSectionHref } from '@/lib/nav/resolve-nav-href';
+import { resolveBrandHref, resolveHomeSectionHref } from '@/lib/nav/resolve-nav-href';
 import styles from './SiteNav.module.css';
 
 const baseUrl = import.meta.env.BASE_URL;
 const cvHref = `${baseUrl}jesus_cocano_cv.pdf`;
 const isHome = isHomePath(Astro.url.pathname, baseUrl);
 const brandHref = resolveBrandHref(isHome, baseUrl);
-const aboutHref = resolveSectionHref('#about', isHome, baseUrl);
-const experienceHref = resolveSectionHref('#experience', isHome, baseUrl);
-const stackHref = resolveSectionHref('#stack', isHome, baseUrl);
-const workHref = resolveSectionHref('#work', isHome, baseUrl);
-const contactHref = resolveSectionHref('#contact', isHome, baseUrl);
+const aboutHref = resolveHomeSectionHref('#about', isHome, baseUrl);
+const experienceHref = resolveHomeSectionHref('#experience', isHome, baseUrl);
+const stackHref = resolveHomeSectionHref('#stack', isHome, baseUrl);
+const workHref = resolveHomeSectionHref('#work', isHome, baseUrl);
+const contactHref = resolveHomeSectionHref('#contact', isHome, baseUrl);
 ---
 
 <nav class={styles.nav} aria-label="Primary">

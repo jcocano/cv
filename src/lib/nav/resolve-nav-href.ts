@@ -1,4 +1,4 @@
-export function resolveSectionHref(hash: string, isHome: boolean, baseUrl: string): string {
+export function resolveHomeSectionHref(hash: string, isHome: boolean, baseUrl: string): string {
   if (isHome) {
     return hash;
   }

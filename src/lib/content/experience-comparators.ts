@@ -1,4 +1,9 @@
-import type { SortableExperience } from '@/lib/content/sort-by-date-desc';
+export interface SortableExperience {
+  company: string;
+  dateStart: string;
+  dateEnd: string | null;
+  order: number;
+}
 
 export function compareCurrentRolesFirst(a: SortableExperience, b: SortableExperience): number {
   const aIsCurrent = a.dateEnd === null;

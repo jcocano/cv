@@ -2,14 +2,10 @@ import {
   compareByDateEndDesc,
   compareByOrderAsc,
   compareCurrentRolesFirst,
+  type SortableExperience,
 } from '@/lib/content/experience-comparators';
 
-export interface SortableExperience {
-  company: string;
-  dateStart: string;
-  dateEnd: string | null;
-  order: number;
-}
+export type { SortableExperience } from '@/lib/content/experience-comparators';
 
 export function sortByDateDesc<T extends SortableExperience>(items: readonly T[]): T[] {
   return [...items].sort((a, b) => {

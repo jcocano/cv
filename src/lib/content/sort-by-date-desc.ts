@@ -1,3 +1,9 @@
+import {
+  compareByDateEndDesc,
+  compareByOrderAsc,
+  compareCurrentRolesFirst,
+} from '@/lib/content/experience-comparators';
+
 export interface SortableExperience {
   company: string;
   dateStart: string;
@@ -7,14 +13,14 @@ export interface SortableExperience {
 
 export function sortByDateDesc<T extends SortableExperience>(items: readonly T[]): T[] {
   return [...items].sort((a, b) => {
-    const aIsCurrent = a.dateEnd === null;
-    const bIsCurrent = b.dateEnd === null;
-    if (aIsCurrent !== bIsCurrent) {
-      return aIsCurrent ? -1 : 1;
+    const currentRolesFirst = compareCurrentRolesFirst(a, b);
+    if (currentRolesFirst !== 0) {
+      return currentRolesFirst;
     }
-    if (a.dateEnd !== null && b.dateEnd !== null && a.dateEnd !== b.dateEnd) {
-      return a.dateEnd < b.dateEnd ? 1 : -1;
+    const byDateEndDesc = compareByDateEndDesc(a, b);
+    if (byDateEndDesc !== 0) {
+      return byDateEndDesc;
     }
-    return a.order - b.order;
+    return compareByOrderAsc(a, b);
   });
 }

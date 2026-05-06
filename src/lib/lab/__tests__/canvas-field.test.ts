@@ -335,6 +335,11 @@ function tickUntilRespawn(rig: MountedRig, frames: number): void {
   }
 }
 
+function drainFirstFrame(rig: MountedRig): void {
+  rig.raf.tick(FRAME_DURATION_MS);
+  rig.fakeCanvas.drawCalls.length = 0;
+}
+
 describe('mountField — animated mode (prefers-reduced-motion: no-preference)', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -488,8 +493,7 @@ describe('mountField — frame cap to 60fps via delta time', () => {
 
   it('skips the simulation step when delta < FRAME_DURATION_MS but still re-schedules rAF', () => {
     const rig = mount({ prefersReducedMotion: false, initialIsIntersecting: true });
-    rig.raf.tick(FRAME_DURATION_MS);
-    rig.fakeCanvas.drawCalls.length = 0;
+    drainFirstFrame(rig);
     rig.raf.tick(FRAME_DURATION_MS - 1);
     expect(rig.raf.pendingHandles()).toHaveLength(1);
     expect(rig.fakeCanvas.drawCalls).toHaveLength(0);
@@ -497,8 +501,7 @@ describe('mountField — frame cap to 60fps via delta time', () => {
 
   it('runs the simulation step when delta >= FRAME_DURATION_MS', () => {
     const rig = mount({ prefersReducedMotion: false, initialIsIntersecting: true });
-    rig.raf.tick(FRAME_DURATION_MS);
-    rig.fakeCanvas.drawCalls.length = 0;
+    drainFirstFrame(rig);
     rig.raf.tick(FRAME_DURATION_MS);
     expect(rig.fakeCanvas.drawCalls.length).toBeGreaterThan(0);
   });

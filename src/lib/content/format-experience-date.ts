@@ -1,3 +1,4 @@
+import { normaliseNbsp } from '@/lib/content/normalise-nbsp';
 import type { I18nString } from '@/lib/schemas/i18n-string';
 import type { LangCode } from '@/lib/theme/toggle-lang';
 
@@ -46,7 +47,7 @@ function formatMonth(date: Date, lang: LangCode): string {
     year: 'numeric',
     timeZone: 'UTC',
   });
-  const raw = formatter.format(date).replace(/\u00a0/g, ' ');
+  const raw = normaliseNbsp(formatter.format(date));
   return capitaliseMonth(raw);
 }
 

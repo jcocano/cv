@@ -148,9 +148,15 @@ export async function mountSiteStatus(root?: HTMLElement): Promise<void> {
   }
 }
 
-if (typeof document !== 'undefined') {
-  const existing = document.querySelector<HTMLElement>(ROOT_SELECTOR);
-  if (existing !== null) {
-    void mountSiteStatus(existing);
+function selfBootstrapIfSkeletonExists(): void {
+  if (typeof document === 'undefined') {
+    return;
   }
+  const existing = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+  if (existing === null) {
+    return;
+  }
+  void mountSiteStatus(existing);
 }
+
+selfBootstrapIfSkeletonExists();

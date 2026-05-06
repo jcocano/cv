@@ -49,7 +49,7 @@ npm run build    # static site to ./dist
 npm test         # Vitest: unit + render tests
 ```
 
-Visual baselines (Playwright) are regenerated inside Docker. See [`docs/verification.md`](docs/verification.md) for the canonical command.
+Visual baselines (Playwright) are regenerated inside Docker.
 
 ## Stack
 

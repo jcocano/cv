@@ -3,7 +3,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
-import { getPrevNext } from '@/lib/content/get-prev-next';
+import { getCircularPrevNextByOrder } from '@/lib/content/get-prev-next';
 import type { Project } from '@/lib/schemas/projects';
 
 export async function getStaticPaths() {
@@ -23,7 +23,7 @@ const baseUrl = import.meta.env.BASE_URL;
 
 const allEntries: CollectionEntry<'projects'>[] = await getCollection('projects');
 const allProjects: Project[] = allEntries.map((item) => item.data);
-const { prev, next } = getPrevNext(entry.data, allProjects);
+const { prev, next } = getCircularPrevNextByOrder(entry.data, allProjects);
 
 const { Content } = await render(entry);
 

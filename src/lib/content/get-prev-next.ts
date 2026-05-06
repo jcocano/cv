@@ -5,7 +5,7 @@ export interface PrevNext {
   next: Project | null;
 }
 
-export function getPrevNext(current: Project, all: readonly Project[]): PrevNext {
+export function getCircularPrevNextByOrder(current: Project, all: readonly Project[]): PrevNext {
   const ordered: Project[] = [...all].sort((a, b) => {
     const aOrder = a.order ?? Number.MAX_SAFE_INTEGER;
     const bOrder = b.order ?? Number.MAX_SAFE_INTEGER;

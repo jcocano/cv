@@ -8,14 +8,8 @@ interface IconWrapper {
   readonly element: HTMLSpanElement;
 }
 
-function setupDocument(htmlTheme: ThemeName): {
-  readonly icons: ReadonlyArray<IconWrapper>;
-} {
-  document.head.innerHTML = '';
-  document.body.innerHTML = '';
-  document.documentElement.removeAttribute('data-theme');
-
-  const style = document.createElement('style');
+function mirrorSiteNavThemeIconRules(target: Document): void {
+  const style = target.createElement('style');
   style.textContent = `
     .themeIcon { display: inline-flex; align-items: center; justify-content: center; }
     html[data-theme='dark'] .themeIcon[data-theme-icon='light'],
@@ -27,7 +21,17 @@ function setupDocument(htmlTheme: ThemeName): {
       display: none;
     }
   `;
-  document.head.appendChild(style);
+  target.head.appendChild(style);
+}
+
+function setupDocument(htmlTheme: ThemeName): {
+  readonly icons: ReadonlyArray<IconWrapper>;
+} {
+  document.head.innerHTML = '';
+  document.body.innerHTML = '';
+  document.documentElement.removeAttribute('data-theme');
+
+  mirrorSiteNavThemeIconRules(document);
   document.documentElement.setAttribute('data-theme', htmlTheme);
 
   const themes: ReadonlyArray<ThemeName> = ['dark', 'light', 'paper'];

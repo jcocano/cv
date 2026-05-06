@@ -329,6 +329,12 @@ function mount(opts: {
   return { deps, handle, raf, setNow, pointerListeners, intersection, fakeCanvas, colors };
 }
 
+function tickUntilRespawn(rig: MountedRig, frames: number): void {
+  for (let i = 0; i < frames; i += 1) {
+    rig.raf.tick(FRAME_DURATION_MS);
+  }
+}
+
 describe('mountField — animated mode (prefers-reduced-motion: no-preference)', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -620,9 +626,7 @@ describe('mountField — random reset on canvas exit (paridad con handoff)', () 
       },
     });
     rig.fakeCanvas.drawCalls.length = 0;
-    for (let i = 0; i < 4; i += 1) {
-      rig.raf.tick(FRAME_DURATION_MS);
-    }
+    tickUntilRespawn(rig, 4);
     const lineTos = rig.fakeCanvas.drawCalls.filter((c) => c.op === 'lineTo');
     expect(lineTos.length).toBeGreaterThan(0);
     for (const call of lineTos) {

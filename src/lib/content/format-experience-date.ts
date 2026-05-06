@@ -1,3 +1,4 @@
+import { normaliseNbsp } from '@/lib/content/normalise-nbsp';
 import type { I18nString } from '@/lib/schemas/i18n-string';
 import type { LangCode } from '@/lib/theme/toggle-lang';
 
@@ -20,7 +21,7 @@ const PRESENT_BY_LANG: Record<LangCode, string> = {
   en: 'Present',
 };
 
-function capitaliseMonth(value: string): string {
+function capitaliseFirstChar(value: string): string {
   if (value.length === 0) {
     return value;
   }
@@ -46,8 +47,8 @@ function formatMonth(date: Date, lang: LangCode): string {
     year: 'numeric',
     timeZone: 'UTC',
   });
-  const raw = formatter.format(date).replace(/\u00a0/g, ' ');
-  return capitaliseMonth(raw);
+  const raw = normaliseNbsp(formatter.format(date));
+  return capitaliseFirstChar(raw);
 }
 
 export function formatExperienceDate(item: FormattableExperience, lang: LangCode): string {

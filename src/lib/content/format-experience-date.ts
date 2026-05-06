@@ -21,7 +21,7 @@ const PRESENT_BY_LANG: Record<LangCode, string> = {
   en: 'Present',
 };
 
-function capitaliseMonth(value: string): string {
+function capitaliseFirstChar(value: string): string {
   if (value.length === 0) {
     return value;
   }
@@ -48,7 +48,7 @@ function formatMonth(date: Date, lang: LangCode): string {
     timeZone: 'UTC',
   });
   const raw = normaliseNbsp(formatter.format(date));
-  return capitaliseMonth(raw);
+  return capitaliseFirstChar(raw);
 }
 
 export function formatExperienceDate(item: FormattableExperience, lang: LangCode): string {

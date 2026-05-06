@@ -593,7 +593,21 @@ describe('mountField — render: line trails (paridad con handoff)', () => {
 
 describe('mountField — random reset on canvas exit (paridad con handoff)', () => {
   it('respawns a particle at a random in-bounds position when it leaves the canvas', () => {
-    const sequence = [0.999, 0.5, 0.1, 0.1, 0.5, 0.5, 0.5, 0.5];
+    const INITIAL_SPAWN_X_FRACTION = 0.999;
+    const INITIAL_SPAWN_Y_FRACTION = 0.5;
+    const RESPAWN_X_FRACTION = 0.1;
+    const RESPAWN_Y_FRACTION = 0.1;
+    const NEUTRAL_FRACTION = 0.5;
+    const sequence = [
+      INITIAL_SPAWN_X_FRACTION,
+      INITIAL_SPAWN_Y_FRACTION,
+      RESPAWN_X_FRACTION,
+      RESPAWN_Y_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+      NEUTRAL_FRACTION,
+    ];
     let cursor = 0;
     const rig = mount({
       prefersReducedMotion: false,
@@ -602,7 +616,7 @@ describe('mountField — random reset on canvas exit (paridad con handoff)', () 
       random: (): number => {
         const value = sequence[cursor % sequence.length];
         cursor += 1;
-        return value ?? 0.5;
+        return value ?? NEUTRAL_FRACTION;
       },
     });
     rig.fakeCanvas.drawCalls.length = 0;

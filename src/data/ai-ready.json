@@ -4,8 +4,8 @@
     "en": "AI-native\nby default."
   },
   "lede": {
-    "es": "Aplicando IA en mi flujo diario y construyendo sistemas backend pensados para integrarse con LLMs, agentes y pipelines de datos modernos.",
-    "en": "Using AI in my daily workflow and architecting backend systems designed to integrate with LLMs, agents, and modern data pipelines."
+    "es": "Dos años usando IA todos los días para diseñar y operar sistemas, y shippeando backends pensados para hospedarla en producción, no como add-on sino como capa de primera clase.",
+    "en": "Two years using AI every day to design and operate systems, and shipping backends made to host it in production, not as an add-on but as a first-class layer."
   },
   "cards": [
     {
@@ -15,22 +15,34 @@
         "en": "AI-assisted dev"
       },
       "body": {
-        "es": "Claude Code, Cursor y Copilot integrados en mi loop diario — desde diseño de APIs hasta refactors a escala. Productividad multiplicada sin sacrificar criterio técnico.",
-        "en": "Claude Code, Cursor, and Copilot integrated into my daily loop — from API design to large-scale refactors. Productivity multiplied without compromising technical judgment."
+        "es": "Claude Code, Cursor, OpenCode y Codex CLI en mi loop diario: diseño de APIs, refactors a escala, exploración de codebases ajenas, debug de incidentes. La IA acelera el qué; el criterio decide el cómo, y dónde no usarla.",
+        "en": "Claude Code, Cursor, OpenCode, and Codex CLI in my daily loop: API design, large-scale refactors, exploring unfamiliar codebases, incident debugging. AI accelerates the what; judgment decides the how, and where not to use it."
       },
-      "tags": ["Claude Code", "Cursor", "Copilot"]
+      "tags": ["Claude Code", "Cursor", "OpenCode", "Codex CLI"]
     },
     {
-      "iconKey": "llmBackends",
+      "iconKey": "ragCitation",
       "title": {
-        "es": "Backends para LLMs",
-        "en": "LLM backends"
+        "es": "RAG con citación estricta",
+        "en": "RAG with strict citation"
       },
       "body": {
-        "es": "Diseño de APIs y servicios pensados para LLMs: streaming, function calling, RAG con vector stores, rate limiting, observabilidad de tokens y costos.",
-        "en": "API and service design built for LLMs: streaming, function calling, RAG with vector stores, rate limiting, token cost observability."
+        "es": "RAG real, no demo: recuperación híbrida sobre datos canónicos en Postgres y prosa indexada en Qdrant, bajo disciplina de citación estricta. Cada respuesta cita su fuente: row, SQL, o vector hit. Streaming y function calling sobre stores reales.",
+        "en": "Real RAG, not demo RAG: hybrid retrieval over canonical data in Postgres and indexed prose in Qdrant, under strict citation discipline. Every answer cites its source: row, SQL, or vector hit. Streaming and function calling over real stores."
       },
-      "tags": ["RAG", "Vector DBs", "Streaming", "Function calling"]
+      "tags": ["RAG", "Hybrid retrieval", "Vector DBs (Qdrant)", "Citation discipline"]
+    },
+    {
+      "iconKey": "multiProvider",
+      "title": {
+        "es": "Multi-provider y modelos locales",
+        "en": "Multi-provider & local models"
+      },
+      "body": {
+        "es": "Multi-provider en producción real (Anthropic, OpenAI, Google, OpenRouter), con secrets cifrados en OS keychain por proveedor. Modelos locales vía Ollama y LM Studio cuando privacidad o costo lo piden. No me caso con el modelo que está de moda; uso el que corresponde a la tarea.",
+        "en": "Multi-provider in real production (Anthropic, OpenAI, Google, OpenRouter), with secrets encrypted in OS keychain per provider. Local models via Ollama and LM Studio when privacy or cost demand it. I don't ship the trendy model; I ship the one that fits the task."
+      },
+      "tags": ["Multi-provider", "OpenRouter", "Local LLMs", "Ollama / LM Studio"]
     },
     {
       "iconKey": "agentsMcp",
@@ -39,14 +51,14 @@
         "en": "Agents & MCP"
       },
       "body": {
-        "es": "Construcción de agentes con tools, memory y orquestación. Servidores MCP para exponer infraestructura y datos a modelos de forma segura y auditable.",
-        "en": "Building agents with tools, memory, and orchestration. MCP servers exposing infrastructure and data to models in a secure, auditable way."
+        "es": "Servidores MCP desplegados a producción, no a demos: 28 tools tipadas, esquemas Zod estrictos, autenticación local. El agente solo puede hacer lo que el contrato permite, no lo que se le ocurra. Agentes con tool use, memoria persistente y orquestación bajo restricciones de seguridad reales.",
+        "en": "MCP servers deployed to production, not to demos: 28 typed tools, strict Zod schemas, local authentication. The agent can only do what the contract allows, not what it makes up. Agents with tool use, persistent memory, and orchestration under real security constraints."
       },
-      "tags": ["MCP", "Agents", "Tool use", "Orchestration"]
+      "tags": ["MCP", "Agents", "Tool use", "Zod-typed contracts"]
     }
   ],
   "myTake": {
-    "es": "Mi enfoque: la IA es una capa más del stack — se diseña, se observa y se escala como cualquier otro sistema en producción.",
-    "en": "My take: AI is just another layer of the stack — designed, observed, and scaled like any other production system."
+    "es": "Para mí la IA es infraestructura, no magia: se diseña, se observa y se escala como cualquier otro sistema en producción.",
+    "en": "For me, AI is infrastructure, not magic: designed, observed, and scaled like any other production system."
   }
 }

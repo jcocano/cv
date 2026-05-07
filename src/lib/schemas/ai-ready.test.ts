@@ -9,61 +9,71 @@ const validAiReady = {
     en: 'AI-native\nby default.',
   },
   lede: {
-    es: 'Aplicando IA en mi flujo diario y construyendo sistemas backend pensados para integrarse con LLMs, agentes y pipelines de datos modernos.',
-    en: 'Using AI in my daily workflow and architecting backend systems designed to integrate with LLMs, agents, and modern data pipelines.',
+    es: 'Dos años aplicando IA en el flujo diario y construyendo backends pensados para hospedarla en producción.',
+    en: 'Two years applying AI in the daily flow and building backends made to host it in production.',
   },
   cards: [
     {
       iconKey: 'assistedDev',
       title: { es: 'Desarrollo asistido', en: 'AI-assisted dev' },
       body: {
-        es: 'Claude Code, Cursor y Copilot integrados en mi loop diario.',
-        en: 'Claude Code, Cursor, and Copilot integrated into my daily loop.',
+        es: 'Claude Code, Cursor, OpenCode y Codex CLI integrados en mi loop diario.',
+        en: 'Claude Code, Cursor, OpenCode, and Codex CLI integrated into my daily loop.',
       },
-      tags: ['Claude Code', 'Cursor', 'Copilot'],
+      tags: ['Claude Code', 'Cursor', 'OpenCode', 'Codex CLI'],
     },
     {
-      iconKey: 'llmBackends',
-      title: { es: 'Backends para LLMs', en: 'LLM backends' },
+      iconKey: 'ragCitation',
+      title: { es: 'RAG con citación estricta', en: 'RAG with strict citation' },
       body: {
-        es: 'Diseño de APIs y servicios pensados para LLMs.',
-        en: 'API and service design built for LLMs.',
+        es: 'Recuperación híbrida sobre datos canónicos con disciplina de citación estricta.',
+        en: 'Hybrid retrieval over canonical data with strict citation discipline.',
       },
-      tags: ['RAG', 'Vector DBs', 'Streaming', 'Function calling'],
+      tags: ['RAG', 'Hybrid retrieval', 'Vector DBs (Qdrant)', 'Citation discipline'],
+    },
+    {
+      iconKey: 'multiProvider',
+      title: { es: 'Multi-provider y modelos locales', en: 'Multi-provider & local models' },
+      body: {
+        es: 'Multi-provider en producción con secrets cifrados y modelos locales para privacidad o costo.',
+        en: 'Multi-provider in production with encrypted secrets and local models for privacy or cost.',
+      },
+      tags: ['Multi-provider', 'OpenRouter', 'Local LLMs', 'Ollama / LM Studio'],
     },
     {
       iconKey: 'agentsMcp',
       title: { es: 'Agentes y MCP', en: 'Agents & MCP' },
       body: {
-        es: 'Construcción de agentes con tools, memory y orquestación.',
-        en: 'Building agents with tools, memory, and orchestration.',
+        es: 'Servidores MCP desplegados a producción con esquemas Zod estrictos.',
+        en: 'MCP servers deployed to production with strict Zod schemas.',
       },
-      tags: ['MCP', 'Agents', 'Tool use', 'Orchestration'],
+      tags: ['MCP', 'Agents', 'Tool use', 'Zod-typed contracts'],
     },
   ],
   myTake: {
-    es: 'Mi enfoque: la IA es una capa más del stack — se diseña, se observa y se escala como cualquier otro sistema en producción.',
-    en: 'My take: AI is just another layer of the stack — designed, observed, and scaled like any other production system.',
+    es: 'Para mí la IA es infraestructura, no magia: se diseña, se observa y se escala como cualquier otro sistema en producción.',
+    en: 'For me, AI is infrastructure, not magic: designed, observed, and scaled like any other production system.',
   },
 } as const;
 
 describe('aiReadySchema', () => {
-  it('parses a fully populated bilingual ai-ready singleton with three cards', () => {
+  it('parses a fully populated bilingual ai-ready singleton with four cards', () => {
     const parsed = aiReadySchema.parse(validAiReady);
     expect(parsed.title.es.startsWith('AI-native')).toBe(true);
     expect(parsed.title.en.endsWith('by default.')).toBe(true);
-    expect(parsed.lede.es.startsWith('Aplicando IA')).toBe(true);
-    expect(parsed.cards).toHaveLength(3);
+    expect(parsed.lede.es.startsWith('Dos años')).toBe(true);
+    expect(parsed.cards).toHaveLength(4);
     expect(parsed.cards[0]?.iconKey).toBe('assistedDev');
-    expect(parsed.cards[1]?.iconKey).toBe('llmBackends');
-    expect(parsed.cards[2]?.iconKey).toBe('agentsMcp');
-    expect(parsed.cards[0]?.tags).toEqual(['Claude Code', 'Cursor', 'Copilot']);
-    expect(parsed.myTake.es.startsWith('Mi enfoque')).toBe(true);
-    expect(parsed.myTake.en.startsWith('My take')).toBe(true);
+    expect(parsed.cards[1]?.iconKey).toBe('ragCitation');
+    expect(parsed.cards[2]?.iconKey).toBe('multiProvider');
+    expect(parsed.cards[3]?.iconKey).toBe('agentsMcp');
+    expect(parsed.cards[0]?.tags).toEqual(['Claude Code', 'Cursor', 'OpenCode', 'Codex CLI']);
+    expect(parsed.myTake.es.startsWith('Para mí')).toBe(true);
+    expect(parsed.myTake.en.startsWith('For me')).toBe(true);
   });
 
-  it('fails when cards has fewer than three entries', () => {
-    const broken = { ...validAiReady, cards: validAiReady.cards.slice(0, 2) };
+  it('fails when cards has fewer than four entries', () => {
+    const broken = { ...validAiReady, cards: validAiReady.cards.slice(0, 3) };
     const result = aiReadySchema.safeParse(broken);
     expect(result.success).toBe(false);
     if (result.success) {
@@ -104,6 +114,7 @@ describe('aiReadySchema', () => {
         },
         validAiReady.cards[1],
         validAiReady.cards[2],
+        validAiReady.cards[3],
       ],
     };
     const result = aiReadySchema.safeParse(broken);
@@ -120,7 +131,12 @@ describe('aiReadySchema', () => {
   it('fails when a card has tags as an empty array', () => {
     const broken = {
       ...validAiReady,
-      cards: [{ ...validAiReady.cards[0], tags: [] }, validAiReady.cards[1], validAiReady.cards[2]],
+      cards: [
+        { ...validAiReady.cards[0], tags: [] },
+        validAiReady.cards[1],
+        validAiReady.cards[2],
+        validAiReady.cards[3],
+      ],
     };
     const result = aiReadySchema.safeParse(broken);
     expect(result.success).toBe(false);
@@ -170,6 +186,7 @@ describe('aiReadySchema', () => {
         },
         validAiReady.cards[1],
         validAiReady.cards[2],
+        validAiReady.cards[3],
       ],
     };
     const result = aiReadySchema.safeParse(broken);
@@ -189,10 +206,11 @@ describe('aiReadySchema', () => {
 
   it('parses the real src/data/ai-ready.json singleton', () => {
     const parsed = aiReadySchema.parse(aiReadyJson);
-    expect(parsed.cards).toHaveLength(3);
+    expect(parsed.cards).toHaveLength(4);
     expect(parsed.cards[0]?.tags.length).toBeGreaterThan(0);
     expect(parsed.cards[1]?.tags.length).toBeGreaterThan(0);
     expect(parsed.cards[2]?.tags.length).toBeGreaterThan(0);
+    expect(parsed.cards[3]?.tags.length).toBeGreaterThan(0);
     expect(parsed.myTake.es.length).toBeGreaterThan(0);
     expect(parsed.myTake.en.length).toBeGreaterThan(0);
   });

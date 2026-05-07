@@ -2,11 +2,20 @@
   "categories": [
     {
       "label": { "es": "Lenguajes", "en": "Languages" },
-      "tags": ["TypeScript", "JavaScript", "Java", "C#", "Solidity", "SQL"]
+      "tags": ["TypeScript", "JavaScript", "Rust", "Java", "C#", "Solidity", "SQL"]
     },
     {
       "label": { "es": "Frameworks", "en": "Frameworks" },
-      "tags": ["NestJS", "Express.js", "Next.js", "React", ".NET Core", "Apex / Visualforce"]
+      "tags": [
+        "NestJS",
+        "Express.js",
+        "Next.js",
+        "React",
+        "Astro",
+        "Electron",
+        ".NET Core",
+        "Apex / Visualforce"
+      ]
     },
     {
       "label": { "es": "Cloud & DevOps", "en": "Cloud & DevOps" },
@@ -15,7 +24,7 @@
         "GCP",
         "Kubernetes",
         "Docker",
-        "Terraform",
+        "Terraform / Terragrunt",
         "GitHub Actions"
       ]
     },
@@ -28,6 +37,7 @@
         "Apache Kafka",
         "Apache Pulsar",
         "Google Pub/Sub",
+        "RabbitMQ",
         "Salesforce"
       ]
     },
@@ -37,7 +47,18 @@
     },
     {
       "label": { "es": "AI / LLMs", "en": "AI / LLMs" },
-      "tags": ["Claude / Anthropic", "OpenAI", "MCP", "RAG", "Vector DBs", "Agents"]
+      "tags": [
+        "Claude / Anthropic",
+        "OpenAI",
+        "Google (Gemini)",
+        "OpenRouter",
+        "Ollama / LM Studio",
+        "MCP",
+        "RAG",
+        "Vector DBs (Qdrant)",
+        "Function calling",
+        "Agents"
+      ]
     },
     {
       "label": { "es": "Especialización", "en": "Specialization" },

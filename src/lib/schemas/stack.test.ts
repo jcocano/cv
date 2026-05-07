@@ -127,6 +127,7 @@ describe('stackSchema', () => {
     expect(parsed.categories[0]?.tags).toEqual([
       'TypeScript',
       'JavaScript',
+      'Rust',
       'Java',
       'C#',
       'Solidity',
@@ -139,14 +140,19 @@ describe('stackSchema', () => {
       'Apache Kafka',
       'Apache Pulsar',
       'Google Pub/Sub',
+      'RabbitMQ',
       'Salesforce',
     ]);
     expect(parsed.categories[5]?.tags).toEqual([
       'Claude / Anthropic',
       'OpenAI',
+      'Google (Gemini)',
+      'OpenRouter',
+      'Ollama / LM Studio',
       'MCP',
       'RAG',
-      'Vector DBs',
+      'Vector DBs (Qdrant)',
+      'Function calling',
       'Agents',
     ]);
   });
@@ -170,9 +176,9 @@ describe('parseStackOrThrow', () => {
     expect(stack.categories[6]?.label.en).toBe('Specialization');
   });
 
-  it('returns a result whose tags arrays match the handoff exactly (Messaging & Data has 7 tags)', () => {
+  it('returns a result whose tags arrays match the handoff exactly (Messaging & Data has 8 tags)', () => {
     const stack = parseStackOrThrow();
-    expect(stack.categories[3]?.tags).toHaveLength(7);
+    expect(stack.categories[3]?.tags).toHaveLength(8);
     expect(stack.categories[4]?.tags).toEqual([
       'Git',
       'Prometheus',

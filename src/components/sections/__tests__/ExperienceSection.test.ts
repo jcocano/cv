@@ -130,29 +130,40 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>Kubernetes<\/span>/);
     expect(html).toMatch(/<span[^>]*>AWS<\/span>/);
     expect(html).toMatch(/<span[^>]*>GCP<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Web3<\/span>/);
+    expect(html).toMatch(/<span[^>]*>MongoDB<\/span>/);
+    expect(html).toMatch(/<span[^>]*>PostgreSQL<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Shopify<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Prometheus<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Jira<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Privy<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pulsar<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pub\/Sub<\/span>/);
     expect(html).toMatch(/<span[^>]*>Terraform<\/span>/);
     expect(html).toMatch(/<span[^>]*>DevOps<\/span>/);
-    expect(html).toMatch(/<span[^>]*>MongoDB<\/span>/);
     expect(html).toMatch(/<span[^>]*>SOQL<\/span>/);
     expect(html).toMatch(/<span[^>]*>Visualforce<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
+    expect(html).toMatch(/<span[^>]*>React<\/span>/);
     expect(html).toMatch(/<span[^>]*>Ethers\.js<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
-    expect(html).toMatch(/<span[^>]*>DeFi<\/span>/);
-    expect(html).toMatch(/<span[^>]*>NFT<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Hardhat<\/span>/);
     expect(html).toMatch(/<span[^>]*>Java<\/span>/);
     expect(html).toMatch(/<span[^>]*>C#<\/span>/);
-    expect(html).toMatch(/<span[^>]*>AWS<\/span>/);
     expect(html).toMatch(/<span[^>]*>Apache Camel<\/span>/);
     expect(html).toMatch(/<span[^>]*>Kafka<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Express<\/span>/);
     expect(html).toMatch(/<span[^>]*>Linux\/Windows<\/span>/);
     expect(html).toMatch(/<span[^>]*>Networking<\/span>/);
     expect(html).toMatch(/<span[^>]*>Active Directory<\/span>/);
     expect(html).toMatch(/<span[^>]*>Firewalls<\/span>/);
     expect(html).toMatch(/<span[^>]*>Storage<\/span>/);
+  });
+
+  it('does NOT render legacy tag pills removed in Phase 5 (Web3, DeFi, NFT)', async () => {
+    const html = await renderExperience();
+    expect(html).not.toMatch(/<span[^>]*>Web3<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*>DeFi<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*>NFT<\/span>/);
   });
 
   it('renders the company text for each non-bilingual company', async () => {

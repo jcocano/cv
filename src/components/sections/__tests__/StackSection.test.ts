@@ -68,6 +68,30 @@ describe('StackSection (render-test)', () => {
     expect(firstCatBlock).toContain('Rust');
   });
 
+  it('renders the Cloud & DevOps category with num="08" and eight chips (including Kustomize and KSOPS)', async () => {
+    const html = await renderStackSection();
+    const labelIdx = html.indexOf('Cloud &amp; DevOps');
+    expect(labelIdx).toBeGreaterThan(-1);
+    const afterLabel = html.slice(labelIdx);
+    const nextCatStart = afterLabel.search(/class="[^"]*stackCat/);
+    const block = nextCatStart === -1 ? afterLabel : afterLabel.slice(0, nextCatStart);
+    expect(block).toMatch(/>08</);
+    const chipMatches = block.match(/class="[^"]*chip/g);
+    expect(chipMatches).not.toBeNull();
+    if (chipMatches === null) {
+      throw new Error('expected eight chip spans for Cloud & DevOps');
+    }
+    expect(chipMatches).toHaveLength(8);
+    expect(block).toContain('AWS');
+    expect(block).toContain('GCP');
+    expect(block).toContain('Kubernetes');
+    expect(block).toContain('Kustomize');
+    expect(block).toContain('KSOPS');
+    expect(block).toContain('Docker');
+    expect(block).toContain('Terraform');
+    expect(block).toContain('GitHub Actions');
+  });
+
   it('renders the Messaging & Data category with num="08" and eight chips (including RabbitMQ)', async () => {
     const html = await renderStackSection();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Mensajería &amp; Datos<\/span>/);
@@ -128,7 +152,7 @@ describe('StackSection (render-test)', () => {
     if (chipMatches === null) {
       throw new Error('expected chip spans');
     }
-    expect(chipMatches).toHaveLength(50);
+    expect(chipMatches).toHaveLength(52);
   });
 
   it('applies the global "reveal" class to the stack grid wrapper', async () => {

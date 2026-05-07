@@ -20,11 +20,13 @@
     {
       "label": { "es": "Cloud & DevOps", "en": "Cloud & DevOps" },
       "tags": [
-        "AWS · EKS · Lambda · SQS",
+        "AWS",
         "GCP",
         "Kubernetes",
+        "Kustomize",
+        "KSOPS",
         "Docker",
-        "Terraform / Terragrunt",
+        "Terraform",
         "GitHub Actions"
       ]
     },

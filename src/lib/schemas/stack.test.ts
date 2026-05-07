@@ -133,6 +133,16 @@ describe('stackSchema', () => {
       'Solidity',
       'SQL',
     ]);
+    expect(parsed.categories[2]?.tags).toEqual([
+      'AWS',
+      'GCP',
+      'Kubernetes',
+      'Kustomize',
+      'KSOPS',
+      'Docker',
+      'Terraform',
+      'GitHub Actions',
+    ]);
     expect(parsed.categories[3]?.tags).toEqual([
       'PostgreSQL',
       'MongoDB',

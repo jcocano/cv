@@ -20,7 +20,17 @@
         "en": "Variable font reacting to the cursor. Weight and width interpolated by proximity."
       },
       "tags": ["CSS", "variable fonts", "pointer events"],
-      "words": ["distributed", "resilient", "observable", "elastic", "event-driven", "cloud-native"]
+      "words": {
+        "es": [
+          "distribuido",
+          "resiliente",
+          "observable",
+          "elástico",
+          "event-driven",
+          "cloud-native"
+        ],
+        "en": ["distributed", "resilient", "observable", "elastic", "event-driven", "cloud-native"]
+      }
     },
     {
       "key": "grid",
@@ -47,7 +57,10 @@
         "en": "Cursor drives speed and direction. Hover left to reverse the flow."
       },
       "tags": ["CSS animations", "pointer math"],
-      "words": ["build", "break", "observe", "iterate", "ship"]
+      "words": {
+        "es": ["construir", "romper", "observar", "iterar", "lanzar"],
+        "en": ["build", "break", "observe", "iterate", "ship"]
+      }
     }
   ]
 }

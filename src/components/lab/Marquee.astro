@@ -2,22 +2,39 @@
 import styles from './Marquee.module.css';
 
 interface Props {
-  words: readonly string[];
+  words: {
+    readonly es: readonly string[];
+    readonly en: readonly string[];
+  };
 }
 
 const { words } = Astro.props;
 
 const REPEAT_COUNT = 3;
-const repeated = Array.from({ length: REPEAT_COUNT }, () => words).flat();
+const copies = Array.from({ length: REPEAT_COUNT });
 ---
 
 <div class={styles.stage} id="stage-marquee">
   <div class={styles.track} id="marquee-track" data-dir="1" style="--speed: 40s">
     {
-      repeated.map((word) => (
+      copies.map(() => (
         <>
-          <span>{word}</span>
-          <span>·</span>
+          <span class={styles.copy} lang="es">
+            {words.es.map((word) => (
+              <>
+                <span>{word}</span>
+                <span>·</span>
+              </>
+            ))}
+          </span>
+          <span class={styles.copy} lang="en">
+            {words.en.map((word) => (
+              <>
+                <span>{word}</span>
+                <span>·</span>
+              </>
+            ))}
+          </span>
         </>
       ))
     }

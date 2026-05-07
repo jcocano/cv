@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { i18nString } from '@/lib/schemas/i18n-string';
+import { i18nString, i18nStringArray } from '@/lib/schemas/i18n-string';
 
 export const LAB_PIECE_KEYS = ['kinetic', 'grid', 'marquee'] as const;
 export const labPieceKeySchema = z.enum(LAB_PIECE_KEYS);
@@ -13,7 +13,7 @@ export const labPieceSchema = z
     title: i18nString,
     description: i18nString,
     tags: z.array(z.string().min(1)).min(1),
-    words: z.array(z.string().min(1)).min(1).optional(),
+    words: i18nStringArray.optional(),
   })
   .strict()
   .refine(
@@ -24,7 +24,19 @@ export const labPieceSchema = z
       return true;
     },
     {
-      message: "The 'kinetic' and 'marquee' pieces require a non-empty 'words' array.",
+      message: "The 'kinetic' and 'marquee' pieces require a non-empty 'words' object.",
+      path: ['words'],
+    },
+  )
+  .refine(
+    (piece) => {
+      if (piece.words === undefined) {
+        return true;
+      }
+      return piece.words.es.length >= 1 && piece.words.en.length >= 1;
+    },
+    {
+      message: "The 'words.es' and 'words.en' arrays must each have at least one entry.",
       path: ['words'],
     },
   );

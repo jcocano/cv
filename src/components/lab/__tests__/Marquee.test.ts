@@ -3,9 +3,17 @@ import { describe, expect, it } from 'vitest';
 
 import Marquee from '@/components/lab/Marquee.astro';
 
-const MARQUEE_WORDS = ['build', 'break', 'observe', 'iterate', 'ship'] as const;
+const MARQUEE_WORDS = {
+  es: ['construir', 'romper', 'observar', 'iterar', 'lanzar'],
+  en: ['build', 'break', 'observe', 'iterate', 'ship'],
+} as const;
 
-async function renderMarquee(words: readonly string[]): Promise<string> {
+interface BilingualWords {
+  readonly es: readonly string[];
+  readonly en: readonly string[];
+}
+
+async function renderMarquee(words: BilingualWords): Promise<string> {
   const container = await AstroContainer.create();
   return container.renderToString(Marquee, { props: { words } });
 }
@@ -32,40 +40,69 @@ describe('Marquee (render-test)', () => {
     expect(html).toMatch(/<div[^>]*id="marquee-track"[^>]*style="[^"]*--speed:\s*40s/);
   });
 
-  it('renders the five words repeated three times (15 word spans total)', async () => {
+  it('renders three es wrappers and three en wrappers (one pair per copy, three copies)', async () => {
     const html = await renderMarquee(MARQUEE_WORDS);
-    for (const word of MARQUEE_WORDS) {
+    const esWraps = html.match(/<span[^>]*lang="es"[^>]*>/g);
+    const enWraps = html.match(/<span[^>]*lang="en"[^>]*>/g);
+    expect(esWraps).not.toBeNull();
+    expect(enWraps).not.toBeNull();
+    if (esWraps === null || enWraps === null) {
+      throw new Error('expected three es wrappers and three en wrappers');
+    }
+    expect(esWraps).toHaveLength(3);
+    expect(enWraps).toHaveLength(3);
+  });
+
+  it('renders each Spanish word three times (once per copy)', async () => {
+    const html = await renderMarquee(MARQUEE_WORDS);
+    for (const word of MARQUEE_WORDS.es) {
       const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
       expect(matches).not.toBeNull();
       if (matches === null) {
-        throw new Error(`expected three spans for word "${word}"`);
+        throw new Error(`expected three spans for Spanish word "${word}"`);
       }
       expect(matches).toHaveLength(3);
     }
   });
 
-  it('renders the · separator span between words, repeated 15 times (5 per copy x 3 copies)', async () => {
+  it('renders each English word three times (once per copy)', async () => {
+    const html = await renderMarquee(MARQUEE_WORDS);
+    for (const word of MARQUEE_WORDS.en) {
+      const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
+      expect(matches).not.toBeNull();
+      if (matches === null) {
+        throw new Error(`expected three spans for English word "${word}"`);
+      }
+      expect(matches).toHaveLength(3);
+    }
+  });
+
+  it('renders the · separator span 30 times (5 per wrapper x 2 wrappers per copy x 3 copies)', async () => {
     const html = await renderMarquee(MARQUEE_WORDS);
     const matches = html.match(/<span[^>]*>·<\/span>/g);
     expect(matches).not.toBeNull();
     if (matches === null) {
-      throw new Error('expected 15 separator spans');
+      throw new Error('expected 30 separator spans');
     }
-    expect(matches).toHaveLength(15);
+    expect(matches).toHaveLength(30);
   });
 
-  it('renders any provided word list (no hardcoded words)', async () => {
-    const customWords = ['alpha', 'beta'];
+  it('renders any provided word lists (no hardcoded words)', async () => {
+    const customWords = {
+      es: ['alfa', 'beta'],
+      en: ['alpha', 'beta'],
+    };
     const html = await renderMarquee(customWords);
+    const alfaMatches = html.match(/<span[^>]*>alfa<\/span>/g);
     const alphaMatches = html.match(/<span[^>]*>alpha<\/span>/g);
-    const betaMatches = html.match(/<span[^>]*>beta<\/span>/g);
+    expect(alfaMatches).not.toBeNull();
     expect(alphaMatches).not.toBeNull();
-    expect(betaMatches).not.toBeNull();
-    if (alphaMatches === null || betaMatches === null) {
+    if (alfaMatches === null || alphaMatches === null) {
       throw new Error('expected custom words rendered three times each');
     }
+    expect(alfaMatches).toHaveLength(3);
     expect(alphaMatches).toHaveLength(3);
-    expect(betaMatches).toHaveLength(3);
     expect(html).not.toMatch(/<span[^>]*>build<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*>construir<\/span>/);
   });
 });

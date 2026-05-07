@@ -2,15 +2,21 @@
 import styles from './KineticType.module.css';
 
 interface Props {
-  words: readonly string[];
+  words: {
+    readonly es: readonly string[];
+    readonly en: readonly string[];
+  };
 }
 
 const { words } = Astro.props;
 ---
 
 <div class={styles.stage} id="stage-kinetic">
-  <div class={styles.wrap}>
-    {words.map((word) => <span class={styles.word}>{word}</span>)}
+  <div class={styles.wrap} lang="es">
+    {words.es.map((word) => <span class={styles.word}>{word}</span>)}
+  </div>
+  <div class={styles.wrap} lang="en">
+    {words.en.map((word) => <span class={styles.word}>{word}</span>)}
   </div>
 </div>
 

@@ -107,14 +107,18 @@ describe('ExperienceSection (render-test)', () => {
 
   it('renders bilingual description text for every role', async () => {
     const html = await renderExperience();
-    expect(html).toContain('Diseño y evolución de servicios backend distribuidos');
-    expect(html).toContain('Designed and evolved distributed backend services');
-    expect(html).toContain('En tokenproof, una startup de 10 personas');
-    expect(html).toContain('At tokenproof, a 10-person startup');
+    expect(html).toContain(
+      'Servicios backend distribuidos para productos blockchain a gran escala',
+    );
+    expect(html).toContain('Distributed backend services for high-traffic blockchain products');
+    expect(html).toContain('Sistemas de autenticación distribuidos con verificación on-chain');
+    expect(html).toContain('Distributed authentication systems with on-chain verification');
     expect(html).toContain('Liderazgo técnico en productos Web3');
     expect(html).toContain('Technical leadership of early-stage Web3');
-    expect(html).toContain('Backend enterprise en Java y C#');
-    expect(html).toContain('Enterprise backend in Java and C#');
+    expect(html).toContain(
+      'Sincronización HA Salesforce ↔ CONTPAQi vía Apache Camel + API C# + proxy JS',
+    );
+    expect(html).toContain('HA Salesforce ↔ CONTPAQi sync via Apache Camel + C# API + JS proxy');
     expect(html).toContain('Sysadmin generalista en entornos enterprise');
     expect(html).toContain('Generalist sysadmin in enterprise environments');
   });

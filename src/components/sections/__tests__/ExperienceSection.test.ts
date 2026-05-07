@@ -60,7 +60,7 @@ describe('ExperienceSection (render-test)', () => {
     const tokenproofIndex = html.indexOf('tokenproof');
     const metaoneIndex = html.indexOf('METAONE');
     const savareIndex = html.indexOf('Savare Medika');
-    const earlyIndex = html.indexOf('2006 → 2013');
+    const earlyIndex = html.indexOf('2006 → 2018');
     expect(yugaIndex).toBeGreaterThan(-1);
     expect(tokenproofIndex).toBeGreaterThan(-1);
     expect(metaoneIndex).toBeGreaterThan(-1);
@@ -80,7 +80,7 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toContain('2022 → Dec 2024');
     expect(html).toContain('Mar 2022 → Sep 2022');
     expect(html).toContain('Mar 2018 → Mar 2022');
-    expect(html).toContain('2006 → 2013');
+    expect(html).toContain('2006 → 2018');
   });
 
   it('renders the bilingual location text inside Yuga Labs', async () => {
@@ -109,14 +109,14 @@ describe('ExperienceSection (render-test)', () => {
     const html = await renderExperience();
     expect(html).toContain('Diseño y evolución de servicios backend distribuidos');
     expect(html).toContain('Designed and evolved distributed backend services');
-    expect(html).toContain('Sistemas de autenticación distribuidos');
-    expect(html).toContain('Distributed authentication systems');
+    expect(html).toContain('En tokenproof, una startup de 10 personas');
+    expect(html).toContain('At tokenproof, a 10-person startup');
     expect(html).toContain('Liderazgo técnico en productos Web3');
     expect(html).toContain('Technical leadership of early-stage Web3');
     expect(html).toContain('Backend enterprise en Java y C#');
     expect(html).toContain('Enterprise backend in Java and C#');
-    expect(html).toContain('Servidores enterprise, redes, firewalls');
-    expect(html).toContain('Enterprise servers, networking, firewalls');
+    expect(html).toContain('Sysadmin generalista en entornos enterprise');
+    expect(html).toContain('Generalist sysadmin in enterprise environments');
   });
 
   it('renders the tags as <span> pills containing every tag declared in frontmatter', async () => {
@@ -130,8 +130,10 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>Pulsar<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pub\/Sub<\/span>/);
     expect(html).toMatch(/<span[^>]*>Terraform<\/span>/);
-    expect(html).toMatch(/<span[^>]*>EKS<\/span>/);
-    expect(html).toMatch(/<span[^>]*>CI\/CD<\/span>/);
+    expect(html).toMatch(/<span[^>]*>DevOps<\/span>/);
+    expect(html).toMatch(/<span[^>]*>MongoDB<\/span>/);
+    expect(html).toMatch(/<span[^>]*>SOQL<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Visualforce<\/span>/);
     expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
     expect(html).toMatch(/<span[^>]*>Ethers\.js<\/span>/);
     expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
@@ -139,13 +141,14 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>NFT<\/span>/);
     expect(html).toMatch(/<span[^>]*>Java<\/span>/);
     expect(html).toMatch(/<span[^>]*>C#<\/span>/);
-    expect(html).toMatch(/<span[^>]*>\.NET Core<\/span>/);
+    expect(html).toMatch(/<span[^>]*>AWS<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Apache Camel<\/span>/);
     expect(html).toMatch(/<span[^>]*>Kafka<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Salesforce<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Linux<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Linux\/Windows<\/span>/);
     expect(html).toMatch(/<span[^>]*>Networking<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Active Directory<\/span>/);
     expect(html).toMatch(/<span[^>]*>Firewalls<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Hosting<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Storage<\/span>/);
   });
 
   it('renders the company text for each non-bilingual company', async () => {

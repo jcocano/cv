@@ -5,9 +5,10 @@ import DocumentIcon from '@/components/ui/icons/DocumentIcon.astro';
 import EmailIcon from '@/components/ui/icons/EmailIcon.astro';
 import GithubIcon from '@/components/ui/icons/GithubIcon.astro';
 import LinkedinIcon from '@/components/ui/icons/LinkedinIcon.astro';
-import LlmBackendsIcon from '@/components/ui/icons/LlmBackendsIcon.astro';
 import MoonIcon from '@/components/ui/icons/MoonIcon.astro';
+import MultiProviderIcon from '@/components/ui/icons/MultiProviderIcon.astro';
 import PaperIcon from '@/components/ui/icons/PaperIcon.astro';
+import RagCitationIcon from '@/components/ui/icons/RagCitationIcon.astro';
 import RepoIcon from '@/components/ui/icons/RepoIcon.astro';
 import SparkleIcon from '@/components/ui/icons/SparkleIcon.astro';
 import SunIcon from '@/components/ui/icons/SunIcon.astro';
@@ -25,9 +26,10 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
   { id: 'ui-email-icon', name: 'EmailIcon' },
   { id: 'ui-github-icon', name: 'GithubIcon' },
   { id: 'ui-linkedin-icon', name: 'LinkedinIcon' },
-  { id: 'ui-llm-backends-icon', name: 'LlmBackendsIcon' },
   { id: 'ui-moon-icon', name: 'MoonIcon' },
+  { id: 'ui-multi-provider-icon', name: 'MultiProviderIcon' },
   { id: 'ui-paper-icon', name: 'PaperIcon' },
+  { id: 'ui-rag-citation-icon', name: 'RagCitationIcon' },
   { id: 'ui-repo-icon', name: 'RepoIcon' },
   { id: 'ui-sparkle-icon', name: 'SparkleIcon' },
   { id: 'ui-sun-icon', name: 'SunIcon' },
@@ -99,9 +101,10 @@ const ICON_ENTRIES: ReadonlyArray<IconEntry> = [
             {iconEntry.id === 'ui-email-icon' && <EmailIcon />}
             {iconEntry.id === 'ui-github-icon' && <GithubIcon />}
             {iconEntry.id === 'ui-linkedin-icon' && <LinkedinIcon />}
-            {iconEntry.id === 'ui-llm-backends-icon' && <LlmBackendsIcon />}
             {iconEntry.id === 'ui-moon-icon' && <MoonIcon />}
+            {iconEntry.id === 'ui-multi-provider-icon' && <MultiProviderIcon />}
             {iconEntry.id === 'ui-paper-icon' && <PaperIcon />}
+            {iconEntry.id === 'ui-rag-citation-icon' && <RagCitationIcon />}
             {iconEntry.id === 'ui-repo-icon' && <RepoIcon />}
             {iconEntry.id === 'ui-sparkle-icon' && <SparkleIcon />}
             {iconEntry.id === 'ui-sun-icon' && <SunIcon />}

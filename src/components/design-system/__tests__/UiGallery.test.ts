@@ -19,9 +19,10 @@ const EXPECTED_IDS = [
   'ui-email-icon',
   'ui-github-icon',
   'ui-linkedin-icon',
-  'ui-llm-backends-icon',
   'ui-moon-icon',
+  'ui-multi-provider-icon',
   'ui-paper-icon',
+  'ui-rag-citation-icon',
   'ui-repo-icon',
   'ui-sparkle-icon',
   'ui-sun-icon',
@@ -61,7 +62,7 @@ describe('UiGallery (render-test)', () => {
     expect(html).not.toMatch(/data-ui-span="full"/);
   });
 
-  it('places all 12 icon entries inside data-ui-group="icons"', async () => {
+  it('places all 13 icon entries inside data-ui-group="icons"', async () => {
     const html = await renderUiGallery();
     const iconsHtml = html.split('data-ui-group="icons"')[1] ?? '';
     const iconIds = [
@@ -71,9 +72,10 @@ describe('UiGallery (render-test)', () => {
       'ui-email-icon',
       'ui-github-icon',
       'ui-linkedin-icon',
-      'ui-llm-backends-icon',
       'ui-moon-icon',
+      'ui-multi-provider-icon',
       'ui-paper-icon',
+      'ui-rag-citation-icon',
       'ui-repo-icon',
       'ui-sparkle-icon',
       'ui-sun-icon',

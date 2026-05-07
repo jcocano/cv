@@ -60,7 +60,7 @@ describe('ExperienceSection (render-test)', () => {
     const tokenproofIndex = html.indexOf('tokenproof');
     const metaoneIndex = html.indexOf('METAONE');
     const savareIndex = html.indexOf('Savare Medika');
-    const earlyIndex = html.indexOf('2006 → 2013');
+    const earlyIndex = html.indexOf('2006 → 2018');
     expect(yugaIndex).toBeGreaterThan(-1);
     expect(tokenproofIndex).toBeGreaterThan(-1);
     expect(metaoneIndex).toBeGreaterThan(-1);
@@ -80,7 +80,7 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toContain('2022 → Dec 2024');
     expect(html).toContain('Mar 2022 → Sep 2022');
     expect(html).toContain('Mar 2018 → Mar 2022');
-    expect(html).toContain('2006 → 2013');
+    expect(html).toContain('2006 → 2018');
   });
 
   it('renders the bilingual location text inside Yuga Labs', async () => {
@@ -107,16 +107,20 @@ describe('ExperienceSection (render-test)', () => {
 
   it('renders bilingual description text for every role', async () => {
     const html = await renderExperience();
-    expect(html).toContain('Diseño y evolución de servicios backend distribuidos');
-    expect(html).toContain('Designed and evolved distributed backend services');
-    expect(html).toContain('Sistemas de autenticación distribuidos');
-    expect(html).toContain('Distributed authentication systems');
+    expect(html).toContain(
+      'Servicios backend distribuidos para productos blockchain a gran escala',
+    );
+    expect(html).toContain('Distributed backend services for high-traffic blockchain products');
+    expect(html).toContain('Sistemas de autenticación distribuidos con verificación on-chain');
+    expect(html).toContain('Distributed authentication systems with on-chain verification');
     expect(html).toContain('Liderazgo técnico en productos Web3');
     expect(html).toContain('Technical leadership of early-stage Web3');
-    expect(html).toContain('Backend enterprise en Java y C#');
-    expect(html).toContain('Enterprise backend in Java and C#');
-    expect(html).toContain('Servidores enterprise, redes, firewalls');
-    expect(html).toContain('Enterprise servers, networking, firewalls');
+    expect(html).toContain(
+      'Sincronización HA Salesforce ↔ CONTPAQi vía Apache Camel + API C# + proxy JS',
+    );
+    expect(html).toContain('HA Salesforce ↔ CONTPAQi sync via Apache Camel + C# API + JS proxy');
+    expect(html).toContain('Sysadmin generalista en entornos enterprise');
+    expect(html).toContain('Generalist sysadmin in enterprise environments');
   });
 
   it('renders the tags as <span> pills containing every tag declared in frontmatter', async () => {
@@ -126,26 +130,40 @@ describe('ExperienceSection (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>Kubernetes<\/span>/);
     expect(html).toMatch(/<span[^>]*>AWS<\/span>/);
     expect(html).toMatch(/<span[^>]*>GCP<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Web3<\/span>/);
+    expect(html).toMatch(/<span[^>]*>MongoDB<\/span>/);
+    expect(html).toMatch(/<span[^>]*>PostgreSQL<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Shopify<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Prometheus<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Jira<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Privy<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pulsar<\/span>/);
     expect(html).toMatch(/<span[^>]*>Pub\/Sub<\/span>/);
     expect(html).toMatch(/<span[^>]*>Terraform<\/span>/);
-    expect(html).toMatch(/<span[^>]*>EKS<\/span>/);
-    expect(html).toMatch(/<span[^>]*>CI\/CD<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
+    expect(html).toMatch(/<span[^>]*>DevOps<\/span>/);
+    expect(html).toMatch(/<span[^>]*>SOQL<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Visualforce<\/span>/);
+    expect(html).toMatch(/<span[^>]*>React<\/span>/);
     expect(html).toMatch(/<span[^>]*>Ethers\.js<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
-    expect(html).toMatch(/<span[^>]*>DeFi<\/span>/);
-    expect(html).toMatch(/<span[^>]*>NFT<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Hardhat<\/span>/);
     expect(html).toMatch(/<span[^>]*>Java<\/span>/);
     expect(html).toMatch(/<span[^>]*>C#<\/span>/);
-    expect(html).toMatch(/<span[^>]*>\.NET Core<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Apache Camel<\/span>/);
     expect(html).toMatch(/<span[^>]*>Kafka<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Salesforce<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Linux<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Express<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Linux\/Windows<\/span>/);
     expect(html).toMatch(/<span[^>]*>Networking<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Active Directory<\/span>/);
     expect(html).toMatch(/<span[^>]*>Firewalls<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Hosting<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Storage<\/span>/);
+  });
+
+  it('does NOT render legacy tag pills removed in Phase 5 (Web3, DeFi, NFT)', async () => {
+    const html = await renderExperience();
+    expect(html).not.toMatch(/<span[^>]*>Web3<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*>DeFi<\/span>/);
+    expect(html).not.toMatch(/<span[^>]*>NFT<\/span>/);
   });
 
   it('renders the company text for each non-bilingual company', async () => {

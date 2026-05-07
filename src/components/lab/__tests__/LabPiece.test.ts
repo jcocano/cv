@@ -13,7 +13,10 @@ const kineticPiece: LabPieceData = {
     en: 'Variable font reacting to the cursor.',
   },
   tags: ['CSS', 'variable fonts', 'pointer events'],
-  words: ['distributed', 'resilient', 'observable', 'elastic', 'event-driven', 'cloud-native'],
+  words: {
+    es: ['distribuido', 'resiliente', 'observable', 'elástico', 'event-driven', 'cloud-native'],
+    en: ['distributed', 'resilient', 'observable', 'elastic', 'event-driven', 'cloud-native'],
+  },
 };
 
 const gridPiece: LabPieceData = {
@@ -36,7 +39,10 @@ const marqueePiece: LabPieceData = {
     en: 'Cursor drives speed.',
   },
   tags: ['CSS animations', 'pointer math'],
-  words: ['build', 'break', 'observe', 'iterate', 'ship'],
+  words: {
+    es: ['construir', 'romper', 'observar', 'iterar', 'lanzar'],
+    en: ['build', 'break', 'observe', 'iterate', 'ship'],
+  },
 };
 
 async function renderLabPiece(piece: LabPieceData): Promise<string> {
@@ -50,10 +56,13 @@ describe('LabPiece (render-test)', () => {
     expect(html).toMatch(/<article[^>]*data-piece="kinetic"/);
   });
 
-  it('renders the kinetic stage with the six words when key is "kinetic"', async () => {
+  it('renders the kinetic stage with the bilingual word lists when key is "kinetic"', async () => {
     const html = await renderLabPiece(kineticPiece);
     expect(html).toMatch(/id="stage-kinetic"/);
-    for (const word of kineticPiece.words ?? []) {
+    for (const word of kineticPiece.words?.es ?? []) {
+      expect(html).toMatch(new RegExp(`<span[^>]*>${word}</span>`));
+    }
+    for (const word of kineticPiece.words?.en ?? []) {
       expect(html).toMatch(new RegExp(`<span[^>]*>${word}</span>`));
     }
   });
@@ -95,11 +104,19 @@ describe('LabPiece (render-test)', () => {
     expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Próximamente<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Marquee con scrub<\/span>/);
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Scrubbable marquee<\/span>/);
-    for (const word of marqueePiece.words ?? []) {
+    for (const word of marqueePiece.words?.es ?? []) {
       const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
       expect(matches).not.toBeNull();
       if (matches === null) {
-        throw new Error(`expected three spans for word "${word}"`);
+        throw new Error(`expected three spans for Spanish word "${word}"`);
+      }
+      expect(matches).toHaveLength(3);
+    }
+    for (const word of marqueePiece.words?.en ?? []) {
+      const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
+      expect(matches).not.toBeNull();
+      if (matches === null) {
+        throw new Error(`expected three spans for English word "${word}"`);
       }
       expect(matches).toHaveLength(3);
     }

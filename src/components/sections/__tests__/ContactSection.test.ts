@@ -65,8 +65,10 @@ describe('ContactSection (render-test)', () => {
 
   it('renders the bilingual lede paragraph from hero.json contact.lede', async () => {
     const html = await renderContactSection();
-    expect(html).toContain('Disponible para roles senior en backend, platform o infraestructura.');
-    expect(html).toContain('Available for senior roles in backend, platform, or infrastructure.');
+    expect(html).toContain('Disponible para roles senior en backend, platform o AI engineering.');
+    expect(html).toContain('Available for senior roles in backend, platform, or AI engineering.');
+    expect(html).toContain('Startups AI-native, Web3, fintech');
+    expect(html).toContain('AI-native startups, Web3, fintech');
   });
 
   it('renders exactly four anchors in document order: email (mailto), cv (pdf), github, linkedin', async () => {

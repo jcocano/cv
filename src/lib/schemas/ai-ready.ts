@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { i18nString } from '@/lib/schemas/i18n-string';
 
-export const ICON_KEYS = ['assistedDev', 'llmBackends', 'agentsMcp'] as const;
+export const ICON_KEYS = ['assistedDev', 'ragCitation', 'multiProvider', 'agentsMcp'] as const;
 export const iconKeySchema = z.enum(ICON_KEYS);
 export type IconKey = z.infer<typeof iconKeySchema>;
 
@@ -19,7 +19,7 @@ export const aiReadySchema = z
   .object({
     title: i18nString,
     lede: i18nString,
-    cards: z.array(aiReadyCard).length(3),
+    cards: z.array(aiReadyCard).length(4),
     myTake: i18nString,
   })
   .strict();

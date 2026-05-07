@@ -27,7 +27,11 @@
   animation-direction: reverse;
 }
 
-.track > span:nth-child(odd) {
+.copy {
+  display: contents;
+}
+
+.copy > span:nth-child(odd) {
   color: var(--accent);
 }
 

@@ -53,10 +53,25 @@ describe('LabSection (render-test)', () => {
     expect(html).toMatch(/<h3[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Marquee con scrub<\/span>/);
   });
 
-  it('renders the kinetic piece with the six literal words from lab.json', async () => {
+  it('renders the kinetic piece with the six Spanish words from lab.json', async () => {
     const html = await renderLabSection();
     expect(html).toMatch(/id="stage-kinetic"/);
-    const words = [
+    const wordsEs = [
+      'distribuido',
+      'resiliente',
+      'observable',
+      'elástico',
+      'event-driven',
+      'cloud-native',
+    ];
+    for (const word of wordsEs) {
+      expect(html).toMatch(new RegExp(`<span[^>]*>${word}</span>`));
+    }
+  });
+
+  it('renders the kinetic piece with the six English words from lab.json', async () => {
+    const html = await renderLabSection();
+    const wordsEn = [
       'distributed',
       'resilient',
       'observable',
@@ -64,7 +79,7 @@ describe('LabSection (render-test)', () => {
       'event-driven',
       'cloud-native',
     ];
-    for (const word of words) {
+    for (const word of wordsEn) {
       expect(html).toMatch(new RegExp(`<span[^>]*>${word}</span>`));
     }
   });
@@ -77,14 +92,27 @@ describe('LabSection (render-test)', () => {
     expect(html).not.toMatch(/<span[^>]*lang="en"[^>]*>Coming soon<\/span>/);
   });
 
-  it('renders the marquee piece with the five literal words from lab.json, repeated three times each', async () => {
+  it('renders the marquee piece with the five Spanish words from lab.json, repeated three times each', async () => {
     const html = await renderLabSection();
-    const words = ['build', 'break', 'observe', 'iterate', 'ship'];
-    for (const word of words) {
+    const wordsEs = ['construir', 'romper', 'observar', 'iterar', 'lanzar'];
+    for (const word of wordsEs) {
       const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
       expect(matches).not.toBeNull();
       if (matches === null) {
-        throw new Error(`expected three spans for word "${word}"`);
+        throw new Error(`expected three spans for Spanish word "${word}"`);
+      }
+      expect(matches).toHaveLength(3);
+    }
+  });
+
+  it('renders the marquee piece with the five English words from lab.json, repeated three times each', async () => {
+    const html = await renderLabSection();
+    const wordsEn = ['build', 'break', 'observe', 'iterate', 'ship'];
+    for (const word of wordsEn) {
+      const matches = html.match(new RegExp(`<span[^>]*>${word}</span>`, 'g'));
+      expect(matches).not.toBeNull();
+      if (matches === null) {
+        throw new Error(`expected three spans for English word "${word}"`);
       }
       expect(matches).toHaveLength(3);
     }

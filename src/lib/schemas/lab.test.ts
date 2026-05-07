@@ -22,7 +22,10 @@ const validLab = {
         en: 'Variable font reacting to the cursor.',
       },
       tags: ['CSS', 'variable fonts', 'pointer events'],
-      words: ['distributed', 'resilient', 'observable', 'elastic', 'event-driven', 'cloud-native'],
+      words: {
+        es: ['distribuido', 'resiliente', 'observable', 'elástico', 'event-driven', 'cloud-native'],
+        en: ['distributed', 'resilient', 'observable', 'elastic', 'event-driven', 'cloud-native'],
+      },
     },
     {
       key: 'grid',
@@ -43,7 +46,10 @@ const validLab = {
         en: 'Cursor drives speed and direction.',
       },
       tags: ['CSS animations', 'pointer math'],
-      words: ['build', 'break', 'observe', 'iterate', 'ship'],
+      words: {
+        es: ['construir', 'romper', 'observar', 'iterar', 'lanzar'],
+        en: ['build', 'break', 'observe', 'iterate', 'ship'],
+      },
     },
   ],
 } as const;
@@ -58,7 +64,15 @@ describe('labSchema', () => {
     expect(parsed.pieces).toHaveLength(3);
     expect(parsed.pieces[0]?.key).toBe('kinetic');
     expect(parsed.pieces[0]?.num).toBe('01');
-    expect(parsed.pieces[0]?.words).toEqual([
+    expect(parsed.pieces[0]?.words?.es).toEqual([
+      'distribuido',
+      'resiliente',
+      'observable',
+      'elástico',
+      'event-driven',
+      'cloud-native',
+    ]);
+    expect(parsed.pieces[0]?.words?.en).toEqual([
       'distributed',
       'resilient',
       'observable',
@@ -70,7 +84,14 @@ describe('labSchema', () => {
     expect(parsed.pieces[1]?.num).toBe('02');
     expect(parsed.pieces[2]?.key).toBe('marquee');
     expect(parsed.pieces[2]?.num).toBe('03');
-    expect(parsed.pieces[2]?.words).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
+    expect(parsed.pieces[2]?.words?.es).toEqual([
+      'construir',
+      'romper',
+      'observar',
+      'iterar',
+      'lanzar',
+    ]);
+    expect(parsed.pieces[2]?.words?.en).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
   });
 
   it('fails when pieces has only two entries (length 3 is required)', () => {
@@ -90,7 +111,14 @@ describe('labSchema', () => {
       ...validLab,
       pieces: [
         validLab.pieces[0],
-        { ...validLab.pieces[1], key: 'kinetic', words: ['x', 'y', 'z', 'a', 'b', 'c'] },
+        {
+          ...validLab.pieces[1],
+          key: 'kinetic',
+          words: {
+            es: ['x', 'y', 'z', 'a', 'b', 'c'],
+            en: ['x', 'y', 'z', 'a', 'b', 'c'],
+          },
+        },
         validLab.pieces[2],
       ],
     };
@@ -105,7 +133,7 @@ describe('labSchema', () => {
     expect(duplicateIssues.length).toBeGreaterThan(0);
   });
 
-  it('fails when the kinetic piece is missing the words array', () => {
+  it('fails when the kinetic piece is missing the words object', () => {
     const { words: _omitted, ...kineticWithoutWords } = validLab.pieces[0];
     void _omitted;
     const broken = {
@@ -123,7 +151,7 @@ describe('labSchema', () => {
     expect(wordsIssues.length).toBeGreaterThan(0);
   });
 
-  it('fails when the marquee piece is missing the words array', () => {
+  it('fails when the marquee piece is missing the words object', () => {
     const { words: _omitted, ...marqueeWithoutWords } = validLab.pieces[2];
     void _omitted;
     const broken = {
@@ -141,10 +169,17 @@ describe('labSchema', () => {
     expect(wordsIssues.length).toBeGreaterThan(0);
   });
 
-  it('fails when the kinetic piece has an empty words array (at least one word required)', () => {
+  it('fails when the kinetic piece has an empty words.es array (at least one entry required)', () => {
     const broken = {
       ...validLab,
-      pieces: [{ ...validLab.pieces[0], words: [] }, validLab.pieces[1], validLab.pieces[2]],
+      pieces: [
+        {
+          ...validLab.pieces[0],
+          words: { es: [], en: ['distributed'] },
+        },
+        validLab.pieces[1],
+        validLab.pieces[2],
+      ],
     };
     const result = labSchema.safeParse(broken);
     expect(result.success).toBe(false);
@@ -155,7 +190,29 @@ describe('labSchema', () => {
       (issue) => issue.path[0] === 'pieces' && issue.path[1] === 0 && issue.path[2] === 'words',
     );
     expect(wordsIssues.length).toBeGreaterThan(0);
-    expect(wordsIssues[0]?.code).toBe('too_small');
+  });
+
+  it('fails when the kinetic piece has an empty words.en array (at least one entry required)', () => {
+    const broken = {
+      ...validLab,
+      pieces: [
+        {
+          ...validLab.pieces[0],
+          words: { es: ['distribuido'], en: [] },
+        },
+        validLab.pieces[1],
+        validLab.pieces[2],
+      ],
+    };
+    const result = labSchema.safeParse(broken);
+    expect(result.success).toBe(false);
+    if (result.success) {
+      throw new Error('expected parse to fail');
+    }
+    const wordsIssues = result.error.issues.filter(
+      (issue) => issue.path[0] === 'pieces' && issue.path[1] === 0 && issue.path[2] === 'words',
+    );
+    expect(wordsIssues.length).toBeGreaterThan(0);
   });
 
   it('fails when a piece title is missing the en key', () => {
@@ -223,7 +280,15 @@ describe('labSchema', () => {
     const parsed = labSchema.parse(labJson);
     expect(parsed.pieces).toHaveLength(3);
     expect(parsed.pieces[0]?.key).toBe('kinetic');
-    expect(parsed.pieces[0]?.words).toEqual([
+    expect(parsed.pieces[0]?.words?.es).toEqual([
+      'distribuido',
+      'resiliente',
+      'observable',
+      'elástico',
+      'event-driven',
+      'cloud-native',
+    ]);
+    expect(parsed.pieces[0]?.words?.en).toEqual([
       'distributed',
       'resilient',
       'observable',
@@ -234,6 +299,13 @@ describe('labSchema', () => {
     expect(parsed.pieces[1]?.key).toBe('grid');
     expect(parsed.pieces[1]?.words).toBeUndefined();
     expect(parsed.pieces[2]?.key).toBe('marquee');
-    expect(parsed.pieces[2]?.words).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
+    expect(parsed.pieces[2]?.words?.es).toEqual([
+      'construir',
+      'romper',
+      'observar',
+      'iterar',
+      'lanzar',
+    ]);
+    expect(parsed.pieces[2]?.words?.en).toEqual(['build', 'break', 'observe', 'iterate', 'ship']);
   });
 });

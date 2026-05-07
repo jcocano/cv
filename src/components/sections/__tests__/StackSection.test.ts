@@ -54,7 +54,7 @@ describe('StackSection (render-test)', () => {
     void matches;
   });
 
-  it('renders the first category (Languages) with bilingual title spans and num="06" (six tags)', async () => {
+  it('renders the first category (Languages) with bilingual title spans and num="07" (seven tags including Rust)', async () => {
     const html = await renderStackSection();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Lenguajes<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Languages<\/span>/);
@@ -64,10 +64,35 @@ describe('StackSection (render-test)', () => {
     const secondCatStart = afterFirst.slice(1).search(/class="[^"]*stackCat/);
     const firstCatBlock =
       secondCatStart === -1 ? afterFirst : afterFirst.slice(0, secondCatStart + 1);
-    expect(firstCatBlock).toMatch(/>06</);
+    expect(firstCatBlock).toMatch(/>07</);
+    expect(firstCatBlock).toContain('Rust');
   });
 
-  it('renders the Messaging & Data category with num="07" and seven chips', async () => {
+  it('renders the Cloud & DevOps category with num="08" and eight chips (including Kustomize and KSOPS)', async () => {
+    const html = await renderStackSection();
+    const labelIdx = html.indexOf('Cloud &amp; DevOps');
+    expect(labelIdx).toBeGreaterThan(-1);
+    const afterLabel = html.slice(labelIdx);
+    const nextCatStart = afterLabel.search(/class="[^"]*stackCat/);
+    const block = nextCatStart === -1 ? afterLabel : afterLabel.slice(0, nextCatStart);
+    expect(block).toMatch(/>08</);
+    const chipMatches = block.match(/class="[^"]*chip/g);
+    expect(chipMatches).not.toBeNull();
+    if (chipMatches === null) {
+      throw new Error('expected eight chip spans for Cloud & DevOps');
+    }
+    expect(chipMatches).toHaveLength(8);
+    expect(block).toContain('AWS');
+    expect(block).toContain('GCP');
+    expect(block).toContain('Kubernetes');
+    expect(block).toContain('Kustomize');
+    expect(block).toContain('KSOPS');
+    expect(block).toContain('Docker');
+    expect(block).toContain('Terraform');
+    expect(block).toContain('GitHub Actions');
+  });
+
+  it('renders the Messaging & Data category with num="08" and eight chips (including RabbitMQ)', async () => {
     const html = await renderStackSection();
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Mensajería &amp; Datos<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Messaging &amp; Data<\/span>/);
@@ -76,16 +101,38 @@ describe('StackSection (render-test)', () => {
     const afterLabel = html.slice(labelIdx);
     const nextCatStart = afterLabel.search(/class="[^"]*stackCat/);
     const block = nextCatStart === -1 ? afterLabel : afterLabel.slice(0, nextCatStart);
-    expect(block).toMatch(/>07</);
+    expect(block).toMatch(/>08</);
     const chipMatches = block.match(/class="[^"]*chip/g);
     expect(chipMatches).not.toBeNull();
     if (chipMatches === null) {
-      throw new Error('expected seven chip spans for Messaging & Data');
+      throw new Error('expected eight chip spans for Messaging & Data');
     }
-    expect(chipMatches).toHaveLength(7);
+    expect(chipMatches).toHaveLength(8);
     expect(block).toContain('PostgreSQL');
     expect(block).toContain('Apache Kafka');
+    expect(block).toContain('RabbitMQ');
     expect(block).toContain('Salesforce');
+  });
+
+  it('renders the AI / LLMs category with num="10" and ten chips covering vendors, protocols and capabilities', async () => {
+    const html = await renderStackSection();
+    const labelIdx = html.indexOf('AI / LLMs');
+    expect(labelIdx).toBeGreaterThan(-1);
+    const afterLabel = html.slice(labelIdx);
+    const nextCatStart = afterLabel.search(/class="[^"]*stackCat/);
+    const block = nextCatStart === -1 ? afterLabel : afterLabel.slice(0, nextCatStart);
+    expect(block).toMatch(/>10</);
+    const chipMatches = block.match(/class="[^"]*chip/g);
+    expect(chipMatches).not.toBeNull();
+    if (chipMatches === null) {
+      throw new Error('expected ten chip spans for AI / LLMs');
+    }
+    expect(chipMatches).toHaveLength(10);
+    expect(block).toContain('Google (Gemini)');
+    expect(block).toContain('OpenRouter');
+    expect(block).toContain('Ollama / LM Studio');
+    expect(block).toContain('Vector DBs (Qdrant)');
+    expect(block).toContain('Function calling');
   });
 
   it('renders unilingual handoff categories (Frameworks, Cloud & DevOps, AI / LLMs) with the same string in both lang spans', async () => {
@@ -105,7 +152,7 @@ describe('StackSection (render-test)', () => {
     if (chipMatches === null) {
       throw new Error('expected chip spans');
     }
-    expect(chipMatches).toHaveLength(42);
+    expect(chipMatches).toHaveLength(52);
   });
 
   it('applies the global "reveal" class to the stack grid wrapper', async () => {

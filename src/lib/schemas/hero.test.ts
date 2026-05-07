@@ -41,8 +41,8 @@ const validHero = {
       en: 'something serious.',
     },
     lede: {
-      es: 'Disponible para roles senior en backend, platform o infraestructura. Web3, fintech, o cualquier producto que viva o muera por su fiabilidad en producción.',
-      en: 'Available for senior roles in backend, platform, or infrastructure. Web3, fintech, or any product whose life depends on production reliability.',
+      es: 'Disponible para roles senior en backend, platform o AI engineering. Startups AI-native, Web3, fintech, o cualquier producto que viva o muera por su fiabilidad en producción.',
+      en: 'Available for senior roles in backend, platform, or AI engineering. AI-native startups, Web3, fintech, or any product whose life depends on production reliability.',
     },
   },
 } as const;

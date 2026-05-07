@@ -3,7 +3,8 @@ import SectionHead from '@/components/ui/SectionHead.astro';
 import Tag from '@/components/ui/Tag.astro';
 import AgentsMcpIcon from '@/components/ui/icons/AgentsMcpIcon.astro';
 import AssistedDevIcon from '@/components/ui/icons/AssistedDevIcon.astro';
-import LlmBackendsIcon from '@/components/ui/icons/LlmBackendsIcon.astro';
+import MultiProviderIcon from '@/components/ui/icons/MultiProviderIcon.astro';
+import RagCitationIcon from '@/components/ui/icons/RagCitationIcon.astro';
 import aiReadyJson from '@/data/ai-ready.json';
 import { t } from '@/lib/i18n/t';
 import { aiReadySchema, type AiReady, type IconKey } from '@/lib/schemas/ai-ready';
@@ -13,7 +14,8 @@ const aiReady: AiReady = aiReadySchema.parse(aiReadyJson);
 
 const iconByKey: Record<IconKey, typeof AssistedDevIcon> = {
   assistedDev: AssistedDevIcon,
-  llmBackends: LlmBackendsIcon,
+  ragCitation: RagCitationIcon,
+  multiProvider: MultiProviderIcon,
   agentsMcp: AgentsMcpIcon,
 };
 ---

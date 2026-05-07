@@ -35,67 +35,83 @@ describe('AiReadySection (render-test)', () => {
 
   it('renders the bilingual lede paragraph from ai-ready.json', async () => {
     const html = await renderAiReady();
-    expect(html).toContain('Aplicando IA en mi flujo diario');
-    expect(html).toContain('Using AI in my daily workflow');
+    expect(html).toContain('Dos años usando IA');
+    expect(html).toContain('Two years using AI');
   });
 
-  it('renders three card titles in both languages (h4 elements)', async () => {
+  it('renders four card titles in both languages (h4 elements)', async () => {
     const html = await renderAiReady();
     expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Desarrollo asistido<\/span>/);
     expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>AI-assisted dev<\/span>/);
-    expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Backends para LLMs<\/span>/);
-    expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>LLM backends<\/span>/);
+    expect(html).toMatch(
+      /<h4[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>RAG con citación estricta<\/span>/,
+    );
+    expect(html).toMatch(
+      /<h4[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>RAG with strict citation<\/span>/,
+    );
+    expect(html).toMatch(
+      /<h4[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Multi-provider y modelos locales<\/span>/,
+    );
+    expect(html).toMatch(
+      /<h4[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Multi-provider (?:&|&amp;) local models<\/span>/,
+    );
     expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Agentes y MCP<\/span>/);
     expect(html).toMatch(/<h4[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Agents (?:&|&amp;) MCP<\/span>/);
   });
 
-  it('renders three h4 elements (one per card)', async () => {
+  it('renders four h4 elements (one per card)', async () => {
     const html = await renderAiReady();
     const h4Matches = html.match(/<h4[^>]*>/g);
     expect(h4Matches).not.toBeNull();
     if (h4Matches === null) {
-      throw new Error('expected three h4 elements');
+      throw new Error('expected four h4 elements');
     }
-    expect(h4Matches).toHaveLength(3);
+    expect(h4Matches).toHaveLength(4);
   });
 
   it('renders unique body fragments for each card in both languages', async () => {
     const html = await renderAiReady();
-    expect(html).toContain('Claude Code, Cursor y Copilot');
-    expect(html).toContain('Claude Code, Cursor, and Copilot');
-    expect(html).toContain('streaming, function calling, RAG');
-    expect(html).toContain('agentes con tools, memory');
-    expect(html).toContain('agents with tools, memory');
-    expect(html).toContain('Servidores MCP');
-    expect(html).toContain('MCP servers');
+    expect(html).toContain('Claude Code, Cursor, OpenCode y Codex CLI');
+    expect(html).toContain('Claude Code, Cursor, OpenCode, and Codex CLI');
+    expect(html).toContain('recuperación híbrida');
+    expect(html).toContain('hybrid retrieval');
+    expect(html).toContain('Multi-provider en producción real');
+    expect(html).toContain('Multi-provider in real production');
+    expect(html).toContain('Servidores MCP desplegados');
+    expect(html).toContain('MCP servers deployed');
   });
 
-  it('renders the three SVG icons inside the cards (one per card via iconKey mapping)', async () => {
+  it('renders the four SVG icons inside the cards (one per card via iconKey mapping)', async () => {
     const html = await renderAiReady();
     const svgMatches = html.match(/<svg[^>]*viewBox="0 0 24 24"/g) ?? [];
-    expect(svgMatches.length).toBeGreaterThanOrEqual(3);
+    expect(svgMatches.length).toBeGreaterThanOrEqual(4);
   });
 
   it('renders all tags from each card as <span> Tag primitives', async () => {
     const html = await renderAiReady();
     expect(html).toMatch(/<span[^>]*>Claude Code<\/span>/);
     expect(html).toMatch(/<span[^>]*>Cursor<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Copilot<\/span>/);
+    expect(html).toMatch(/<span[^>]*>OpenCode<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Codex CLI<\/span>/);
     expect(html).toMatch(/<span[^>]*>RAG<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Vector DBs<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Streaming<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Function calling<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Hybrid retrieval<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Vector DBs \(Qdrant\)<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Citation discipline<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Multi-provider<\/span>/);
+    expect(html).toMatch(/<span[^>]*>OpenRouter<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Local LLMs<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Ollama \/ LM Studio<\/span>/);
     expect(html).toMatch(/<span[^>]*>MCP<\/span>/);
     expect(html).toMatch(/<span[^>]*>Agents<\/span>/);
     expect(html).toMatch(/<span[^>]*>Tool use<\/span>/);
-    expect(html).toMatch(/<span[^>]*>Orchestration<\/span>/);
+    expect(html).toMatch(/<span[^>]*>Zod-typed contracts<\/span>/);
   });
 
   it('renders the bilingual "my take" paragraph with the → arrow', async () => {
     const html = await renderAiReady();
     expect(html).toContain('→');
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Mi enfoque:[\s\S]*<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>My take:[\s\S]*<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Para mí[\s\S]*<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>For me[\s\S]*<\/span>/);
   });
 
   it('adds the global "reveal" class on the SectionHead wrapper (handoff L151)', async () => {

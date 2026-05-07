@@ -37,19 +37,19 @@ describe('SummarySection (render-test)', () => {
   it('renders the bilingual lede paragraph from summary.json', async () => {
     const html = await renderSummary();
     expect(html).toContain(
-      '7+ años en sistemas distribuidos · 12+ años en infraestructura y operaciones.',
+      '8 años de ingeniería de backend sobre 12 años trabajando con sistemas.',
     );
     expect(html).toContain(
-      '7+ years in distributed systems · 12+ years in infrastructure &amp; ops.',
+      '8 years of backend engineering on top of 12 years working with systems.',
     );
   });
 
   it('renders all four stats with their value, accent and bilingual labels', async () => {
     const html = await renderSummary();
-    expect(html).toMatch(/>\s*7\s*<span[^>]*>\+<\/span>/);
+    expect(html).toMatch(/>\s*8\s*<span[^>]*>\+<\/span>/);
     expect(html).toMatch(/>\s*12\s*<span[^>]*>\+<\/span>/);
     expect(html).toMatch(/>\s*2\s*<span[^>]*>×<\/span>/);
-    expect(html).toMatch(/>\s*∞\s*<\/span>/);
+    expect(html).toMatch(/>\s*5\s*<\/span>/);
     const accentMatches = html.match(/<span[^>]*>\+<\/span>/g);
     expect(accentMatches).not.toBeNull();
     if (accentMatches === null) {
@@ -57,20 +57,22 @@ describe('SummarySection (render-test)', () => {
     }
     expect(accentMatches.length).toBeGreaterThanOrEqual(2);
     expect(html).toMatch(/<span[^>]*>×<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>años en sistemas distribuidos<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>years in distributed systems<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>años en infra &amp; ops<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>years in infra &amp; ops<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>años en backend distribuido<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>years in distributed backend<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>años de base en sysadmin &amp; redes<\/span>/);
+    expect(html).toMatch(
+      /<span[^>]*lang="en"[^>]*>years of sysadmin &amp; networking foundation<\/span>/,
+    );
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>clouds en producción \(AWS · GCP\)<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>production clouds \(AWS · GCP\)<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>eventos procesados \(Kafka · Pulsar\)<\/span>/);
-    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>events shipped \(Kafka · Pulsar\)<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>stacks de mensajería en producción<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>messaging stacks in production<\/span>/);
   });
 
-  it('does not render an accent <span> inside the infinity stat (accent: null)', async () => {
+  it('does not render an accent <span> inside the null-accent stat (tile #4, value 5)', async () => {
     const html = await renderSummary();
-    const infinityNumMatch = html.match(/<span[^>]*>\s*∞\s*<\/span>/);
-    expect(infinityNumMatch).not.toBeNull();
+    const tileFourNumMatch = html.match(/<span[^>]*>\s*5\s*<\/span>/);
+    expect(tileFourNumMatch).not.toBeNull();
     const allAccents = html.match(/<span[^>]*>[+×]<\/span>/g) ?? [];
     expect(allAccents).toHaveLength(3);
   });
@@ -99,7 +101,7 @@ describe('SummarySection (render-test)', () => {
     if (liMatches === null) {
       throw new Error('expected <li> elements');
     }
-    expect(liMatches).toHaveLength(6);
+    expect(liMatches).toHaveLength(7);
     expect(ulInner).toMatch(
       /<span[^>]*lang="es"[^>]*>Sistemas backend cloud-native y arquitecturas distribuidas<\/span>/,
     );
@@ -111,6 +113,12 @@ describe('SummarySection (render-test)', () => {
     );
     expect(ulInner).toMatch(
       /<span[^>]*lang="en"[^>]*>Technical leadership in incident response<\/span>/,
+    );
+    expect(ulInner).toMatch(
+      /<span[^>]*lang="es"[^>]*>Backends AI-native: MCP servers, RAG con vector stores y LLM tooling<\/span>/,
+    );
+    expect(ulInner).toMatch(
+      /<span[^>]*lang="en"[^>]*>AI-native backends: MCP servers, RAG with vector stores, and LLM tooling<\/span>/,
     );
   });
 

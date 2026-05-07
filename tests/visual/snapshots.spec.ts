@@ -42,6 +42,15 @@ test.describe('visual baselines (1440×900, full-page)', () => {
         ({ theme, lang }) => {
           window.localStorage.setItem('theme', theme);
           window.localStorage.setItem('lang', lang);
+
+          let seed = 0x9e3779b9;
+          Math.random = (): number => {
+            seed = (seed + 0x6d2b79f5) | 0;
+            let t = seed;
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
         },
         { theme: visualCase.theme, lang: visualCase.lang },
       );
@@ -63,18 +72,24 @@ test.describe('visual baselines (1440×900, full-page)', () => {
         });
       }
 
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto(visualCase.path, { waitUntil: 'networkidle' });
       await page.evaluate(() => document.fonts.ready);
 
-      // Wait for the SiteStatus block to reach the loaded state on the
-      // the-system page so the snapshot captures painted values, not the
-      // skeleton.
       if (visualCase.slug === 'the-system') {
         await page.waitForSelector(
           'div[data-component="site-status"][aria-busy="false"][data-status-state="loaded"]',
           { state: 'attached' },
         );
       }
+
+      await page.evaluate(() => {
+        const elements = document.querySelectorAll<HTMLElement>('.reveal');
+        elements.forEach((element) => {
+          element.classList.add('in');
+        });
+      });
+      await page.waitForTimeout(800);
 
       const screenshotName = `${visualCase.slug}__${visualCase.theme}__${visualCase.lang}.png`;
       await expect(page).toHaveScreenshot(screenshotName, { fullPage: true });

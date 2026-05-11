@@ -4,7 +4,7 @@
 #
 # Why we run inside the official Playwright container
 # ---------------------------------------------------
-# `playwright.config.ts` enforces `maxDiffPixelRatio: 0.0` — a single byte
+# `playwright.config.ts` enforces `maxDiffPixelRatio: 0.0`: a single byte
 # of pixel difference is enough to fail the suite. Snapshots are therefore
 # only meaningful when the renderer (Chromium + system fonts + libs) is
 # byte-identical between the machine that generated them and the machine
@@ -16,7 +16,7 @@
 # class of failures that a bare runner is prone to.
 #
 # Practical consequences:
-#   1. We do NOT need `npx playwright install chromium --with-deps` here —
+#   1. We do NOT need `npx playwright install chromium --with-deps` here:
 #      the container already provides Chromium and apt-level GUI libs.
 #   2. Snapshot regeneration must happen inside the same container locally,
 #      or the freshly generated PNGs will not match what CI produces. The
@@ -43,7 +43,7 @@
 #      preview server to do it implicitly.
 #
 # Snapshots committed under `tests/visual/__snapshots__/` are the source of
-# truth — see `docs/verification.md` for how to regenerate them locally.
+# truth (see `docs/verification.md` for how to regenerate them locally).
 name: Visual tests
 
 on:
@@ -64,3 +64,19 @@ jobs:
         run: npm run build
       - name: Run visual tests
         run: npm run test:visual
+      # Upload `test-results/` so the actual diff PNGs and error-context.md files
+      # produced by Playwright on failure can be inspected from the Actions UI.
+      # Without this step the diffs only exist inside the ephemeral container and
+      # the maintainer has to guess the cause of any drift, which historically led
+      # to repeated "regenerate baselines and hope" commits instead of root-cause
+      # fixes. The artifact is scoped to the run_id so reruns of the same workflow
+      # do not collide, retention is bounded to 14 days, and the step is best
+      # effort (it is fine for the directory to be missing on green runs).
+      - name: Upload Playwright test-results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results-${{ github.run_id }}
+          path: test-results/
+          retention-days: 14
+          if-no-files-found: ignore

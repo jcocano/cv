@@ -15,7 +15,7 @@ function readProject(filename: string): string {
   return readFileSync(resolve(PROJECTS_DIR, filename), 'utf8');
 }
 
-describe('parseProjectMdx — frontmatter extraction on real projects', () => {
+describe('parseProjectMdx: frontmatter extraction on real projects', () => {
   it('extracts the cluster-separation frontmatter', () => {
     const mdx = readProject('cluster-separation.mdx');
     const parsed = parseProjectMdx(mdx);
@@ -56,7 +56,7 @@ describe('parseProjectMdx — frontmatter extraction on real projects', () => {
   });
 });
 
-describe('parseProjectMdx — section extraction on real projects', () => {
+describe('parseProjectMdx: section extraction on real projects', () => {
   it('finds 3 sections in cluster-separation with the expected labels and ArchDiagram on the third', () => {
     const mdx = readProject('cluster-separation.mdx');
     const parsed = parseProjectMdx(mdx);
@@ -122,7 +122,7 @@ describe('parseProjectMdx — section extraction on real projects', () => {
   });
 });
 
-describe('parseProjectMdx — round-trip with buildProjectMdx', () => {
+describe('parseProjectMdx: round-trip with buildProjectMdx', () => {
   function makeInput(): BuildProjectMdxInput {
     return {
       slug: 'aaaa1111-bbbb-4ccc-8ddd-eeeeffff0000',

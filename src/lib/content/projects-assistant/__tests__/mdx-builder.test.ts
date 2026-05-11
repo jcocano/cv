@@ -119,7 +119,7 @@ function makeValidInput(overrides: Partial<BuildProjectMdxInput> = {}): BuildPro
   return { ...base, ...overrides };
 }
 
-describe('buildProjectMdx — frontmatter round-trip', () => {
+describe('buildProjectMdx: frontmatter round-trip', () => {
   it('emits a frontmatter that parses through projectSchema with cover normalised to ./cover.png', () => {
     const input = makeValidInput();
     const mdx = buildProjectMdx(input);
@@ -156,7 +156,7 @@ describe('buildProjectMdx — frontmatter round-trip', () => {
   });
 });
 
-describe('buildProjectMdx — no em-dashes', () => {
+describe('buildProjectMdx: no em-dashes', () => {
   it('strips em-dashes from i18n strings, replacing them with comma and space', () => {
     const input = makeValidInput({
       title: { es: 'Algo — destacado', en: 'Something — featured' },
@@ -193,7 +193,7 @@ describe('buildProjectMdx — no em-dashes', () => {
   });
 });
 
-describe('buildProjectMdx — no human comments', () => {
+describe('buildProjectMdx: no human comments', () => {
   it('emits no JSX style human comments such as {/* ... */} or HTML comments', () => {
     const mdx = buildProjectMdx(makeValidInput());
     expect(mdx).not.toMatch(/\{\/\*/);
@@ -203,7 +203,7 @@ describe('buildProjectMdx — no human comments', () => {
   });
 });
 
-describe('buildProjectMdx — imports', () => {
+describe('buildProjectMdx: imports', () => {
   it('always imports Lang and ProjectSection', () => {
     const mdx = buildProjectMdx(makeValidInput());
     expect(mdx).toContain("import Lang from '@/components/ui/Lang.astro';");
@@ -251,7 +251,7 @@ describe('buildProjectMdx — imports', () => {
   });
 });
 
-describe('buildProjectMdx — section bodies', () => {
+describe('buildProjectMdx: section bodies', () => {
   it('wraps prose in a <Lang lang="es"> and <Lang lang="en"> with blank lines for markdown', () => {
     const mdx = buildProjectMdx(
       makeValidInput({

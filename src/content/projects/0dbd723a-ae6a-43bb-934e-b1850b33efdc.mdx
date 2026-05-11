@@ -1,0 +1,118 @@
+---
+slug: '0dbd723a-ae6a-43bb-934e-b1850b33efdc'
+title:
+  es: 'pkmn-vgc-copilot: un copiloto que cita cada afirmación'
+  en: 'pkmn-vgc-copilot: a copilot that cites every claim'
+company: 'Open Source'
+year: 2026
+featured: true
+tagline:
+  es: 'Copiloto VGC que obliga a citar cada respuesta'
+  en: 'VGC copilot that forces every answer to cite its source'
+description:
+  es: 'Copiloto para Pokémon VGC competitivo donde cada respuesta cita su fuente: agregaciones SQL en Postgres, hits vectoriales en Qdrant o transcripciones de Whisper. Sin cita no hay respuesta. Multi-TUI con un AGENTS.md compartido entre Claude Code, Cursor y más.'
+  en: 'Copilot for competitive Pokémon VGC where every answer cites its source: SQL aggregations in Postgres, vector hits in Qdrant, or Whisper transcriptions. No citation, no answer. Multi-TUI with a shared AGENTS.md across Claude Code, Cursor, and more.'
+cover: './cover.png'
+tags:
+  - 'AI'
+  - 'LLM'
+  - 'RAG'
+  - 'Tooling'
+order: 2
+eyebrow:
+  es: 'open source'
+  en: 'open source'
+stack:
+  - 'TypeScript'
+  - 'Postgres'
+  - 'Qdrant'
+  - 'Whisper'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+Pokémon VGC competitivo es un deporte donde la diferencia entre llegar a top-cut y quedarte fuera es haber recordado esa interacción oscura de un torneo de hace cuatro meses. La información está en todas partes (bases de replays, análisis de VODs en YouTube, post-mortems en Discord) y en ninguna a la vez. Los LLM genéricos alucinan el meta con la misma confianza con que aciertan, lo cual es peor que inútil cuando te quedan treinta segundos para selección de equipo.
+
+  </Lang>
+  <Lang lang="en">
+
+Competitive Pokémon VGC is a sport where the difference between top-cut and bubbling out is whether you remembered that one obscure interaction from a tournament four months ago. The data is everywhere (replay databases, YouTube VOD analysis, Discord post-mortems) and nowhere at the same time. Generic LLMs hallucinate the meta as confidently as they get it right, which is worse than useless when you are 30 seconds from team selection.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+No quería otro wrapper de "pregúntale a la IA". Quería un sistema donde toda respuesta tuviera que apuntar a la fila, la agregación SQL o el hit vectorial que la produjo. Sin cita, no hay respuesta.
+
+  </Lang>
+  <Lang lang="en">
+
+I did not want another "ask the AI" wrapper. I wanted a system where every answer had to point at the row, the SQL aggregation, or the vector hit that produced it. No citation, no answer.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+Dos almacenes, una disciplina. Postgres guarda los datos canónicos del juego y los resultados de torneo, cualquier cosa que se pueda consultar, joinear y agregar vive ahí. Qdrant guarda la prosa narrativa, comentario de replays, análisis escrito, transcripciones de YouTube, cualquier cosa donde "qué dijo la gente sobre este matchup" importe más que "cuáles son los números".
+
+Cada herramienta que expone el copiloto (`meta-analysis`, `anti-meta`, `team-builder`, `match-analyzer`, `playstyle-profile`) decide en tiempo de routing a qué almacén pegarle, y la respuesta tiene que citar por almacén. Una agregación SQL cita el query y las filas. Una recuperación vectorial cita el chunk y su fuente. Si el modelo quiere hacer una afirmación que ninguno de los dos almacenes respalda, tiene que decirlo.
+
+La pieza es multi-TUI por diseño: Claude Code, OpenCode, Cursor, Codex CLI y Aider la operan a través de un `AGENTS.md` compartido con dos modos de operador (USER para análisis, EDITOR para ingesta).
+
+  </Lang>
+  <Lang lang="en">
+
+Two stores, one discipline. Postgres holds the canonical game data and tournament results, anything that can be queried, joined, and aggregated lives there. Qdrant holds the narrative prose, replay commentary, written analysis, transcribed YouTube breakdowns, anything where "what did people say about this matchup" matters more than "what are the numbers."
+
+Every tool the copilot exposes (`meta-analysis`, `anti-meta`, `team-builder`, `match-analyzer`, `playstyle-profile`) decides at routing time which store to hit, and the response has to cite per store. A SQL aggregation cites the query and the rows. A vector retrieval cites the chunk and its source. If the model wants to make a claim neither store supports, it has to say so.
+
+The whole thing is multi-TUI by design: Claude Code, OpenCode, Cursor, Codex CLI, and Aider all drive it through a shared `AGENTS.md` with two operator modes (USER for analysis, EDITOR for ingestion).
+
+  </Lang>
+  <ArchDiagram>
+       <span class="h">User</span>
+        |
+        v
+   +----------+
+   | <span class="c">Multi-TUI</span>|
+   | <span class="c">AGENTS.md</span>|
+   +-----+----+
+         |
+         v
+     +--------+
+     | <span class="c">Router</span> |
+     +-+----+-+
+       |    |
+       v    v
+   +--------+ +--------+
+   |<span class="c">Postgres</span>| |<span class="c">Qdrant</span>  |
+   | <span class="c">SQL</span>    | | <span class="c">vec</span>    |
+   +---+----+ +---+----+
+       |          |
+       +----+-----+
+            v
+      <span class="h">Cited answer</span>
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Este es el proyecto donde dejé de usar la IA como buscador y empecé a usarla como sistema de dominio. El pipeline de ingesta (parseo de replays de Showdown, transcripción con Whisper, indexado de embeddings) corre end-to-end sin que yo toque los datos, así que la base de conocimiento crece sola. La disciplina de citación es la parte que más me enorgullece: es la diferencia entre un copiloto en el que confías y un copiloto que tienes que verificar a mano.
+
+  </Lang>
+  <Lang lang="en">
+
+This is the project where I stopped using AI as a search engine and started using it as a domain system. The ingestion pipeline (Showdown replay parsing, Whisper transcription, embedding indexing) runs end-to-end without me touching the data, so the knowledge base grows on its own. The citation discipline is the part I am most proud of: it is the difference between a copilot you trust and a copilot you fact-check.
+
+  </Lang>
+</ProjectSection>

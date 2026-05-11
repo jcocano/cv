@@ -36,15 +36,15 @@ const made = makeProject({
   eyebrow: { es: 'proyecto destacado', en: 'featured project' },
   stack: ['TypeScript', 'NestJS', 'K8s', 'AWS', 'GCP'],
 });
-const cluster = makeProject({
-  slug: 'cluster-separation',
+const neighborC = makeProject({
+  slug: 'neighbor-c',
   order: 3,
-  title: { es: 'Separación de Clusters', en: 'Cluster Separation' },
+  title: { es: 'Vecino C', en: 'Neighbor C' },
 });
-const incommers = makeProject({
-  slug: 'incommers-nft',
+const neighborB = makeProject({
+  slug: 'neighbor-b',
   order: 2,
-  title: { es: 'Incommers NFT', en: 'Incommers NFT' },
+  title: { es: 'Vecino B', en: 'Neighbor B' },
 });
 
 async function renderProjectLayout(
@@ -61,18 +61,18 @@ async function renderProjectLayout(
 
 describe('ProjectLayout (render-test)', () => {
   it('renders the page-aware back-link with default href to home (BASE_URL "/cv/") and `data-back-link` marker', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<a[^>]*data-back-link[^>]*href="\/cv\/"/);
   });
 
   it('emits both home/projects href datasets on the back-link anchor', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<a[^>]*data-back-link[^>]*data-home-href="\/cv\/"/);
     expect(html).toMatch(/<a[^>]*data-back-link[^>]*data-projects-href="\/cv\/projects\/"/);
   });
 
   it('emits the bilingual home labels visible (no `hidden` attribute) and the projects labels hidden by default', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(
       /<span[^>]*data-back-variant="home"[^>]*lang="es"(?:(?!hidden)[^>])*>Inicio<\/span>/,
     );
@@ -88,61 +88,61 @@ describe('ProjectLayout (render-test)', () => {
   });
 
   it('emits a referrer-aware <script> as a sibling of the back-link to mutate it when document.referrer matches /projects/', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<script[\s\S]*document\.referrer[\s\S]*<\/script>/);
     expect(html).toMatch(/<script[\s\S]*data-back-link[\s\S]*<\/script>/);
     expect(html).toMatch(/<script[\s\S]*data-projects-href[\s\S]*<\/script>/);
   });
 
   it('does NOT render the legacy "Volver al portfolio / Back to portfolio" copy (replaced by page-aware Inicio/Home + Todos los proyectos/All projects)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toContain('Volver al portfolio');
     expect(html).not.toContain('Back to portfolio');
   });
 
   it('does NOT render the legacy `href="/cv/#work"` portfolio anchor anywhere in the layout (replaced by page-aware default to home)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toContain('href="/cv/#work"');
   });
 
   it('renders the project eyebrow with order padded to 2 digits ("01") and bilingual category', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<span[^>]*>01<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="es"[^>]*>proyecto destacado<\/span>/);
     expect(html).toMatch(/<span[^>]*lang="en"[^>]*>featured project<\/span>/);
   });
 
   it('reuses the shared <Eyebrow> component for the project hero eyebrow (regression: feature #17 iter 3 bug 1)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toMatch(/class="[^"]*\bmono\b[^"]*"/);
     expect(html).toMatch(/<span\s+class="[^"]+"[^>]*>01<\/span>/);
   });
 
   it('renders the project h1 title with bilingual <span lang="…"> children', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<h1[^>]*>[\s\S]*<span[^>]*lang="es"[^>]*>Made by Apes<\/span>/);
     expect(html).toMatch(/<h1[^>]*>[\s\S]*<span[^>]*lang="en"[^>]*>Made by Apes<\/span>/);
   });
 
   it('renders the bilingual tagline paragraph from the project frontmatter', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toContain('Plataforma oficial de licencias para BAYC y MAYC.');
     expect(html).toContain('Official licensing platform for BAYC and MAYC.');
   });
 
   it('does NOT render the legacy "Cliente"/"Client" meta key (iter 4 rediseño hero)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Cliente<\/span>/);
     expect(html).not.toMatch(/<span[^>]*lang="en"[^>]*>Client<\/span>/);
   });
 
   it('renders the company name with accent styling (iter 5)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<span\s+class="[^"]+"[^>]*>Yuga Labs<\/span>/);
   });
 
   it('renders the year inline with the company in a single combined line (iter 5)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     const companyIdx = html.indexOf('>Yuga Labs<');
     const yearIdx = html.indexOf('>2025<');
     expect(companyIdx).toBeGreaterThan(-1);
@@ -152,7 +152,7 @@ describe('ProjectLayout (render-test)', () => {
   });
 
   it('renders a "/" separator between company and year (iter 5)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     const companyIdx = html.indexOf('>Yuga Labs<');
     const yearIdx = html.indexOf('>2025<');
     const slashSpanRe = /<span\s+class="[^"]+"[^>]*>\/<\/span>/g;
@@ -168,13 +168,13 @@ describe('ProjectLayout (render-test)', () => {
   });
 
   it('does NOT render a YEAR meta key (iter 5: removed)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Año<\/span>/);
     expect(html).not.toMatch(/<span[^>]*lang="en"[^>]*>Year<\/span>/);
   });
 
   it('does NOT render a ROLE meta key (iter 5: removed; role lives in experience section)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toMatch(/<span[^>]*lang="es"[^>]*>Rol<\/span>/);
     expect(html).not.toMatch(/<span[^>]*lang="en"[^>]*>Role<\/span>/);
     expect(html).not.toContain('Senior Backend &amp; Platform Engineer');
@@ -182,12 +182,12 @@ describe('ProjectLayout (render-test)', () => {
   });
 
   it('does NOT render a STACK meta key (iter 5: pills are the only affordance)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).not.toMatch(/>Stack</);
   });
 
   it('renders one <span> per technology with the literal tech name (iter 5)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toMatch(/<span[^>]*>TypeScript<\/span>/);
     expect(html).toMatch(/<span[^>]*>NestJS<\/span>/);
     expect(html).toMatch(/<span[^>]*>K8s<\/span>/);
@@ -202,50 +202,51 @@ describe('ProjectLayout (render-test)', () => {
       order: 1,
       stack: ['Solidity', 'Hardhat', 'Next.js'],
     });
-    const html = await renderProjectLayout(projectWithThreeTechs, cluster, incommers);
+    const html = await renderProjectLayout(projectWithThreeTechs, neighborC, neighborB);
     expect(html).toMatch(/<span[^>]*>Solidity<\/span>/);
     expect(html).toMatch(/<span[^>]*>Hardhat<\/span>/);
     expect(html).toMatch(/<span[^>]*>Next\.js<\/span>/);
   });
 
   it('groups the back-link and the eyebrow inside a single hero-top wrapper (iter 4 rediseño hero)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     const wrapperRe =
       /<div[^>]*class="[^"]*"[^>]*>[\s\S]*?<a[^>]*data-back-link[\s\S]*?<span[^>]*class="[^"]*_eyebrow_[^"]*"[\s\S]*?<\/span>[\s\S]*?<\/div>/;
     expect(html).toMatch(wrapperRe);
   });
 
   it('renders the slot (MDX deep-dive body) verbatim inside <main>', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     expect(html).toContain('<p>cuerpo del deep-dive</p>');
   });
 
   it('renders the next-project nav with bilingual "Anterior/Previous" link to prev when prev is not null', async () => {
-    const html = await renderProjectLayout(cluster, incommers, made);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/incommers-nft"[\s\S]*Anterior/);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/incommers-nft"[\s\S]*Previous/);
-    expect(html).toContain('Incommers NFT');
+    const html = await renderProjectLayout(neighborC, neighborB, made);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-b"[\s\S]*Anterior/);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-b"[\s\S]*Previous/);
+    expect(html).toContain('Neighbor B');
   });
 
   it('renders the next-project nav with bilingual "Siguiente/Next" link to next when next is not null', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/incommers-nft"[\s\S]*Siguiente/);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/incommers-nft"[\s\S]*Next/);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-b"[\s\S]*Siguiente/);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-b"[\s\S]*Next/);
   });
 
-  it('renders the bilingual title of the linked next project (Incommers NFT in es / Incommers NFT in en)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
-    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Incommers NFT<\/span>/);
+  it('renders the bilingual title of the linked next project (Vecino B in es / Neighbor B in en)', async () => {
+    const html = await renderProjectLayout(made, neighborC, neighborB);
+    expect(html).toMatch(/<span[^>]*lang="es"[^>]*>Vecino B<\/span>/);
+    expect(html).toMatch(/<span[^>]*lang="en"[^>]*>Neighbor B<\/span>/);
   });
 
-  it('renders the circular wrap on the prev side when current is the first by order (made-by-apes -> prev=cluster-separation)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/cluster-separation"[\s\S]*Anterior/);
-    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/cluster-separation"[\s\S]*Previous/);
+  it('renders the circular wrap on the prev side when current is the first by order (made-by-apes -> prev=neighbor-c)', async () => {
+    const html = await renderProjectLayout(made, neighborC, neighborB);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-c"[\s\S]*Anterior/);
+    expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/neighbor-c"[\s\S]*Previous/);
   });
 
-  it('renders the circular wrap on the next side when current is the last by order (cluster-separation -> next=made-by-apes)', async () => {
-    const html = await renderProjectLayout(cluster, incommers, made);
+  it('renders the circular wrap on the next side when current is the last by order (neighbor-c -> next=made-by-apes)', async () => {
+    const html = await renderProjectLayout(neighborC, neighborB, made);
     expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/made-by-apes"[\s\S]*Siguiente/);
     expect(html).toMatch(/<a[^>]*href="\/cv\/projects\/made-by-apes"[\s\S]*Next/);
   });
@@ -257,7 +258,7 @@ describe('ProjectLayout (render-test)', () => {
   });
 
   it('does NOT render the legacy "Todos los proyectos / All projects" fallback inside the bottom nav (circular: never falls back to the portfolio)', async () => {
-    const html = await renderProjectLayout(made, cluster, incommers);
+    const html = await renderProjectLayout(made, neighborC, neighborB);
     const navMatch = html.match(/<nav[^>]*aria-label="Project navigation"[\s\S]*?<\/nav>/);
     expect(navMatch).not.toBeNull();
     const navHtml = navMatch?.[0] ?? '';

@@ -15,12 +15,49 @@ function readProject(filename: string): string {
   return readFileSync(resolve(PROJECTS_DIR, filename), 'utf8');
 }
 
-describe('parseProjectMdx: frontmatter extraction on real projects', () => {
-  it('extracts the incommers-nft frontmatter', () => {
-    const mdx = readProject('incommers-nft.mdx');
+function buildSyntheticThreeSectionMdx(): string {
+  return buildProjectMdx({
+    slug: 'synthetic-fixture',
+    title: { es: 'Synthetic Fixture', en: 'Synthetic Fixture' },
+    company: 'Acme',
+    year: 2024,
+    featured: true,
+    order: 2,
+    tagline: { es: 'tagline es.', en: 'tagline en.' },
+    description: { es: 'description es.', en: 'description en.' },
+    tags: ['Alpha'],
+    eyebrow: { es: 'destacado', en: 'featured' },
+    stack: ['TypeScript', 'NestJS'],
+    sections: [
+      {
+        labelEs: 'contexto',
+        labelEn: 'context',
+        prose: { es: 'contexto es.', en: 'context en.' },
+      },
+      {
+        labelEs: 'impacto',
+        labelEn: 'impact',
+        metrics: [
+          { value: '0', labelEs: 'firmas', labelEn: 'signatures' },
+          { value: '<1s', labelEs: 'latencia', labelEn: 'latency' },
+          { value: '100%', labelEs: 'validez', labelEn: 'validity' },
+        ],
+      },
+      {
+        labelEs: 'decisiones',
+        labelEn: 'decisions',
+        archDiagram: 'node A -> node B',
+      },
+    ],
+  });
+}
+
+describe('parseProjectMdx: frontmatter extraction', () => {
+  it('extracts a complete frontmatter from a synthetic fixture (slug, company, year, order, featured)', () => {
+    const mdx = buildSyntheticThreeSectionMdx();
     const parsed = parseProjectMdx(mdx);
-    expect(parsed.frontmatter.slug).toBe('incommers-nft');
-    expect(parsed.frontmatter.company).toBe('MetaOne');
+    expect(parsed.frontmatter.slug).toBe('synthetic-fixture');
+    expect(parsed.frontmatter.company).toBe('Acme');
     expect(parsed.frontmatter.year).toBe(2024);
     expect(parsed.frontmatter.order).toBe(2);
     expect(parsed.frontmatter.featured).toBe(true);
@@ -39,9 +76,9 @@ describe('parseProjectMdx: frontmatter extraction on real projects', () => {
   });
 });
 
-describe('parseProjectMdx: section extraction on real projects', () => {
-  it('finds 3 sections in incommers-nft, the impact section carries 3 metrics, the decisions section carries an ArchDiagram', () => {
-    const mdx = readProject('incommers-nft.mdx');
+describe('parseProjectMdx: section extraction', () => {
+  it('finds 3 sections in a synthetic fixture, the impact section carries 3 metrics, the decisions section carries an ArchDiagram', () => {
+    const mdx = buildSyntheticThreeSectionMdx();
     const parsed = parseProjectMdx(mdx);
     expect(parsed.sections).toHaveLength(3);
     const impactSection = parsed.sections.find((section) => section.labelEn === 'impact');

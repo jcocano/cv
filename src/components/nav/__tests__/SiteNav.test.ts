@@ -266,7 +266,7 @@ describe('SiteNav (page-aware hrefs)', () => {
   });
 
   it('renders absolute hrefs when rendered on a project page (`/projects/foo/`)', async () => {
-    const html = await renderSiteNav('/projects/incommers-nft/');
+    const html = await renderSiteNav('/projects/made-by-apes/');
     const navLinkMatches = Array.from(
       html.matchAll(/<a[^>]*class="[^"]*\bnav-link\b[^"]*"[^>]*>/g),
     );

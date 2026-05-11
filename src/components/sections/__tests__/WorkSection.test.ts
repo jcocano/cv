@@ -40,10 +40,10 @@ describe('WorkSection (render-test)', () => {
     expect(html).toContain('Production platforms, architectural calls, and measurable impact.');
   });
 
-  it('renders the case-studies block with the 2 featured projects', async () => {
+  it('renders the case-studies block with the featured project (Made by Apes)', async () => {
     const html = await renderWorkSection();
     expect(html).toContain('Made by Apes');
-    expect(html).toContain('Incommers NFT');
+    expect(html).not.toContain('Incommers NFT');
     expect(html).not.toContain('Cluster Separation');
   });
 
@@ -87,7 +87,7 @@ describe('WorkSection (render-test)', () => {
 
   it('places the MoreProjectsLink AFTER the case-studies block and BEFORE the 04.5 OSS eyebrow', async () => {
     const html = await renderWorkSection();
-    const caseStudiesIdx = html.lastIndexOf('Incommers NFT');
+    const caseStudiesIdx = html.lastIndexOf('Made by Apes');
     const linkIdx = html.indexOf('Más proyectos de interés');
     const ossEyebrowIdx = html.indexOf('>04.5<');
     expect(caseStudiesIdx).toBeGreaterThan(-1);

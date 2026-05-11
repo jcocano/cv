@@ -26,10 +26,10 @@ async function renderSlug(slug: string): Promise<string> {
 }
 
 describe('pages/projects/[...slug].astro (render-test)', () => {
-  it('the projects collection contains exactly the 2 expected slugs', async () => {
+  it('the projects collection contains exactly the expected slug (made-by-apes)', async () => {
     const entries: CollectionEntry<'projects'>[] = await getCollection('projects');
     const slugs = entries.map((entry) => entry.data.slug).sort();
-    expect(slugs).toEqual(['incommers-nft', 'made-by-apes']);
+    expect(slugs).toEqual(['made-by-apes']);
   });
 
   it('renders the made-by-apes project page with the project title in <h1>', async () => {
@@ -98,33 +98,9 @@ describe('pages/projects/[...slug].astro (render-test)', () => {
     expect(html).toContain('on-chain sync latency');
   });
 
-  it('renders the circular prev=incommers-nft and next=incommers-nft nav for made-by-apes (first by order, wraps prev to last with only 2 projects)', async () => {
+  it('does NOT render the bottom Project navigation nav when the collection has a single project (no peers to rotate to)', async () => {
     const html = await renderSlug('made-by-apes');
-    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Anterior/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Previous/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Siguiente/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/incommers-nft"[\s\S]*Next/);
-  });
-
-  it('renders the circular prev=made-by-apes and next=made-by-apes nav for incommers-nft (last by order, wraps next to first with only 2 projects)', async () => {
-    const html = await renderSlug('incommers-nft');
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Anterior/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Previous/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Siguiente/);
-    expect(html).toMatch(/<a[^>]*href="\/projects\/made-by-apes"[\s\S]*Next/);
-  });
-
-  it('does not render the legacy "Todos los proyectos / All projects" fallback inside the bottom nav (circular: never falls back to the portfolio)', async () => {
-    for (const slug of ['made-by-apes', 'incommers-nft']) {
-      const html = await renderSlug(slug);
-      const navMatch = html.match(/<nav[^>]*aria-label="Project navigation"[\s\S]*?<\/nav>/);
-      expect(navMatch).not.toBeNull();
-      const navHtml = navMatch?.[0] ?? '';
-      expect(navHtml).not.toContain('Todos los proyectos');
-      expect(navHtml).not.toContain('All projects');
-      expect(navHtml).not.toContain('Volver');
-      expect(navHtml).not.toContain('#work');
-    }
+    expect(html).not.toMatch(/<nav[^>]*aria-label="Project navigation"/);
   });
 
   it('uses the project order to render the eyebrow num (made-by-apes -> 01)', async () => {
@@ -132,15 +108,13 @@ describe('pages/projects/[...slug].astro (render-test)', () => {
     expect(html).toMatch(/<span[^>]*>01<\/span>/);
   });
 
-  for (const slug of ['made-by-apes', 'incommers-nft']) {
-    it(`does not render any <p><p> double-open in the ${slug} project page (iter 7)`, async () => {
-      const html = await renderSlug(slug);
-      expect(html).not.toContain('<p><p>');
-    });
+  it('does not render any <p><p> double-open in the made-by-apes project page (iter 7)', async () => {
+    const html = await renderSlug('made-by-apes');
+    expect(html).not.toContain('<p><p>');
+  });
 
-    it(`does not render any empty <p></p> in the ${slug} project page (iter 7)`, async () => {
-      const html = await renderSlug(slug);
-      expect(html).not.toContain('<p></p>');
-    });
-  }
+  it('does not render any empty <p></p> in the made-by-apes project page (iter 7)', async () => {
+    const html = await renderSlug('made-by-apes');
+    expect(html).not.toContain('<p></p>');
+  });
 });

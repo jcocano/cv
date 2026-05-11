@@ -17,7 +17,6 @@ const PAGES: ReadonlyArray<{ path: string; slug: string }> = [
   { path: 'projects/', slug: 'projects' },
   { path: 'projects/made-by-apes/', slug: 'project-made-by-apes' },
   { path: 'projects/incommers-nft/', slug: 'project-incommers-nft' },
-  { path: 'projects/cluster-separation/', slug: 'project-cluster-separation' },
   { path: 'the-system/', slug: 'the-system' },
 ];
 const THEMES: readonly ThemeName[] = ['dark', 'light', 'paper'];

@@ -22,26 +22,7 @@ const { slug } = Astro.props;
     </svg>
   )
 }
-{
-  slug === 'cluster-separation' && (
-    <svg
-      class="signature"
-      viewBox="0 0 200 200"
-      fill="none"
-      stroke="var(--accent)"
-      stroke-width="0.6"
-    >
-      <rect x="20" y="20" width="60" height="60" rx="4" />
-      <rect x="120" y="20" width="60" height="60" rx="4" />
-      <rect x="20" y="120" width="60" height="60" rx="4" />
-      <rect x="120" y="120" width="60" height="60" rx="4" />
-      <line x1="80" y1="50" x2="120" y2="50" stroke-dasharray="2 3" />
-      <line x1="80" y1="150" x2="120" y2="150" stroke-dasharray="2 3" />
-      <line x1="50" y1="80" x2="50" y2="120" stroke-dasharray="2 3" />
-      <line x1="150" y1="80" x2="150" y2="120" stroke-dasharray="2 3" />
-    </svg>
-  )
-}
+
 {
   slug === 'incommers-nft' && (
     <svg
@@ -66,7 +47,7 @@ const { slug } = Astro.props;
   )
 }
 {
-  slug !== 'made-by-apes' && slug !== 'cluster-separation' && slug !== 'incommers-nft' && (
+  slug !== 'made-by-apes' && slug !== 'incommers-nft' && (
     <svg
       class="signature"
       viewBox="0 0 200 200"

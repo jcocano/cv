@@ -12,7 +12,6 @@ const PAGE_PATHS: readonly string[] = [
   'projects/index.html',
   'projects/made-by-apes/index.html',
   'projects/incommers-nft/index.html',
-  'projects/cluster-separation/index.html',
   'the-system/index.html',
 ];
 

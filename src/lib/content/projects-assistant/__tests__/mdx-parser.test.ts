@@ -16,23 +16,6 @@ function readProject(filename: string): string {
 }
 
 describe('parseProjectMdx: frontmatter extraction on real projects', () => {
-  it('extracts the cluster-separation frontmatter', () => {
-    const mdx = readProject('cluster-separation.mdx');
-    const parsed = parseProjectMdx(mdx);
-    expect(parsed.frontmatter.slug).toBe('cluster-separation');
-    expect(parsed.frontmatter.company).toBe('tokenproof');
-    expect(parsed.frontmatter.year).toBe(2023);
-    expect(parsed.frontmatter.featured).toBe(true);
-    expect(parsed.frontmatter.order).toBe(3);
-    expect(parsed.frontmatter.cover).toBe('./cover.png');
-    expect(parsed.frontmatter.title.es).toBe('Separación de Clusters');
-    expect(parsed.frontmatter.title.en).toBe('Cluster Separation');
-    expect(parsed.frontmatter.tags).toEqual(['Terraform', 'EKS', 'IaC', 'CI/CD']);
-    expect(parsed.frontmatter.stack).toEqual(['Terraform', 'Terragrunt', 'EKS', 'GitHub Actions']);
-    expect(parsed.frontmatter.eyebrow.es).toBe('infraestructura');
-    expect(parsed.frontmatter.eyebrow.en).toBe('infrastructure');
-  });
-
   it('extracts the incommers-nft frontmatter', () => {
     const mdx = readProject('incommers-nft.mdx');
     const parsed = parseProjectMdx(mdx);
@@ -57,27 +40,6 @@ describe('parseProjectMdx: frontmatter extraction on real projects', () => {
 });
 
 describe('parseProjectMdx: section extraction on real projects', () => {
-  it('finds 3 sections in cluster-separation with the expected labels and ArchDiagram on the third', () => {
-    const mdx = readProject('cluster-separation.mdx');
-    const parsed = parseProjectMdx(mdx);
-    expect(parsed.sections).toHaveLength(3);
-    const firstSection = parsed.sections[0];
-    const secondSection = parsed.sections[1];
-    const thirdSection = parsed.sections[2];
-    if (firstSection === undefined || secondSection === undefined || thirdSection === undefined) {
-      throw new Error('expected 3 sections');
-    }
-    expect(firstSection.labelEs).toBe('problema');
-    expect(firstSection.labelEn).toBe('problem');
-    expect(secondSection.labelEs).toBe('impacto');
-    expect(secondSection.labelEn).toBe('impact');
-    expect(secondSection.metrics).not.toBeNull();
-    expect(secondSection.metrics).toHaveLength(3);
-    expect(thirdSection.labelEs).toBe('decisiones');
-    expect(thirdSection.labelEn).toBe('decisions');
-    expect(thirdSection.archDiagram).not.toBeNull();
-  });
-
   it('finds 3 sections in incommers-nft, the impact section carries 3 metrics, the decisions section carries an ArchDiagram', () => {
     const mdx = readProject('incommers-nft.mdx');
     const parsed = parseProjectMdx(mdx);

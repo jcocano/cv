@@ -15,8 +15,8 @@ describe('isHomePath', () => {
     expect(isHomePath('/cv/the-system/', '/cv/')).toBe(false);
   });
 
-  it('returns false for a project page ("/cv/projects/incommers-nft/")', () => {
-    expect(isHomePath('/cv/projects/incommers-nft/', '/cv/')).toBe(false);
+  it('returns false for a project page ("/cv/projects/made-by-apes/")', () => {
+    expect(isHomePath('/cv/projects/made-by-apes/', '/cv/')).toBe(false);
   });
 
   it('returns true for root when base is "/" (local preview without base)', () => {

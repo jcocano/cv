@@ -1,30 +1,9 @@
 ---
-interface Props {
-  slug: string;
-}
 
-const { slug } = Astro.props;
 ---
 
 {
-  slug === 'made-by-apes' && (
-    <svg
-      class="signature"
-      viewBox="0 0 200 200"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="0.5"
-    >
-      <circle cx="100" cy="100" r="80" stroke="var(--accent)" />
-      <circle cx="100" cy="100" r="60" stroke="var(--accent)" opacity="0.6" />
-      <circle cx="100" cy="100" r="40" stroke="var(--accent)" opacity="0.4" />
-      <circle cx="100" cy="100" r="20" fill="var(--accent)" opacity="0.3" />
-    </svg>
-  )
-}
-
-{
-  slug !== 'made-by-apes' && (
+  (
     <svg
       class="signature"
       viewBox="0 0 200 200"

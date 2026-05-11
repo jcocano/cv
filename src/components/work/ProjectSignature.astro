@@ -24,30 +24,7 @@ const { slug } = Astro.props;
 }
 
 {
-  slug === 'incommers-nft' && (
-    <svg
-      class="signature"
-      viewBox="0 0 200 200"
-      fill="none"
-      stroke="var(--accent)"
-      stroke-width="0.6"
-    >
-      <path d="M100 20 L100 50 M70 80 L130 80 M40 110 L70 110 M90 110 L110 110 M130 110 L160 110" />
-      <line x1="100" y1="50" x2="70" y2="80" />
-      <line x1="100" y1="50" x2="130" y2="80" />
-      <line x1="70" y1="80" x2="40" y2="110" />
-      <line x1="70" y1="80" x2="100" y2="110" />
-      <line x1="130" y1="80" x2="100" y2="110" />
-      <line x1="130" y1="80" x2="160" y2="110" />
-      <circle cx="40" cy="110" r="4" fill="var(--accent)" />
-      <circle cx="100" cy="110" r="4" fill="var(--accent)" />
-      <circle cx="160" cy="110" r="4" fill="var(--accent)" />
-      <circle cx="100" cy="50" r="4" fill="var(--accent)" />
-    </svg>
-  )
-}
-{
-  slug !== 'made-by-apes' && slug !== 'incommers-nft' && (
+  slug !== 'made-by-apes' && (
     <svg
       class="signature"
       viewBox="0 0 200 200"

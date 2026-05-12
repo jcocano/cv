@@ -15,6 +15,7 @@ interface VisualCase {
 const PAGES: ReadonlyArray<{ path: string; slug: string }> = [
   { path: '', slug: 'home' },
   { path: 'projects/', slug: 'projects' },
+  { path: 'projects/7a4b3c05-879d-4148-87c9-17f1fd81367f/', slug: 'project-7a4b3c05' },
   { path: 'the-system/', slug: 'the-system' },
 ];
 const THEMES: readonly ThemeName[] = ['dark', 'light', 'paper'];

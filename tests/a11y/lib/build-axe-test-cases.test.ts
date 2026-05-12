@@ -13,8 +13,8 @@ describe('buildAxeTestCases', () => {
     const pagePaths = Array.from(new Set(cases.map((entry) => entry.pagePath))).sort();
     expect(pagePaths).toEqual([
       'index.html',
+      'projects/7a4b3c05-879d-4148-87c9-17f1fd81367f/index.html',
       'projects/index.html',
-      'projects/made-by-apes/index.html',
       'the-system/index.html',
     ]);
   });

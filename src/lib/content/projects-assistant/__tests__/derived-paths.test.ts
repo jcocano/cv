@@ -485,7 +485,7 @@ describe('derived-paths types are exported', () => {
 describe('findVisualTestEntries default targets', () => {
   it('uses repo-relative tests/visual specs as default when no targets are passed', async () => {
     const repoRoot = resolve(__dirname, '../../../../../');
-    const entries = await findVisualTestEntries('made-by-apes');
+    const entries = await findVisualTestEntries('7a4b3c05-879d-4148-87c9-17f1fd81367f');
     expect(entries.length).toBeGreaterThanOrEqual(2);
     const filePaths = new Set(entries.map((entry) => entry.filePath));
     expect(filePaths.has(join(repoRoot, 'tests/visual/snapshots.spec.ts'))).toBe(true);

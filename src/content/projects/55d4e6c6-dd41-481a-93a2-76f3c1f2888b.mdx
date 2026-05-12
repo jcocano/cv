@@ -1,0 +1,124 @@
+---
+slug: '55d4e6c6-dd41-481a-93a2-76f3c1f2888b'
+title:
+  es: 'simple-template: un editor de correos local que los agentes de IA pueden manejar'
+  en: 'simple-template: a local-first email editor that AI agents can drive'
+company: 'Open Source'
+year: 2026
+featured: true
+tagline:
+  es: 'Editor de correos local que los agentes manejan vía MCP'
+  en: 'Local email editor that agents drive through MCP'
+description:
+  es: 'Editor de correos local-first (Electron + better-sqlite3) que cualquier cliente MCP-aware (Claude Desktop, Cursor, Zed) puede manejar a través de 28 herramientas tipadas con Zod. El agente nunca alucina HTML porque no escribe HTML: opera el editor.'
+  en: 'Local-first email editor (Electron + better-sqlite3) that any MCP-aware client (Claude Desktop, Cursor, Zed) can drive through 28 Zod-typed tools. The agent never hallucinates HTML because it never writes HTML: it operates the editor.'
+cover: './cover.png'
+tags:
+  - 'AI'
+  - 'MCP'
+  - 'Desktop'
+  - 'Tooling'
+order: 3
+eyebrow:
+  es: 'open source'
+  en: 'open source'
+stack:
+  - 'Electron'
+  - 'React'
+  - 'TypeScript'
+  - 'better-sqlite3'
+  - 'MCP'
+  - 'Zod'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+Los editores de correo marketing están encerrados en la nube, son opinionados sobre HTML y son silenciosamente hostiles con quien quiere que sus plantillas vivan en su propio disco. El estado del arte para "quiero que una IA me ayude a armar este correo" es o pegar capturas en un chat o aceptar lo que un SaaS hosted decida renderizar. Ambos son malos.
+
+  </Lang>
+  <Lang lang="en">
+
+Marketing email editors are cloud-locked, opinionated about HTML, and quietly hostile to anyone who wants their templates to live on their own disk. The state of the art for "I want an AI to help me build this email" is either pasting screenshots into a chat window or accepting whatever a hosted SaaS decides to render. Both are bad.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+El agente tenía que manejar el editor de extremo a extremo sin alucinar HTML nunca. Si Claude Desktop dice "agrega un footer de dos columnas con el unsubscribe a la derecha", el editor tiene que hacer exactamente eso, de forma determinística, y el agente tiene que poder verificar que sí lo hizo.
+
+  </Lang>
+  <Lang lang="en">
+
+The agent had to drive the editor end-to-end without ever hallucinating HTML. If Claude Desktop says "add a two-column footer with the unsubscribe link on the right," the editor has to do exactly that, deterministically, and the agent has to be able to verify it did.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+Lo construí como app desktop de Electron (macOS, Windows, Linux), respaldada por better-sqlite3 para persistencia local, y embebí un servidor Model Context Protocol dentro de la app misma. El servidor MCP expone 28 herramientas tipadas, cada una validada por schema con Zod, cubriendo toda la superficie del editor: bloques, estilos, assets, exports, checks de pre-flight.
+
+Cualquier cliente MCP-aware (Claude Desktop, Cursor, Zed) se conecta al editor en marcha y lo maneja a través de esas herramientas. El agente nunca genera HTML; llama a `addBlock`, `setStyle`, `runPreflight`. La app genera el HTML. La alucinación se vuelve un error de categoría: no hay string que el modelo pueda inventar.
+
+Encima de eso: cinco proveedores de IA (Anthropic, OpenAI, Google, Ollama, OpenRouter) con API keys cifradas en el keychain del sistema, UI en seis idiomas (EN / ES / PT / FR / JA / ZH), y una etapa de pre-flight que audita contenido, accesibilidad, compatibilidad con clientes de correo y cumplimiento de CAN-SPAM antes del export.
+
+  </Lang>
+  <Lang lang="en">
+
+I built it as an Electron desktop app (macOS, Windows, Linux), backed by better-sqlite3 for local persistence, and embedded a Model Context Protocol server inside the app itself. The MCP server exposes 28 typed tools, every one schema-validated with Zod, covering the full surface of the editor: blocks, styling, assets, exports, pre-flight checks.
+
+Any MCP-aware client (Claude Desktop, Cursor, Zed) connects to the running editor and drives it through those tools. The agent never generates HTML; it calls `addBlock`, `setStyle`, `runPreflight`. The app generates the HTML. Hallucination becomes a category error: there is no string for the model to invent.
+
+On top of that: five AI providers (Anthropic, OpenAI, Google, Ollama, OpenRouter) with API keys encrypted in the OS keychain, six-language UI (EN / ES / PT / FR / JA / ZH), and a pre-flight stage that audits content, accessibility, email-client compatibility, and CAN-SPAM compliance before export.
+
+  </Lang>
+  <ArchDiagram>
+      <span class="h">User</span>
+       |
+       v
+ +----------------+
+ | <span class="c">MCP Client</span>     |
+ | (Claude /      |
+ |  Cursor / Zed) |
+ +--------+-------+
+          |
+          v
+ +----------------+
+ | <span class="c">MCP Server</span>     |
+ | <span class="c">28 typed tools</span> |
+ | <span class="c">Zod schemas</span>    |
+ +--------+-------+
+          |
+          v
+ +----------------+
+ | <span class="c">Electron App</span>   |
+ | (editor state) |
+ +---+--------+---+
+     |        |
+     v        v
+ +-------+ +----------+
+ |<span class="c">SQLite</span> | | <span class="c">HTML Out</span> |
+ +-------+ +----------+
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Todo el mundo está enviando features "AI-powered". Yo quería enviar una app que fuera operable por agentes, un constraint de diseño distinto. El servidor MCP es el contrato: si tus herramientas son tipadas, tus schemas son estrictos y tu estado es observable, un agente puede manejar tu producto como un usuario de primera clase. Ese es el patrón de diseño que creo que la mayoría de las apps desktop y web van a necesitar dentro de los próximos dos años.
+
+  </Lang>
+  <Lang lang="en">
+
+Everyone is shipping "AI-powered" features. I wanted to ship an app that is agent-operable, a different design constraint. The MCP server is the contract: if your tools are typed, your schemas are strict, and your state is observable, an agent can drive your product as a first-class user. That is the design pattern I think most desktop and web apps are going to need within the next two years.
+
+  </Lang>
+</ProjectSection>

@@ -10,7 +10,7 @@ export interface AxeTestCase {
 const PAGE_PATHS: readonly string[] = [
   'index.html',
   'projects/index.html',
-  'projects/made-by-apes/index.html',
+  'projects/7a4b3c05-879d-4148-87c9-17f1fd81367f/index.html',
   'the-system/index.html',
 ];
 

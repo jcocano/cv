@@ -63,16 +63,16 @@ describe('parseProjectMdx: frontmatter extraction', () => {
     expect(parsed.frontmatter.featured).toBe(true);
   });
 
-  it('extracts the made-by-apes frontmatter', () => {
-    const mdx = readProject('made-by-apes.mdx');
+  it('extracts the MBA frontmatter', () => {
+    const mdx = readProject('7a4b3c05-879d-4148-87c9-17f1fd81367f.mdx');
     const parsed = parseProjectMdx(mdx);
-    expect(parsed.frontmatter.slug).toBe('made-by-apes');
+    expect(parsed.frontmatter.slug).toBe('7a4b3c05-879d-4148-87c9-17f1fd81367f');
     expect(parsed.frontmatter.company).toBe('Yuga Labs');
     expect(parsed.frontmatter.year).toBe(2025);
     expect(parsed.frontmatter.order).toBe(1);
     expect(parsed.frontmatter.featured).toBe(true);
-    expect(parsed.frontmatter.eyebrow.es).toBe('proyecto destacado');
-    expect(parsed.frontmatter.eyebrow.en).toBe('featured project');
+    expect(parsed.frontmatter.eyebrow.es).toBe('producto');
+    expect(parsed.frontmatter.eyebrow.en).toBe('product');
   });
 });
 
@@ -92,20 +92,20 @@ describe('parseProjectMdx: section extraction', () => {
     expect(decisionsSection.archDiagram).not.toBeNull();
   });
 
-  it('finds 4 sections in made-by-apes including an ArchDiagram on decisions', () => {
-    const mdx = readProject('made-by-apes.mdx');
+  it('finds 2 sections in MBA including an ArchDiagram on architecture', () => {
+    const mdx = readProject('7a4b3c05-879d-4148-87c9-17f1fd81367f.mdx');
     const parsed = parseProjectMdx(mdx);
-    expect(parsed.sections).toHaveLength(4);
-    const decisionsSection = parsed.sections.find((section) => section.labelEn === 'decisions');
-    expect(decisionsSection).toBeDefined();
-    if (decisionsSection === undefined) {
-      throw new Error('expected decisions section');
+    expect(parsed.sections).toHaveLength(2);
+    const archSection = parsed.sections.find((section) => section.labelEn === 'architecture');
+    expect(archSection).toBeDefined();
+    if (archSection === undefined) {
+      throw new Error('expected architecture section');
     }
-    expect(decisionsSection.archDiagram).not.toBeNull();
+    expect(archSection.archDiagram).not.toBeNull();
   });
 
-  it('captures prose for both languages on context section of made-by-apes', () => {
-    const mdx = readProject('made-by-apes.mdx');
+  it('captures prose for both languages on context section of MBA', () => {
+    const mdx = readProject('7a4b3c05-879d-4148-87c9-17f1fd81367f.mdx');
     const parsed = parseProjectMdx(mdx);
     const contextSection = parsed.sections.find((section) => section.labelEn === 'context');
     expect(contextSection).toBeDefined();
@@ -116,8 +116,8 @@ describe('parseProjectMdx: section extraction', () => {
     if (contextSection.prose === null) {
       throw new Error('expected prose on context section');
     }
-    expect(contextSection.prose.es).toContain('BAYC y MAYC');
-    expect(contextSection.prose.en).toContain('BAYC and MAYC');
+    expect(contextSection.prose.es).toContain('Bored Ape Yacht Club');
+    expect(contextSection.prose.en).toContain('Bored Ape Yacht Club');
   });
 });
 

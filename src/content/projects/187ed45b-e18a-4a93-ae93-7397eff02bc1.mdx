@@ -1,0 +1,135 @@
+---
+slug: '187ed45b-e18a-4a93-ae93-7397eff02bc1'
+title:
+  es: 'Plugin de Tokenproof para Shopify: ApeFest'
+  en: 'Tokenproof Shopify Plugin: ApeFest'
+company: 'Yuga Labs'
+year: 2025
+featured: false
+tagline:
+  es: 'Storefront donde los holders escanean un QR y la merch los reconoce'
+  en: 'Storefront where holders scan a QR and the merch knows them'
+description:
+  es: 'Plugin headless de Shopify para ApeFest que reconoce a los holders por escaneo de QR (sin wallet popups) y renderiza un catálogo personalizado: productos tokengated, descuentos por holder y redenciones de NFT por merch físico. Construido en Hydrogen, Remix, Preact y ethers.js.'
+  en: 'Headless Shopify plugin for ApeFest that recognizes holders by QR scan (no wallet popups) and renders a personalized catalog: tokengated products, holder discounts, and NFT redemption for physical merch. Built on Hydrogen, Remix, Preact, and ethers.js.'
+cover: './cover.png'
+tags:
+  - 'Web3'
+  - 'Commerce'
+  - 'Shopify'
+  - 'Tokengating'
+  - 'Rust'
+eyebrow:
+  es: 'comercio'
+  en: 'commerce'
+stack:
+  - 'Shopify Hydrogen'
+  - 'Remix'
+  - 'Preact'
+  - 'GraphQL'
+  - 'PostgreSQL'
+  - 'ethers.js'
+  - 'Rust'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+ApeFest es el evento insignia en vivo de Yuga Labs, el lugar donde la comunidad de BAYC aparece en persona y donde el merch oficial es parte de la experiencia. La pregunta del lado de comercio era simple e incómoda: ¿cómo vendes merchandise de ApeFest de forma que realmente recompense a los holders? Los códigos de descuento se filtran. Las allowlists quedan desactualizadas en el momento en que alguien transfiere un token. Un storefront normal de Shopify no tiene idea de quién está del otro lado de la pantalla, solo sabe que tiene una tarjeta de crédito.
+
+  </Lang>
+  <Lang lang="en">
+
+ApeFest is Yuga Labs' flagship live event, the place where the BAYC community shows up in person and where official merch is part of the experience. The question on the commerce side was simple and uncomfortable: how do you sell ApeFest merchandise in a way that actually rewards token holders? Discount codes leak. Allowlists go stale the moment somebody transfers a token. A regular Shopify storefront has no idea who is on the other side of the screen, only that they have a credit card.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+La experiencia de compra tenía que ser mejor que el flujo público, no peor. Sin wallet popups en un venue lleno. Sin instrucciones de "instala MetaMask" en la puerta. El flujo tenía que funcionar para un holder sacando su teléfono, escaneando un código y siendo reconocido, y tenía que coexistir con un checkout normal de Shopify del que el resto del stack de comercio de Yuga ya dependía.
+
+  </Lang>
+  <Lang lang="en">
+
+The buying experience had to be better than the public flow, not worse. No wallet popups in a crowded venue. No "install MetaMask" instructions at the door. The flow had to work for a holder pulling out their phone, scanning a code, and being recognized, and it had to coexist with a normal Shopify checkout that the rest of the Yuga commerce stack already relied on.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+Lo construí desde cero como un storefront headless de Shopify sobre Hydrogen, con Remix encargado del routing y la carga de datos y GraphQL contra la Storefront API de Shopify para todo lo comercial. PostgreSQL vivía detrás como capa de configuración y auditoría: reglas de gating por producto, definiciones de descuento, registro de redenciones. ethers.js manejaba las verificaciones de propiedad on-chain. Preact entró en los widgets embebibles donde el tamaño del bundle pesaba más que la ergonomía.
+
+El comprador nunca conectaba una wallet. Escaneaba un código QR y el flujo de identidad resolvía su propiedad server-side, antes de que el storefront decidiera qué renderizar. Desde ese momento, el storefront sabía quién era, y Hydrogen renderizaba un catálogo personalizado con tres clases de capacidad gated:
+
+- Productos tokengated: ítems que simplemente no existían como comprables si no tenías el token correcto.
+- Descuentos especiales: porcentuales o de monto fijo, aplicados automáticamente contra la identidad del holder, sin códigos que compartir, capturar o filtrar.
+- Redención de tokens: usar el NFT mismo como derecho para reclamar un ítem físico, con el estado de redención tracked server-side para que un token no pudiera reclamar dos veces.
+
+El lado del merchant (el resto del equipo de comercio de Yuga) seguía trabajando en Shopify como siempre. Productos, inventario, fulfillment, impuestos, nada cambió de forma. El tokengating era simplemente una dimensión más de cómo se podía ofrecer un producto.
+
+  </Lang>
+  <Lang lang="en">
+
+I built it from zero as a headless Shopify storefront on Hydrogen, with Remix doing the routing and data loading and GraphQL against Shopify's Storefront API for everything commerce-side. PostgreSQL sat behind it as the configuration and audit layer: gating rules per product, discount definitions, redemption ledger. ethers.js handled the on-chain ownership checks. Preact went into the embeddable widgets where bundle size mattered more than ergonomics.
+
+The buyer never connected a wallet. They scanned a QR code and the identity flow resolved their ownership server-side, before the storefront ever decided what to render. From that moment on, the storefront knew who they were, and Hydrogen rendered a personalized catalog with three classes of gated capability:
+
+- Tokengated products: items that simply did not exist as purchasable unless you held the right token.
+- Special discounts: both percentage and fixed-amount, applied automatically against holder identity, so no codes to share, screenshot, or leak.
+- Token redemption: using the NFT itself as the entitlement to claim a physical item, with the redemption state tracked server-side so a token could not double-claim.
+
+The merchant side (the rest of the Yuga commerce team) kept working in Shopify the way they always had. Products, inventory, fulfillment, taxes, none of it changed shape. Tokengating was just one more dimension of how a product could be offered.
+
+  </Lang>
+  <ArchDiagram>
+         <span class="h">Buyer (QR scan)</span>
+                |
+                v
+     +-------------------+
+     | <span class="c">Identity Resolver</span> |
+     |    <span class="c">ethers.js</span>      |
+     +---------+---------+
+               |
+               v
+     +-------------------+
+     | <span class="c">Hydrogen + Remix</span>  |
+     |     <span class="c">Storefront</span>    |
+     +-+------+--------+-+
+       |      |        |
+       v      v        v
+    +------+ +-----+ +---------+
+    |<span class="c">Gated</span> | |<span class="c">Disc</span> | |<span class="c">Redempt</span> |
+    +---+--+ +--+--+ +----+----+
+        |       |        |
+        +-------+--------+
+                v
+         +-------------+
+         | <span class="c">PostgreSQL</span>  |
+         | <span class="c">ledger + cfg</span>|
+         +------+------+
+                |
+                v
+          <span class="h">Buyer gets merch</span>
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Este es el proyecto donde envié una superficie completa de comercio Web3 como único builder, de punta a punta: framework de storefront, integración de identidad, resolución on-chain, motor de descuentos, registro de redenciones. Se desplegó en un setting de circuito cerrado (merch de ApeFest, tienda propia de Yuga) donde no había espacio para "el demo funcionaba". O tomaba el escaneo de QR del comprador y le daba su merch, o no.
+
+  </Lang>
+  <Lang lang="en">
+
+This is the project where I shipped a complete Web3 commerce surface as a single builder, end to end: storefront framework, identity integration, on-chain resolution, discount engine, redemption ledger. It was deployed in a closed-loop setting (ApeFest merch, Yuga's own store) where there was no room for "the demo worked." It either took the buyer's QR scan and gave them their merch, or it did not.
+
+  </Lang>
+</ProjectSection>

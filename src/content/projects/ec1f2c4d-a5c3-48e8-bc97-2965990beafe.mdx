@@ -1,0 +1,108 @@
+---
+slug: 'ec1f2c4d-a5c3-48e8-bc97-2965990beafe'
+title:
+  es: 'Separación de clusters y automatización de infraestructura'
+  en: 'Cluster Separation & Infrastructure Automation'
+company: 'tokenproof'
+year: 2024
+featured: false
+tagline:
+  es: 'Aislamiento de entornos por IaC que dejó de dar miedo al equipo'
+  en: 'IaC-driven environment isolation that engineers stopped fearing'
+description:
+  es: 'Separé compute, red y secretos por entorno y reconstruí todo desde IaC con Terraform y Terragrunt. Cada cluster con su red, su CI/CD y su rotación de secretos. Si un entorno se caía lo regeneraba desde cero. El equipo dejó de tener miedo a desplegar.'
+  en: 'Separated compute, network and secrets per environment and rebuilt everything from IaC with Terraform and Terragrunt. Each cluster with its own network, CI/CD, and secret rotation. If an environment went down, I could regenerate it from scratch. The team stopped fearing deploys.'
+cover: './cover.png'
+tags:
+  - 'Platform'
+  - 'IaC'
+  - 'Kubernetes'
+  - 'DevOps'
+eyebrow:
+  es: 'plataforma'
+  en: 'platform'
+stack:
+  - 'Terraform'
+  - 'Terragrunt'
+  - 'Kubernetes'
+  - 'Pulsar'
+  - 'Pub/Sub'
+  - 'GCP'
+  - 'AWS'
+  - 'GitHub Actions'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+Cuando entré a tokenproof, "production" y "staging" compartían más cosas de las que deberían: clusters solapados, networking compartido, paths de deploy que dependían de que el operador recordara qué pestaña de terminal era cuál. Funcionaba, hasta que dejaba de funcionar. El costo de un deploy equivocado no era un rollback; era un incidente.
+
+  </Lang>
+  <Lang lang="en">
+
+When I joined tokenproof, "production" and "staging" shared more than they should have: overlapping clusters, shared networking, deployment paths that depended on the operator remembering which terminal tab was which. It worked, until it did not. The cost of a deploy mistake was not a rollback; it was an incident.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+Tenía que separar todo (compute, networking, secrets, tráfico) sin congelar al equipo de producto. Las migraciones tenían que ser invisibles para los ingenieros que enviaban a diario, y el nuevo setup tenía que provisionarse igual cada vez, por cualquiera, desde cero.
+
+  </Lang>
+  <Lang lang="en">
+
+I had to separate everything (compute, networking, secrets, traffic) without freezing the product team. Migrations had to be invisible to the engineers shipping daily, and the new setup had to be provisioned the same way every time, by anyone, from scratch.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+Infrastructure-as-Code completo con Terraform y Terragrunt. Cada entorno tenía su propio cluster de Kubernetes, su propia red privada, su propio pipeline de CI/CD, su propio scope de secretos. Nada se provisionaba a mano. Si staging ardía, lo podía reconstruir en el tiempo que tomaba ir por un café, y volvía idéntico.
+
+Una vez aislados los clusters, endurecí el perímetro: políticas de tráfico, networking privado para llamadas service-to-service, flujos de rotación de secretos. Los ciclos de release se aceleraron de forma notable, no porque las pipelines fueran mágicas, sino porque los ingenieros dejaron de tenerles miedo.
+
+  </Lang>
+  <Lang lang="en">
+
+Full Infrastructure-as-Code with Terraform and Terragrunt. Every environment got its own Kubernetes cluster, its own private network, its own CI/CD pipeline, its own secret scope. Nothing was provisioned by hand. If staging burned down, I could rebuild it in the time it took to grab coffee, and it would come back identical.
+
+Once the clusters were isolated, I hardened the perimeter: traffic management policies, private networking for service-to-service calls, secret rotation flows. Release cycles got noticeably faster, not because the pipelines were magic, but because engineers stopped being afraid of them.
+
+  </Lang>
+  <ArchDiagram>
+             <span class="c">Terraform / Terragrunt</span>
+                        |
+           +------------+------------+
+           |                         |
+           v                         v
+   +---------------+         +---------------+
+   | <span class="c">staging env</span>   |         | <span class="c">prod env</span>      |
+   +-------+-------+         +-------+-------+
+           |                         |
+     +-----+-----+             +-----+-----+
+     |   |   |   |             |   |   |   |
+     v   v   v   v             v   v   v   v
+    <span class="c">K8s</span> <span class="c">Net</span> <span class="c">CI</span> <span class="c">Sec</span>           <span class="c">K8s</span> <span class="c">Net</span> <span class="c">CI</span> <span class="c">Sec</span>
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Este es el proyecto donde dejé de ser "el ingeniero bueno con integraciones de Salesforce" y me convertí en la persona de plataforma. Los artefactos técnicos (módulos de Terraform, plantillas de CI, políticas de networking) son el output visible. El entregable real fue un equipo que podía desplegar sin necesidad de reunión.
+
+  </Lang>
+  <Lang lang="en">
+
+This is the project where I stopped being "the engineer who is good at Salesforce integrations" and became the platform person. The technical artifacts (Terraform modules, CI templates, networking policies) are the visible output. The actual deliverable was a team that could deploy without a meeting.
+
+  </Lang>
+</ProjectSection>

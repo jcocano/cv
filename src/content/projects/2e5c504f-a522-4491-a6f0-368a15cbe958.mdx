@@ -1,0 +1,115 @@
+---
+slug: '2e5c504f-a522-4491-a6f0-368a15cbe958'
+title:
+  es: 'Dragora: automatización de torneos de eSports'
+  en: 'Dragora: eSports tournament automation'
+company: 'Personal'
+year: 2025
+featured: false
+tagline:
+  es: 'Bot de Discord que opera torneos completos de esports de punta a punta'
+  en: 'Discord bot that runs full esports tournaments end to end'
+description:
+  es: 'Plataforma para automatizar torneos de esports desde Discord: el bot en Rust corre el evento (check-ins, calls de match, resultados) contra Start.gg vía GraphQL, un backend event-driven actualiza el sitio público en tiempo real y la IA cubre seeding, salud de bracket y análisis.'
+  en: 'Platform to automate esports tournaments from Discord: a Rust bot runs the event (check-ins, match calls, results) against Start.gg via GraphQL, an event-driven backend updates the public site in real time, and AI handles seeding, bracket health, and analysis.'
+cover: './cover.png'
+tags:
+  - 'Discord'
+  - 'Rust'
+  - 'AI'
+eyebrow:
+  es: 'plataforma'
+  en: 'platform'
+stack:
+  - 'Rust'
+  - 'TypeScript'
+  - 'GraphQL'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+Correr un torneo competitivo de esports a cualquier escala no-trivial es básicamente un fin de semana metido en la UI de Start.gg haciendo cosas que una máquina debería hacer por ti: registrar jugadores, sembrar brackets, postear calls de match en el servidor de Discord donde los jugadores realmente viven, perseguir a los que nunca leen los anuncios, registrar resultados, llamar la siguiente ronda. Los jugadores, a cambio, casi no reciben nada durante el evento: ni una lectura en vivo de cómo va el field, ni analytics de matchups, ni sentido de dónde están saliendo los upsets, hasta que alguien escribe un recap dos días después. El trabajo es de alto esfuerzo para el organizador y bajo feedback para el jugador, al mismo tiempo.
+
+  </Lang>
+  <Lang lang="en">
+
+Running a competitive esports tournament at any non-trivial scale is mostly a weekend spent inside Start.gg's UI doing things a machine should do for you: registering players, seeding brackets, posting match calls into the Discord server where the players actually live, chasing the ones who never read announcements, logging results, calling the next round. The players, in turn, get almost nothing back during the event itself: no live read on how the field is shaping, no analytics on matchups, no sense of where the upsets are coming from until somebody writes a recap two days later. The work is high-effort for the organizer and low-feedback for the player at the same time.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+Quería una plataforma que un organizador pudiera configurar una vez y dejar de tocar durante el torneo. El bot de Discord (donde la comunidad ya está) corre el evento. La superficie web carga el lado público: brackets, resultados en vivo, analytics. La IA se encarga del trabajo que a nadie le gusta: seeding de casos borde, chequeos de salud del bracket, surfacing de patrones a medida que las matches se resuelven. Todo tiene que comportarse bajo condiciones reales de torneo, porque el entorno de prueba es un evento en vivo con jugadores mirando.
+
+  </Lang>
+  <Lang lang="en">
+
+I wanted a platform an organizer could set up once and stop touching during the tournament. The Discord bot (where the community already is) runs the event. The web surface carries the public side: brackets, live results, analytics. The AI handles the work nobody enjoys: edge-case seeding, bracket health checks, surfacing patterns as matches resolve. The whole thing has to behave under real tournament conditions, because the test environment is a live event with players watching.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+El bot de Discord está en Rust. La automatización de torneos es I/O-heavy y el bot tiene que estar arriba toda la duración de un evento sin leaks, panics ni restarts. Rust paga por esa garantía con una escritura más cara, y la negociación vale la pena. El bot habla con la API GraphQL de Start.gg como fuente de verdad de datos del torneo y posee su propia superficie para las cosas que Start.gg no maneja bien: calls de match en el canal, check-in de jugadores, confirmación de resultados, flujos de gracia para registros tardíos.
+
+Detrás del bot vive un backend event-driven donde cada evento de resultado se reparte a las piezas que importan: recálculo de estado de bracket, actualizaciones en vivo empujadas al sitio público, agregación de analytics, y los hooks de IA que deciden cuándo surfacing un trend (un upset, un match estancado, un desbalance regional) hacia la vista del organizador. La generación de bracket asistida por IA maneja el seeding para casos donde los defaults de Start.gg se degradan: fields pequeños, quirks de double-elimination, balance regional o por skill-tier.
+
+dragora.gg es la superficie pública, en desarrollo activo contra torneos reales corridos por Draguima eSports, la org que co-fundé como technology partner. El feedback loop es corto e implacable: un bug en el bot es un bug en el match de alguien.
+
+  </Lang>
+  <Lang lang="en">
+
+The Discord bot is in Rust. Tournament automation is I/O-heavy and the bot has to stay up for the full duration of an event without leaks, panics, or restarts. Rust pays for that guarantee with a steeper write, and the trade is worth it. The bot talks to Start.gg's GraphQL API for source-of-truth tournament data and owns its own surface for the things Start.gg does not handle well: in-channel match calls, player check-in, result confirmation, late-registration grace flows.
+
+Behind the bot sits an event-driven backend where every match-result event fans out to the pieces that care: bracket-state recomputation, live updates pushed to the public site, analytics aggregation, and the AI hooks that decide when to surface a trend (an upset, a stalled match, a regional imbalance) into the organizer's view. AI-assisted bracket generation handles seeding for cases where Start.gg's defaults degrade: small fields, double-elimination quirks, regional or skill-tier balance.
+
+dragora.gg is the public surface, in active development against real tournaments running through Draguima eSports, the org I co-founded as technology partner. The feedback loop is short and unforgiving: a bug in the bot is a bug in someone's match.
+
+  </Lang>
+  <ArchDiagram>
+         <span class="h">Organizer + Players</span>
+                |
+                v
+          +-----------+
+          | <span class="c">Discord</span>   |
+          +-----+-----+
+                |
+                v
+          +-----------+        +---------------+
+          | <span class="c">Rust Bot</span>  |<------>| <span class="c">Start.gg</span>      |
+          +-----+-----+        | <span class="c">GraphQL API</span>   |
+                |              +---------------+
+                v
+          +-----------+
+          | <span class="c">Event Bus</span> |
+          +-+---+---+-+
+            |   |   |
+            v   v   v
+     +---------+ +------+ +-------------+
+     | <span class="c">Bracket</span> | | <span class="c">Web</span>  | | <span class="c">AI Hooks</span>    |
+     | <span class="c">State</span>   | | <span class="c">site</span> | | <span class="c">Analytics</span>   |
+     +---------+ +------+ +-------------+
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Este es el proyecto donde puedo tomar cada decisión arquitectural yo mismo: elección de lenguaje, message bus, modelo de datos, dónde vive la IA, qué se queda humano, qué nunca sale del bot. Es el artefacto más cercano que tengo a "cómo diseñaría un sistema si nada me constriñera", y el lugar donde los trade-offs son míos para defender. Torneos reales dependiendo de ello cargan un tipo distinto de presión que un side project normal; la plataforma o corre el evento o no lo corre, y no hay "lo arreglamos el próximo sprint" en medio de un bracket en vivo.
+
+  </Lang>
+  <Lang lang="en">
+
+This is the project where I get to make every architectural call myself: language choice, message bus, data model, where the AI sits, what stays human, what never leaves the bot. It is the closest artifact I have to "how I would design a system if nothing constrained me," and the place where the trade-offs are mine to defend. Real tournaments depending on it carry a different kind of pressure than a usual side project; the platform either runs the event or it does not, and there is no "we will fix it next sprint" in the middle of a live bracket.
+
+  </Lang>
+</ProjectSection>

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npm run build:status && npm run build:og",
+    "build": "astro build && npm run build:status",
     "build:status": "node scripts/generate-status.mjs",
     "build:og": "node scripts/generate-og.mjs",
     "preview": "astro preview",

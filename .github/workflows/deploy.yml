@@ -75,6 +75,15 @@ jobs:
         env:
           GENERATE_STATUS_SHA: ${{ github.sha }}
         run: npm run build
+      # OG thumbnails are produced post-build by screenshotting the hidden
+      # dist/og-preview/* pages with Playwright Chromium. They live only on
+      # the deployed artifact: keeping this step out of `npm run build` keeps
+      # the CI build / test-unit jobs free of a Chromium dependency while
+      # still guaranteeing every Pages release ships fresh OG images.
+      - name: Install Playwright Chromium for OG screenshots
+        run: npx --yes playwright install chromium
+      - name: Generate OG thumbnails
+        run: npm run build:og
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:

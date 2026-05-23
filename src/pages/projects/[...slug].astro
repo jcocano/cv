@@ -28,9 +28,10 @@ const { prev, next } = getCircularPrevNextByOrder(entry.data, allProjects);
 const { Content } = await render(entry);
 
 const pageTitle = `${entry.data.title.es} — Jesus Cocano`;
+const ogSlug = `projects/${entry.data.slug}`;
 ---
 
-<BaseLayout title={pageTitle} description={entry.data.tagline.es}>
+<BaseLayout title={pageTitle} description={entry.data.tagline.es} ogSlug={ogSlug} ogType="article">
   <ProjectLayout project={entry.data} prev={prev} next={next} baseUrl={baseUrl}>
     <Content />
   </ProjectLayout>

@@ -1,0 +1,32 @@
+---
+import type { Publication } from '@/lib/schemas/publications';
+import styles from './PublicationRow.module.css';
+
+interface Props {
+  publication: Publication;
+}
+
+const { publication } = Astro.props;
+---
+
+<a class={styles.pubRow} href={publication.url} target="_blank" rel="noopener noreferrer">
+  <div>
+    <h3 class={styles.title}>
+      <span lang="es">{publication.title.es}</span>
+      <span lang="en">{publication.title.en}</span>
+    </h3>
+    <div class={styles.meta}>
+      <span class={styles.source}>{publication.source}</span>
+      <span class={styles.dot}>·</span>
+      <span class={styles.date}>{publication.date}</span>
+    </div>
+    <p class={styles.summary}>
+      <span lang="es">{publication.summary.es}</span>
+      <span lang="en">{publication.summary.en}</span>
+    </p>
+  </div>
+  <div class={styles.cta}>
+    <span lang="es">Leer →</span>
+    <span lang="en">Read →</span>
+  </div>
+</a>

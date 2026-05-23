@@ -1,0 +1,41 @@
+---
+import styles from './OgCard.module.css';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  meta?: string;
+  tags?: readonly string[];
+}
+
+const { eyebrow, title, subtitle, meta, tags } = Astro.props;
+---
+
+<div class={styles.card}>
+  <header class={styles.top}>
+    <span class={styles.brand}>jc</span>
+    <span class={styles.eyebrow}>{eyebrow}</span>
+  </header>
+
+  <div class={styles.body}>
+    <h1 class={styles.title}>
+      {title}<span class={styles.accent}>.</span>
+    </h1>
+    <p class={styles.subtitle}>{subtitle}</p>
+    {
+      tags !== undefined && tags.length > 0 && (
+        <div class={styles.tags}>
+          {tags.map((tag) => (
+            <span class={styles.tag}>{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <footer class={styles.bottom}>
+    <span class={styles.url}>jcocano.github.io/cv</span>
+    {meta !== undefined && <span class={styles.meta}>{meta}</span>}
+  </footer>
+</div>

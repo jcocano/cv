@@ -40,6 +40,7 @@ progress/
 # scripts/: la mayoría es harness; los archivos de producto se whitelistean abajo.
 scripts/*
 !scripts/generate-status.mjs
+!scripts/generate-og.mjs
 !scripts/__tests__/
 scripts/__tests__/*
 !scripts/__tests__/generate-status.test.ts

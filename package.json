@@ -8,6 +8,7 @@
     "dev": "astro dev",
     "build": "astro build && npm run build:status",
     "build:status": "node scripts/generate-status.mjs",
+    "build:og": "node scripts/generate-og.mjs",
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint \"src/**/*.{ts,astro,mjs,cjs,js}\" \"tests/**/*.{ts,astro,mjs,cjs,js}\" \"tooling/**/*.{ts,mjs,cjs,js}\" \"scripts/**/*.{ts,mjs,cjs,js}\"",

@@ -1,0 +1,16 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import PublicationRow from '@/components/work/PublicationRow.astro';
+import type { Publication } from '@/lib/schemas/publications';
+import styles from './PublicationsList.module.css';
+
+const publicationEntries: CollectionEntry<'publications'>[] = await getCollection('publications');
+const publications: Publication[] = publicationEntries
+  .map((entry: CollectionEntry<'publications'>) => entry.data)
+  .sort((a, b) => a.order - b.order);
+---
+
+<div class={`${styles.pubList} reveal`}>
+  {publications.map((publication) => <PublicationRow publication={publication} />)}
+</div>

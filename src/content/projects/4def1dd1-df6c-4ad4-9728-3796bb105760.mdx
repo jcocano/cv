@@ -1,0 +1,119 @@
+---
+slug: '4def1dd1-df6c-4ad4-9728-3796bb105760'
+title:
+  es: 'Ajolopy: un framework Python para apps AI-native'
+  en: 'Ajolopy: a Python framework for AI-native apps'
+company: 'Open Source'
+year: 2026
+featured: false
+tagline:
+  es: 'Framework Python donde LLMs, agentes y MCP son primitivos de primera clase'
+  en: 'Python framework where LLMs, agents, and MCP are first-class primitives'
+description:
+  es: 'Framework opinionado en Python 3.14+ donde LLMs, agentes, tools, prompts, evals, streaming y MCP son primitivos de primera clase. Pyright strict, DI por tipos, asyncio TaskGroup. Model-agnostic: el mismo código corre con modelos locales, frontier hospedados o self-hosted sin reescribir.'
+  en: 'Opinionated Python 3.14+ framework where LLMs, agents, tools, prompts, evals, streaming, and MCP are first-class primitives. Pyright strict, DI by type-hints, asyncio TaskGroup. Model-agnostic: the same code runs against local, hosted frontier, and self-hosted models without rewriting.'
+cover: './cover.png'
+tags:
+  - 'Open Source'
+  - 'PyPI'
+  - 'AI Framework'
+  - 'Python'
+eyebrow:
+  es: 'open source'
+  en: 'open source'
+stack:
+  - 'Python 3.14+'
+  - 'pydantic'
+  - 'MCP'
+  - 'asyncio'
+  - 'Pyright strict'
+---
+
+import Lang from '@/components/ui/Lang.astro';
+import ProjectSection from '@/components/projects/ProjectSection.astro';
+import ArchDiagram from '@/components/projects/ArchDiagram.astro';
+
+<ProjectSection labelEs="problema" labelEn="problem">
+  <Lang lang="es">
+
+Construir apps AI-native en Python siempre era el mismo collage: un cliente de Anthropic por aquí, un wrapper de OpenAI por allá, un servidor MCP pegado con cinta adhesiva, una capa de evals improvisada en notebooks, y streaming reinventado cada vez que alguien hacía un cambio. No había una "default choice", el equivalente en Python a lo que FastAPI hizo por HTTP o pydantic por validación. Cada equipo terminaba reescribiendo los mismos primitivos, mal, en su propio repo.
+
+  </Lang>
+  <Lang lang="en">
+
+Building AI-native apps in Python was always the same collage: an Anthropic client over here, an OpenAI wrapper over there, an MCP server taped on, an evals layer improvised in notebooks, and streaming reinvented every time somebody touched the code. There was no "default choice," no Python equivalent of what FastAPI did for HTTP or pydantic did for validation. Every team ended up rewriting the same primitives, badly, in their own repo.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="restricción" labelEn="constraint">
+  <Lang lang="es">
+
+El framework tenía que ser model-agnostic de verdad, no en una página de README. El mismo código de agente, los mismos prompts, los mismos validators tenían que poder correr contra un modelo local de coder, un frontier hospedado, o un modelo self-hosted sin reescribir nada. Si swappear un proveedor implicaba tocar la lógica de negocio, el framework había fallado en su único trabajo.
+
+  </Lang>
+  <Lang lang="en">
+
+The framework had to be model-agnostic for real, not in a README. The same agent code, the same prompts, the same validators had to run against a local coder model, a hosted frontier model, or a self-hosted model without rewriting anything. If swapping a provider meant touching business logic, the framework had failed at its one job.
+
+  </Lang>
+</ProjectSection>
+
+<ProjectSection labelEs="decisión" labelEn="decision">
+  <Lang lang="es">
+
+Diseñé Ajolopy desde cero para Python 3.14+ con Pyright strict, DI por type-hints y `asyncio.TaskGroup` asumido en todas partes. Los primitivos no son features opcionales — son el core: LLMs, agentes, tools, prompts, evals, streaming y MCP viven en el mismo modelo mental y se componen entre sí sin glue code.
+
+Lo opinionado importa: hay una sola forma de declarar un agente, una sola forma de tipar una tool, una sola forma de correr un eval. Eso elimina la pregunta "¿cómo debería estructurar esto?" que mata el momentum en proyectos nuevos. Los extras (`otel`, `mcp`, `redis`, `postgres`, `mongo`, `qdrant`, `pgvector`) son opt-in: si no usas RAG vectorial, no instalas qdrant.
+
+La arquitectura model-agnostic vive en una capa de provider thin que normaliza streaming, function calling y telemetría a través de Anthropic, OpenAI, Google, OpenRouter, Hugging Face, Ollama y LM Studio. El mismo `Agent(prompt=..., tools=[...])` corre contra cualquiera de ellos cambiando una línea de config.
+
+  </Lang>
+  <Lang lang="en">
+
+I designed Ajolopy from zero for Python 3.14+ with Pyright strict, DI by type-hints, and `asyncio.TaskGroup` assumed everywhere. The primitives are not optional features — they are the core: LLMs, agents, tools, prompts, evals, streaming, and MCP live in the same mental model and compose with each other without glue code.
+
+Opinionation matters: there is one way to declare an agent, one way to type a tool, one way to run an eval. That kills the "how should I structure this?" question that murders momentum in new projects. Extras (`otel`, `mcp`, `redis`, `postgres`, `mongo`, `qdrant`, `pgvector`) are opt-in: if you do not use vector RAG, you do not install qdrant.
+
+The model-agnostic architecture lives in a thin provider layer that normalizes streaming, function calling, and telemetry across Anthropic, OpenAI, Google, OpenRouter, Hugging Face, Ollama, and LM Studio. The same `Agent(prompt=..., tools=[...])` runs against any of them by flipping a config line.
+
+  </Lang>
+  <ArchDiagram>
+      <span class="h">User code</span>
+        |
+        v
+   +--------------+
+   | <span class="c">Agent</span>        |
+   | <span class="c">tools/prompts</span>|
+   +------+-------+
+          |
+          v
+   +--------------+
+   | <span class="c">Primitives</span>   |
+   | <span class="c">LLM · MCP</span>    |
+   | <span class="c">evals · stream</span>|
+   +------+-------+
+          |
+          v
+   +--------------+
+   | <span class="c">Provider Layer</span>|
+   +-+----+----+--+
+     |    |    |
+     v    v    v
+   <span class="c">Anthropic</span> <span class="c">OpenAI</span> <span class="c">Ollama</span>
+   <span class="c">Google</span>    <span class="c">OpenR.</span> <span class="c">LM Studio</span>
+  </ArchDiagram>
+</ProjectSection>
+
+<ProjectSection labelEs="por qué importa" labelEn="why it matters">
+  <Lang lang="es">
+
+Este es el proyecto donde dejé de ser usuario de frameworks AI y me convertí en autor de uno. El criterio que me impongo es duro: Ajolopy tiene que ser la "default choice" obvia para alguien que arranca una app AI-native en Python — no porque sea la única, sino porque las decisiones que ya tomó (Pyright strict, asyncio first, primitivos compostables, extras opt-in) son las que tomaría cualquier equipo serio en hour zero. Si terminas reescribiendo una pieza, es un bug del framework, no del usuario.
+
+  </Lang>
+  <Lang lang="en">
+
+This is the project where I stopped being a user of AI frameworks and became the author of one. The bar I hold myself to is hard: Ajolopy has to be the obvious "default choice" for somebody starting an AI-native app in Python — not because it is the only option, but because the decisions it already made (Pyright strict, asyncio first, composable primitives, opt-in extras) are the ones any serious team would make at hour zero. If you end up rewriting a piece, that is a framework bug, not a user bug.
+
+  </Lang>
+</ProjectSection>

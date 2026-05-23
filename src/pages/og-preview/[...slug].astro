@@ -1,0 +1,99 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+import OgCard from '@/components/og/OgCard.astro';
+import heroData from '@/data/hero.json';
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+import type { Project } from '@/lib/schemas/projects';
+
+interface PageProps {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  meta?: string;
+  tags?: readonly string[];
+}
+
+interface StaticPath {
+  params: { slug: string };
+  props: PageProps;
+}
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+  const paths: StaticPath[] = [
+    {
+      params: { slug: 'home' },
+      props: {
+        eyebrow: 'cv · portfolio',
+        title: heroData.name,
+        subtitle: heroData.pitch.en,
+        meta: heroData.role.en,
+      },
+    },
+    {
+      params: { slug: 'projects' },
+      props: {
+        eyebrow: 'work',
+        title: 'Selected projects',
+        subtitle: 'Production platforms, architectural calls, and measurable impact.',
+      },
+    },
+    {
+      params: { slug: 'the-system' },
+      props: {
+        eyebrow: 'technical handbook',
+        title: 'The system',
+        subtitle:
+          'Principles, decisions, and foundations behind the site: why it is built this way and what reusable pieces hold it together.',
+      },
+    },
+  ];
+
+  const projectEntries: CollectionEntry<'projects'>[] = await getCollection('projects');
+  for (const entry of projectEntries) {
+    const project: Project = entry.data;
+    paths.push({
+      params: { slug: `projects/${project.slug}` },
+      props: {
+        eyebrow: project.eyebrow.en,
+        title: project.title.en,
+        subtitle: project.tagline.en,
+        meta: `${project.company} · ${project.year.toString()}`,
+        tags: project.tags,
+      },
+    });
+  }
+
+  return paths;
+}
+
+type Props = PageProps;
+
+const { eyebrow, title, subtitle, meta, tags } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{title} — OG preview</title>
+    <style is:global>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <OgCard eyebrow={eyebrow} title={title} subtitle={subtitle} meta={meta} tags={tags} />
+  </body>
+</html>

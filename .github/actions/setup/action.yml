@@ -1,21 +1,29 @@
 # Shared setup for every CI workflow in this repo.
 #
-# Why a composite action: the three steps below (checkout, pin Node, install
-# deps) are identical across every CI job. Centralising them here keeps the
-# individual workflows trivial — one real step each — and guarantees that all
-# jobs run against the same Node version and the same lockfile-resolved tree.
+# Why a composite action: the two steps below (pin Node, install deps) are
+# identical across every CI job. Centralising them here keeps the individual
+# workflows trivial and guarantees that all jobs run against the same Node
+# version and the same lockfile-resolved tree.
+#
+# Callers MUST run `actions/checkout` themselves before invoking this action.
+# Two reasons:
+#   1. Local-path actions (`uses: ./.github/actions/setup`) require the repo
+#      to already be on disk so GitHub can read this `action.yml`.
+#   2. Running `actions/checkout` here in addition to the caller's checkout
+#      broke the deploy job on push to main: two back-to-back v6 checkouts
+#      on the same host workspace under an `environment:`-scoped token
+#      raced on the git auth header and the second one failed with
+#      "fatal: could not read Username for 'https://github.com'". The
+#      duplicate was redundant for every other caller too.
 #
 # Node version is pinned to match the local development environment so that
 # any tooling that relies on engine-specific behaviour (Vitest, Astro, ESLint
 # v10) sees the same runtime in CI as on the contributor's machine.
 name: Setup repository
-description: Checkout the repo, install Node 24.15.0 with npm cache, and run npm ci.
+description: Install Node 24.15.0 with npm cache and run npm ci. Caller must checkout first.
 runs:
   using: composite
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v6
-
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:

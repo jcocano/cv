@@ -69,16 +69,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # The shared composite at .github/actions/setup already runs
-      # actions/checkout@v6 as its first step. Listing checkout again here
-      # caused the second checkout (the one inside the composite) to fail
-      # with "could not read Username for 'https://github.com'" on push to
-      # main: the deploy job runs under an `environment:`-scoped GITHUB_TOKEN
-      # without a `container:`, so the back-to-back v6 checkouts on the same
-      # workspace clobber the auth header the first one wrote. The other
-      # callers of the composite (lint, format, typecheck, test-unit,
-      # test-visual, build) survive the duplicate because they either run
-      # inside a container or do not carry an environment-scoped token.
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - name: Build site
         env:

@@ -26,15 +26,15 @@ Every decision in this project is meant to be visible from the architecture. If 
 
 Five routes, all statically generated, all bilingual via a `data-lang` attribute on `<html>`:
 
-| Route                    | Purpose                                                                                  |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| `/`                      | Hero, summary, AI-ready, lab, experience, stack, selected work, contact.                 |
-| `/projects/`             | Index of every case study from the `projects` content collection.                        |
-| `/projects/<slug>/`      | One MDX case study per project, rendered through `ProjectLayout`.                        |
-| `/the-system/`           | Technical handbook: principles, decisions, type/spacing/UI primitives, tokens, live build status. |
-| `/og-preview/<slug>/`    | Hidden 1200×630 surfaces that the OG generator screenshots at deploy time. `noindex,nofollow`. |
+| Route                 | Purpose                                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------- |
+| `/`                   | Hero, summary, AI-ready, lab, experience, stack, selected work, contact.                          |
+| `/projects/`          | Index of every case study from the `projects` content collection.                                 |
+| `/projects/<slug>/`   | One MDX case study per project, rendered through `ProjectLayout`.                                 |
+| `/the-system/`        | Technical handbook: principles, decisions, type/spacing/UI primitives, tokens, live build status. |
+| `/og-preview/<slug>/` | Hidden 1200×630 surfaces that the OG generator screenshots at deploy time. `noindex,nofollow`.    |
 
-`/og-preview/` exists only as a canvas for the OG generator — users never land on it. That separation between "what users read" and "what crawlers consume" is what lets the OG cards reuse the live site's fonts and tokens without forking a second design system. Details in [§5 Build pipeline](#5-build-pipeline).
+`/og-preview/` exists only as a canvas for the OG generator — users never land on it. That separation between "what users read" and "what crawlers consume" is what lets the OG cards reuse the live site's fonts and tokens without forking a second design system. Details in [§6 Build pipeline](#6-build-pipeline-producer--pipeline-separation).
 
 ### 2. Layers & dependency direction
 
@@ -56,23 +56,23 @@ flowchart TD
     Pages -->|built by astro build| Dist
 ```
 
-Arrows go one way. Schemas never import components. Components never import pages. Build-time artifacts (`dist/status.json`, `dist/og/`) are produced *after* `astro build` exits, never during SSR — so there's no circular dependency between "the build" and "what the build needs to read." Details in [§5 Build pipeline](#5-build-pipeline).
+Arrows go one way. Schemas never import components. Components never import pages. Build-time artifacts (`dist/status.json`, `dist/og/`) are produced _after_ `astro build` exits, never during SSR — so there's no circular dependency between "the build" and "what the build needs to read." Details in [§6 Build pipeline](#6-build-pipeline-producer--pipeline-separation).
 
 ### 3. Boundaries: every layer crosses through Zod
 
 Everything that crosses a layer crosses through a Zod schema first.
 
-| Crossing                                                  | Schema (`src/lib/schemas/`) | Fails the build if…                          |
-| --------------------------------------------------------- | --------------------------- | -------------------------------------------- |
-| `src/content/experience/*.mdx`                            | `experience.ts`             | Frontmatter is missing or wrong-typed.       |
-| `src/content/projects/*.mdx`                              | `projects.ts`               | Same.                                        |
-| `src/content/side-projects/*.mdx`                         | `side-projects.ts`          | Same.                                        |
-| `src/content/oss-projects/*.mdx`                          | `oss-projects.ts`           | Same.                                        |
-| `src/content/publications/*.mdx`                          | `publications.ts`           | Same.                                        |
-| `src/data/*.json` (hero, summary, stack, principles, lab, ai-ready, technical-decisions, design-system-decisions) | one schema per file         | A data block ships in the wrong shape.       |
-| i18n strings                                              | `i18n-string.ts`            | A translation has only one of `{ es, en }`.  |
-| Design tokens                                             | `tokens.ts`                 | A token name or value drifts.                |
-| `dist/status.json` (build-time)                           | `site-status.ts`            | The build artifact itself is malformed.      |
+| Crossing                                                                                                          | Schema (`src/lib/schemas/`) | Fails the build if…                         |
+| ----------------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------- |
+| `src/content/experience/*.mdx`                                                                                    | `experience.ts`             | Frontmatter is missing or wrong-typed.      |
+| `src/content/projects/*.mdx`                                                                                      | `projects.ts`               | Same.                                       |
+| `src/content/side-projects/*.mdx`                                                                                 | `side-projects.ts`          | Same.                                       |
+| `src/content/oss-projects/*.mdx`                                                                                  | `oss-projects.ts`           | Same.                                       |
+| `src/content/publications/*.mdx`                                                                                  | `publications.ts`           | Same.                                       |
+| `src/data/*.json` (hero, summary, stack, principles, lab, ai-ready, technical-decisions, design-system-decisions) | one schema per file         | A data block ships in the wrong shape.      |
+| i18n strings                                                                                                      | `i18n-string.ts`            | A translation has only one of `{ es, en }`. |
+| Design tokens                                                                                                     | `tokens.ts`                 | A token name or value drifts.               |
+| `dist/status.json` (build-time)                                                                                   | `site-status.ts`            | The build artifact itself is malformed.     |
 
 This is what "no `any`" means in practice: types don't come from hand-written interfaces, they come from Zod schemas parsed against real files. There is nowhere for a wrong shape to hide.
 
@@ -164,7 +164,7 @@ Two artifacts the site needs don't exist until `dist/` is built:
 - `dist/status.json` — page weight, JS payload, CSS payload, route count, build SHA, build time.
 - `dist/og/<slug>.png` — 1200×630 OG cards for every route.
 
-Both are produced *after* `astro build` exits, never during SSR. That separation is what keeps the build a single pass.
+Both are produced _after_ `astro build` exits, never during SSR. That separation is what keeps the build a single pass.
 
 ```mermaid
 flowchart TD
@@ -225,7 +225,7 @@ The Pages deploy step is also the only place Playwright Chromium gets installed:
 
 ## Decisions
 
-The architecture above is the *how*. This section is the *why* — decisions I made deliberately and would defend in a code review:
+The architecture above is the _how_. This section is the _why_ — decisions I made deliberately and would defend in a code review:
 
 - **No `any` in TypeScript, anywhere, including tests.** If I'm tempted to reach for `any`, that's a smell. Either the type is wrong or the logic is. Strong typing isn't just a safety net — it's how I know, at every moment, where I am in the code and what I expect to happen next. When something is genuinely dynamic I reach for `unknown` + narrowing, generics, or a Zod-derived type. The few extra minutes of modeling pay back the same day, not in some imaginary future refactor. Enforced in the architecture by [§3 the schema layer](#3-boundaries-every-layer-crosses-through-zod): types flow from Zod schemas parsed against real files, not from hand-rolled interfaces that can drift.
 
@@ -247,15 +247,15 @@ Full rationale and the alternatives I rejected live in [the technical decisions 
 
 ## Testing & quality bar
 
-| Layer                 | Tool                                              | What it locks down                                                                       |
-| --------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Logic / helpers       | Vitest 4                                          | Pure functions, Zod schemas, content validators, runtime modules.                         |
-| Astro components      | Vitest + `experimental_AstroContainer`            | Branching markup, prop handling, i18n string selection.                                  |
-| Build tooling         | Vitest (`tests/tooling/`, `scripts/__tests__/`)   | `sync-data-store`, `generate-status`, the `pretest` hook.                                |
-| A11y (structural)     | axe-core via JSDOM (`tests/a11y/axe.test.ts`)     | `document-title`, `html-has-lang`, `button-name`, `link-name`, `image-alt`, zero violations across every page × theme × lang combo. |
-| A11y (color contrast) | axe-core via Playwright (`tests/visual/axe-contrast.spec.ts`) | Color-contrast checks JSDOM can't evaluate because it doesn't resolve CSS custom properties. |
-| Visual regression     | Playwright 1.59 (`tests/visual/snapshots.spec.ts`) | `maxDiffPixelRatio: 0.0` — a single byte fails the suite.                                |
-| Production artifact   | `astro build` in CI                               | Catches build regressions independently of test results.                                  |
+| Layer                 | Tool                                                          | What it locks down                                                                                                                  |
+| --------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Logic / helpers       | Vitest 4                                                      | Pure functions, Zod schemas, content validators, runtime modules.                                                                   |
+| Astro components      | Vitest + `experimental_AstroContainer`                        | Branching markup, prop handling, i18n string selection.                                                                             |
+| Build tooling         | Vitest (`tests/tooling/`, `scripts/__tests__/`)               | `sync-data-store`, `generate-status`, the `pretest` hook.                                                                           |
+| A11y (structural)     | axe-core via JSDOM (`tests/a11y/axe.test.ts`)                 | `document-title`, `html-has-lang`, `button-name`, `link-name`, `image-alt`, zero violations across every page × theme × lang combo. |
+| A11y (color contrast) | axe-core via Playwright (`tests/visual/axe-contrast.spec.ts`) | Color-contrast checks JSDOM can't evaluate because it doesn't resolve CSS custom properties.                                        |
+| Visual regression     | Playwright 1.59 (`tests/visual/snapshots.spec.ts`)            | `maxDiffPixelRatio: 0.0` — a single byte fails the suite.                                                                           |
+| Production artifact   | `astro build` in CI                                           | Catches build regressions independently of test results.                                                                            |
 
 The visual side of the site is committed as [Playwright baselines](tests/visual/__snapshots__/) alongside the code — every page × theme × language captured as a PNG and compared with `maxDiffPixelRatio: 0.0`. Visual regressions show up as a normal file diff in any PR; you can browse the UI's evolution by following those PNGs through git history.
 

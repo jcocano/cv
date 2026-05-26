@@ -11,14 +11,14 @@ import BackToHomeLink from '@/components/work/BackToHomeLink.astro';
 import principlesJson from '@/data/principles.json';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { t } from '@/lib/i18n/t';
-import { getStaticBuildLabel } from '@/lib/runtime/static-build-label';
+import { getStaticBuildLabel, resolveBuildDate } from '@/lib/runtime/static-build-label';
 import { principlesSchema } from '@/lib/schemas/principles';
 import styles from './index.module.css';
 
 const parsed = principlesSchema.parse(principlesJson);
 const principles = parsed.principles;
 
-const lastBuildLabel = getStaticBuildLabel(new Date());
+const lastBuildLabel = getStaticBuildLabel(resolveBuildDate());
 ---
 
 <BaseLayout

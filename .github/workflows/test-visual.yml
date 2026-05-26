@@ -58,9 +58,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
+      # GENERATE_STATUS_BUILD_TIME pins the date rendered by
+      # `getStaticBuildLabel` on `/the-system/` so visual baselines stay
+      # stable across days. The pinned value matches `build_time` in
+      # `src/fixtures/status-fixture.json` (which the visual spec uses to
+      # stub `/cv/status.json`), so the meta "last build" cell and the
+      # SiteStatus block share one frozen instant. Production deploys leave
+      # the env var unset and the label reflects the real build date.
       - name: Build site for preview server
         env:
           GENERATE_STATUS_SHA: ${{ github.sha }}
+          GENERATE_STATUS_BUILD_TIME: 2026-05-04T17:00:00.000Z
         run: npm run build
       - name: Run visual tests
         run: npm run test:visual
